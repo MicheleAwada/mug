@@ -1,0 +1,30 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% tailwind_css %}
+        <script src="{% static 'home/devjquery.js' %}" defer></script>
+        <script>const likeurl="{% url 'ajaxlike' %}"</script>
+        <script src="{% static 'home/home.js' %}" defer></script>
+    </head>
+    <body>
+        <section class="post">
+            {% for post in post_list %}
+                <div class="bg-gray-100 rounded-md m-3 p-3">
+                    <a href="{% url 'post-detail' post.id %}" class="text-2xl">
+                        {{post.title}}
+                    </a>
+                    <a href="{% url 'author-view' uid=post.author.id %}">By: {{post.author.name}}</a>
+                    <p class="mt-4">
+                        {{post.body}}
+                    </p>
+                    <button onclick="likeajax({{post.id}},'post');" class="bg-gray-200">
+                        Liked
+                    </button>
+                    {{post.get_likes}}
+                </div>
+            {% endfor %}
+        </section>
+    </body>
+</html>

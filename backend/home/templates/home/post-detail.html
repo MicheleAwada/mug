@@ -1,0 +1,61 @@
+{% load static tailwind_tags custom_filters %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        {% tailwind_css %}
+        <script src="{% static 'home/devjquery.js' %}" defer></script>
+        <script>const likeurl="{% url 'ajaxlike' %}"</script>
+        <script src="{% static 'home/home.js' %}" defer></script>
+    </head>
+    <body>
+        <section class="post">
+            <div class="bg-gray-100 rounded-md m-3 p-3">
+                <a href="{% url 'post-detail' post.id %}" class="text-2xl">
+                    {{post.title}}
+                </a>
+                <a href="{% url 'author-view' uid=post.author.id %}">By: {{post.author.name}}</a>
+                <p>
+                    {{post.date|date}}
+                </p>
+                <p class="mt-4">
+                    {{post.body}}
+                </p>
+                <button onclick="likeajax({{post.id}},'post');" class="bg-gray-200">
+                    Liked
+                </button>
+                {{post.get_likes|abbreviate}}
+            </div>
+            
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset>
+                    {{form.body}}
+                </fieldset>
+                <button type="sumbit" class="bg-gray-200">
+                    Comment
+                </button>
+            </form>
+
+            <section>
+                {% for comment in post.comments.all %}
+                    <div>
+                        <p>
+                            {{comment.author.name}}
+                        </p>
+                        <p>
+                            {{comment.date|date}}
+                        </p>
+                        <p>
+                            {{comment.body}}
+                        </p>
+                        <button onclick="likeajax({{post.id}},'comment');" class="bg-gray-200">
+                            Liked
+                        </button>
+                        {{comment.get_likes|abbreviate}}
+                    </div>
+                {% endfor %}
+            </section>
+        </section>
+    </body>
+</html>
