@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+#header {
+  box-shadow: 0px 1px 12px rgb(32, 32, 32);
+}
+
 * {
   margin: 0;
   padding: 0;
