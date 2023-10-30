@@ -156,7 +156,7 @@ NPM_BIN_PATH = r"npm.cmd"
 
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost:3000'
+     'http://localhost:5173'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/']
@@ -169,3 +169,7 @@ SESSION_COOKIE_HTTPONLY = True
 # PROD ONLY
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
+
+REST_FRAMEWORK = {
+    "DATETIME_FORMAT": "%B %m %Y",
+}

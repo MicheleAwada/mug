@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#header {
+    box-shadow: ;
+}
+
+$mugblue: #00acff;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.mug-blue-bg {
+    background-color: $mugblue;
+}
+
+.truncate-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to display before truncating */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+.post {
+    gap: 20px;
+}
+
+
+
+
+#post-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 0.6fr 3.5fr 1fr;
+    section {
+        background-color: gray;
+    }
+    #detail-post-view {
+        background-color: white;
+        img.post-image {
+            min-width: 63%;
+            width:100%;
+            max-height: 90vh;
+        }
+
+    }
+}

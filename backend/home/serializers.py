@@ -8,9 +8,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'username', 'email')
 
 class PostSerializer(serializers.ModelSerializer):
-    # liked = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())  # Assuming User is the related model
-    author = UserSerializer()
+    DATETIME_FORMAT = "%B %m, %Y"
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'body', 'created_at')
+class ListPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'body', 'author')
+        fields = ('id', 'title')

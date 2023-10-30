@@ -1,10 +1,38 @@
-import React from 'react'
+ import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import './index.css'
+import Root from './routes/root'
+import PostsListView,
+{loader as postsListViewLoader} from './routes/postsListView';
+
+import PostView,
+{loader as postViewLoader} from "./routes/postView"
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <PostsListView />,
+        loader: postsListViewLoader,
+      },
+      {
+        path: "posts/:id/",
+        element: <PostView />,
+        loader: postViewLoader,
+      },
+    ]
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )

@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from .forms import comment_form, create_blog
 
 from rest_framework import viewsets
-from .serializers import PostSerializer
+from . import serializers
 
 # class PostsView(ListView):
 #     model = Post
@@ -21,8 +21,11 @@ from .serializers import PostSerializer
 
 
 class PostsView(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
     queryset = Post.objects.all()
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return serializers.ListPostSerializer
+        return serializers.PostSerializer # I dont' know what you want for create/destroy/update.
 
 
 # class PostDetailView(DetailView):

@@ -13,7 +13,7 @@ class Post(models.Model):
     title = models.CharField(max_length=125)
     body = models.TextField()
 
-    date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey("myauth.User", on_delete=models.CASCADE, null=True, blank=True)
     liked = models.ManyToManyField("myauth.User", related_name="liked", blank=True)
     def get_likes(self):
