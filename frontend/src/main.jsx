@@ -3,11 +3,13 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/root";
+
 import PostsListView, {
 	loader as postsListViewLoader,
 } from "./routes/postsListView";
-
 import PostView, { loader as postViewLoader } from "./routes/postView";
+
+import Login, { action as loginAction } from "./routes/login";
 
 const router = createBrowserRouter([
 	{
@@ -18,6 +20,11 @@ const router = createBrowserRouter([
 				index: true,
 				element: <PostsListView />,
 				loader: postsListViewLoader,
+			},
+			{
+				path: "login/",
+				element: <Login />,
+				action: loginAction,
 			},
 			{
 				path: "posts/:id/",

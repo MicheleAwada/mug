@@ -1,43 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html,
+body,
+#root {
+  height: 100%;
+}
+
 #header {
-	box-shadow: 0px 1px 12px rgb(32, 32, 32);
+  box-shadow: 0px 1px 12px rgb(32, 32, 32);
 }
 
 * {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .mug-blue-bg {
-	background-color: #00acff;
+  background-color: #00acff;
 }
 
 .truncate-title {
-	display: -webkit-box;
-	-webkit-line-clamp: 3; /* Number of lines to display before truncating */
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to display before truncating */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .post {
-	gap: 20px;
+  gap: 20px;
 }
 
 #post-container {
-	min-height: 100vh;
-	display: grid;
-	grid-template-columns: 0.6fr 3.5fr 1fr;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.6fr 3.5fr 1fr;
 }
 #post-container section {
-	background-color: gray;
+  background-color: gray;
 }
 #post-container #detail-post-view {
-	background-color: white;
+  background-color: white;
 }
 #post-container #detail-post-view img.post-image {
-	min-width: 63%;
-	width: 100%;
-	max-height: 90vh;
-} /*# sourceMappingURL=index.css.map */
+  min-width: 63%;
+  width: 100%;
+  max-height: 90vh;
+}
+
+#login-main-div {
+  height: calc(100% - 5rem);
+}
+@media (min-width: 640px) {
+  #login-main-div {
+    height: calc(100% - 4rem);
+  }
+}/*# sourceMappingURL=index.css.map */

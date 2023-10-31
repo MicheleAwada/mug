@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+	height: 100%;
+}
+
 #header {
 	box-shadow: 0px 1px 12px rgb(32, 32, 32);
 }
@@ -42,5 +48,13 @@ $mugblue: #00acff;
 			width: 100%;
 			max-height: 90vh;
 		}
+	}
+}
+
+#login-main-div {
+	height: calc(100% - 5rem);
+
+	@media (min-width: 640px) {
+		height: calc(100% - 4rem);
 	}
 }
