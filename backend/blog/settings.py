@@ -154,7 +154,7 @@ INTERNAL_IPS = [
 
 NPM_BIN_PATH = r"npm.cmd"
 
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
      'http://localhost:5173'
@@ -164,7 +164,7 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 CSRF_COOKIE_SAMESITE = 'Strict'
 SESSION_COOKIE_SAMESITE = 'Strict'
-CSRF_COOKIE_HTTPONLY = False  # False since we will grab it via universal-cookies
+CSRF_COOKIE_HTTPONLY = True  # False since we will grab it via universal-cookies
 SESSION_COOKIE_HTTPONLY = True
 
 # PROD ONLY
@@ -174,3 +174,5 @@ SESSION_COOKIE_HTTPONLY = True
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
 }
+LOGIN_REDIRECT_URL = 'http://localhost:5173/'
+

@@ -8,8 +8,17 @@ body,
 	height: 100%;
 }
 
+a {
+	color: $mugblue;
+}
+
 #header {
 	box-shadow: 0px 1px 12px rgb(32, 32, 32);
+}
+#root-divider {
+	display: flex;
+	flex-flow: column;
+	min-height: 100%;
 }
 
 $mugblue: #00acff;
@@ -37,7 +46,7 @@ $mugblue: #00acff;
 #post-container {
 	min-height: 100vh;
 	display: grid;
-	grid-template-columns: 0.6fr 3.5fr 1fr;
+	grid-template-columns: 1fr 3.5fr 1fr;
 	section {
 		background-color: gray;
 	}
