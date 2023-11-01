@@ -9,10 +9,7 @@ import PostsListView, {
 } from "./routes/postsListView";
 import PostView, { loader as postViewLoader } from "./routes/postView";
 
-import Login, {
-	action as loginAction,
-	loader as loginLoader,
-} from "./routes/login";
+import Login, { action as loginAction } from "./routes/login";
 
 const router = createBrowserRouter([
 	{
@@ -32,7 +29,6 @@ const router = createBrowserRouter([
 			{
 				path: "login/",
 				element: <Login />,
-				loader: loginLoader,
 				action: loginAction,
 			},
 		],

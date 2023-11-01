@@ -3,17 +3,14 @@ import { login, getCSRF } from "../auth-api";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
 
-export function loader() {
-	return getCSRF();
-}
-
 export async function action({ request, params }) {
 	const formData = await request.formData();
 	const username = formData.get("username");
 	const password = formData.get("password");
-	login();
+	const isAuthenticated = login(username, password);
 	console.log(username);
-	console.log(pass);
+	console.log(password);
+	console.log(isAuthenticated);
 	return null;
 }
 

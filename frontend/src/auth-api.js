@@ -18,22 +18,28 @@ export function getSession() {
 }
 
 export function getCSRF() {
-	fetch("http://127.0.0.1:8000/api/csrf/", {
+	return fetch("http://127.0.0.1:8000/api/csrf/", {
 		credentials: "same-origin",
-	})
-		.then((res) => {
-			console.log(res);
-			let csrfToken = res.headers.get("X-CSRFToken");
-			console.log(csrfToken);
-			return { csrf: csrfToken };
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+	});
+	// .then((res) => {
+	// 	console.log("csrf");
+	// 	console.log(res);
+	// 	const csrfToken = res.headers.values();
+	// 	console.log(csrfToken);
+	// 	return csrfToken;
+	// })
+	// .catch((err) => {
+	// 	console.log("error");
+	// 	console.log(err);
+	// });
 }
 
-export function login(username, password, csrf) {
-	const csrfToken = getCSRF();
+export async function login(username, password) {
+	const csrfTokenFetch = await getCSRF();
+	const responseJson = await csrfTokenFetch.json();
+	const csrfToken = responseJson["X-CSRFToken"];
+	console.log("what your waiting for");
+	console.log(csrfToken);
 	fetch("http://127.0.0.1:8000/api/login/", {
 		method: "POST",
 		headers: {
@@ -53,7 +59,7 @@ export function login(username, password, csrf) {
 		})
 		.catch((err) => {
 			console.log(err);
-			return False;
+			return false;
 			// ({ error: "Wrong username or password." });
 		});
 }
@@ -65,7 +71,7 @@ export async function logout() {
 		.then(isResponseOk)
 		.then((data) => {
 			console.log(data);
-			return { isAuthenticated: false };
+			return false;
 		})
 		.catch((err) => {
 			console.log(err);
