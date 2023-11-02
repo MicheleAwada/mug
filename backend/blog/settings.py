@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'theme',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken'
 ]
 # LOGIN_URL='/admin/'
 
@@ -156,22 +157,31 @@ NPM_BIN_PATH = r"npm.cmd"
 
 # CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_WHITELIST = [
-     'http://localhost:5173'
-]
+# CORS_ORIGIN_WHITELIST = [
+#      'http://127.0.0.1:3000'
+# ]
+#
+# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
+#
+# CSRF_COOKIE_SAMESITE = 'Strict'
+# SESSION_COOKIE_SAMESITE = 'Strict'
+# CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
+#
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+#
+# # PROD ONLY
+# # CSRF_COOKIE_SECURE = True
+# # SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
-
-CSRF_COOKIE_SAMESITE = 'Strict'
-SESSION_COOKIE_SAMESITE = 'Strict'
-CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_HTTPONLY = False
-
-# PROD ONLY
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
+
 

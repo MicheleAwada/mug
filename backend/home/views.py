@@ -8,6 +8,7 @@ import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from .forms import comment_form, create_blog
+from .permissions import IsAuthorOrReadOnly
 
 from rest_framework import viewsets
 from . import serializers
@@ -22,6 +23,7 @@ from . import serializers
 
 class PostsView(viewsets.ModelViewSet):
     queryset = Post.objects.all()
+    permission_classes = [IsAuthorOrReadOnly]
     def get_serializer_class(self):
         if self.action == 'list':
             return serializers.ListPostSerializer

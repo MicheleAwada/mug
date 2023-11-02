@@ -1,5 +1,4 @@
 import { Form, useLoaderData } from "react-router-dom";
-import { login, getCSRF } from "../auth-api";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
 
