@@ -2,6 +2,7 @@ import Mug_Logo from "../assets/mug.svg";
 import { Link } from "react-router-dom";
 
 export default function Header({ isAuthenticated }) {
+	console.log("IMPP" + isAuthenticated);
 	return (
 		<div>
 			<header id="header" className="bg-gray-200 fixed w-full h-20 md:h-16">

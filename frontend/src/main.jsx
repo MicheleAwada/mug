@@ -10,6 +10,7 @@ import PostsListView, {
 import PostView, { loader as postViewLoader } from "./routes/postView";
 
 import Login, { action as loginAction } from "./routes/login";
+import Logout, { action as logoutAction } from "./routes/logout";
 
 const router = createBrowserRouter([
 	{
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
 				path: "login/",
 				element: <Login />,
 				action: loginAction,
+			},
+			{
+				path: "logout/",
+				element: <Logout />,
+				action: logoutAction,
 			},
 		],
 	},

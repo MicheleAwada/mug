@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'username', 'email')
 
 class PostSerializer(serializers.ModelSerializer):
-    DATETIME_FORMAT = "%B %m, %Y"
+    created_at = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Post
         fields = ('id', 'title', 'body', 'created_at')

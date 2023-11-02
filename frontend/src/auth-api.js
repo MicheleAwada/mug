@@ -1,17 +1,22 @@
+import axios from "axios";
+
 export async function login(username, password) {
-	const token = btoa(`${username}:${password}`);
 	try {
-		const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
-			method: "POST",
-			credentials: "include",
-			headers: {
-				Authorization: `Basic ${token}`,
-			},
+		const response = await axios.post("http://127.0.0.1:8000/api/token-auth/", {
+			username,
+			password,
 		});
-		const data = await response.json();
-		const user = await models.userSchema.validate(data);
-		setAppContext((ctx) => ({ ...ctx, user }));
+		const token = response.data.token;
+		localStorage.setItem("token", token);
+		return true;
 	} catch (error) {
+		console.error("error while authenticating");
 		console.error(error);
+		return false;
 	}
+}
+
+export function isAuthenticated() {
+	console.log(localStorage.getItem("token") !== null);
+	return localStorage.getItem("token") !== null;
 }

@@ -28,7 +28,10 @@ class PostsView(viewsets.ModelViewSet):
         if self.action == 'list':
             return serializers.ListPostSerializer
         return serializers.PostSerializer # I dont' know what you want for create/destroy/update.
-
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'DELETE', "PATCH"]:
+            return [IsAuthorOrReadOnly()]
+        return []
 
 # class PostDetailView(DetailView):
 #     model = Post

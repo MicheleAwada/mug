@@ -1,27 +1,43 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { Form } from "react-router-dom";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
+import Spinner from "../assets/spinner.svg";
+import { useState } from "react";
+import { useActionData } from "react-router-dom";
+import { login } from "../auth-api";
+
+import { redirect } from "react-router-dom";
 
 export async function action({ request, params }) {
+	// console.table(request);
+	// console.table(params);
 	const formData = await request.formData();
 	const username = formData.get("username");
 	const password = formData.get("password");
-	const isAuthenticated = login(username, password);
-	console.log(username);
-	console.log(password);
+	const isAuthenticated = await login(username, password);
+	console.log("after");
 	console.log(isAuthenticated);
-	return null;
+	if (isAuthenticated) {
+		return redirect("/");
+	}
+	return true;
 }
 
 export default function Login() {
-	const csrfToken = useLoaderData();
+	const [loading, setLoading] = useState(false);
+	const actionData = useActionData();
+	const error = actionData ? (
+		<p className="text-red-500 text-center mb-8">
+			"Invalid username or password"
+		</p>
+	) : null;
 	return (
 		<>
 			<div className="flex-grow flex items-center justify-center">
 				<Form
 					method="POST"
-					action=""
 					className="border-gray-300 border-2 rounded-sm p-4"
+					test="batata"
 				>
 					<fieldset className="flex flex-col">
 						<label htmlFor="username">Username</label>
@@ -43,10 +59,16 @@ export default function Login() {
 					</fieldset>
 					<button
 						type="sumbit"
-						className="block mx-auto my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+						className="flex items-center h-8 gap-2 mx-auto my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
 					>
+						<img
+							src={Spinner}
+							alt="loading"
+							className={(loading ? "animate-spin" : "hidden") + " h-full"}
+						/>
 						Login
 					</button>
+					{error}
 					<div className="flex flex-row flex-wrap content-stretch items-stretch justify-center gap-4 mb-4">
 						<a className="bg-gray-100 text-gray-800 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-sm">
 							<img src={Google} alt="Google" className="h-8" />
