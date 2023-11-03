@@ -10,29 +10,48 @@ export async function loader({ request, params }) {
 export default function PostView() {
 	const post = useLoaderData();
 	return (
-		<div id="post-container">
-			<section></section>
-			<section className="my-8 mx-20" id="detail-post-view">
-				{/* TODO : add type */}
-				<h3 className="italic text-gray-500">Tutorial</h3>
-				<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
-				<p className="mb-4 text-gray-800">Posted on {post.created_at}</p>
-				{/* TODO : add author */}
-				<div className="flex items-center gap-3 mb-8">
-					<img
-						className="author-image w-14 h-14 object-cover rounded-full"
-						src="http://placekitten.com/200/201"
-					/>
-					<p className="text-lg text-gray-800">Author Name</p>
-				</div>
-
+		<section className="my-8 mx-20" id="detail-post-view">
+			{/* TODO : add type */}
+			<h3 className="italic text-gray-500">Tutorial</h3>
+			<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
+			<p className="mb-4 text-gray-800">Posted on {post.created_at}</p>
+			{/* TODO : add author */}
+			{/* <p>Posted by <a href="">{post.author.name}</a></p> */}
+			<div className="flex items-center gap-3 mb-8">
 				<img
-					className="post-image object-cover mx-auto rounded-md mb-8"
-					src="https://blog.hubspot.com/hs-fs/hubfs/how-to-start-coding-1.jpg?width=595&height=400&name=how-to-start-coding-1.jpg"
+					className="author-image w-14 h-14 object-cover rounded-full"
+					src={post.author.avatar}
 				/>
-				<p className="mx-3 text-gray-800 text-justify">{post.body}</p>
+				<p className="text-lg text-gray-800">{post.author.username}</p>
+			</div>
+
+			<img
+				className="post-image object-cover mx-auto rounded-md mb-8"
+				src={post.image}
+			/>
+			<p className="mx-3 text-gray-800 text-justify">{post.body}</p>
+			<section>
+				<hr />
+				<p>
+					{post.comments.length}{" "}
+					{post.comments.length === 1 ? "comment" : "comments"}
+				</p>
+				<hr />
+				{post.comments.map((comment) => (
+					<div>
+						<div className="flex items-center gap-3">
+							<img
+								className="author-image w-8 h-8 object-cover rounded-full"
+								src={comment.author.avatar}
+							/>
+							<p className="text-lg text-gray-800">{comment.author.username}</p>
+						</div>
+						<div>
+							<p>{comment.body}</p>
+						</div>
+					</div>
+				))}
 			</section>
-			<section></section>
-		</div>
+		</section>
 	);
 }

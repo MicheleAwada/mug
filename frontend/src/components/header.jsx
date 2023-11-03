@@ -1,8 +1,9 @@
 import Mug_Logo from "../assets/mug.svg";
 import { Link } from "react-router-dom";
 
-export default function Header({ isAuthenticated }) {
-	console.log("IMPP" + isAuthenticated);
+import { isAuthenticated } from "../auth-api";
+
+export default function Header() {
 	return (
 		<div>
 			<header id="header" className="bg-gray-200 fixed w-full h-20 md:h-16">
@@ -23,7 +24,7 @@ export default function Header({ isAuthenticated }) {
 							</a>
 						</nav>
 					</div>
-					{!isAuthenticated ? (
+					{!isAuthenticated() ? (
 						<nav className="flex">
 							<a
 								href="/login/"

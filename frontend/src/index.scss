@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+$mugblue: #00acff;
+
 html,
 body,
 #root {
@@ -15,13 +17,12 @@ a {
 #header {
 	box-shadow: 0px 1px 12px rgb(32, 32, 32);
 }
+
 #root-divider {
 	display: flex;
 	flex-flow: column;
 	min-height: 100%;
 }
-
-$mugblue: #00acff;
 
 * {
 	margin: 0;
@@ -43,20 +44,12 @@ $mugblue: #00acff;
 	gap: 20px;
 }
 
-#post-container {
-	min-height: 100vh;
-	display: grid;
-	grid-template-columns: 1fr 3.5fr 1fr;
-	section {
-		background-color: gray;
-	}
-	#detail-post-view {
-		background-color: white;
-		img.post-image {
-			min-width: 63%;
-			width: 100%;
-			max-height: 90vh;
-		}
+#detail-post-view {
+	background-color: white;
+	img.post-image {
+		min-width: 63%;
+		width: 100%;
+		max-height: 90vh;
 	}
 }
 

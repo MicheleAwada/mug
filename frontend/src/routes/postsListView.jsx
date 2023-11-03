@@ -3,6 +3,7 @@ import { getPosts } from "../api.js";
 
 export async function loader({ request }) {
 	const posts = await getPosts();
+	console.log("hi");
 	return posts.data;
 }
 
@@ -18,7 +19,7 @@ export default function PostsListView() {
 					<Link to={`posts/${post.id}`}>
 						<img
 							className="object-cover w-full h-32 rounded-t-lg"
-							src="https://blog.hubspot.com/hs-fs/hubfs/how-to-start-coding-1.jpg?width=595&height=400&name=how-to-start-coding-1.jpg"
+							src={post.thumbnail}
 						/>
 						<div className="bg-gray-100 rounded-b-lg p-4">
 							<h1 className="truncate-title">{post.title}</h1>

@@ -9,14 +9,10 @@ import { login } from "../auth-api";
 import { redirect } from "react-router-dom";
 
 export async function action({ request, params }) {
-	// console.table(request);
-	// console.table(params);
 	const formData = await request.formData();
 	const username = formData.get("username");
 	const password = formData.get("password");
 	const isAuthenticated = await login(username, password);
-	console.log("after");
-	console.log(isAuthenticated);
 	if (isAuthenticated) {
 		return redirect("/");
 	}

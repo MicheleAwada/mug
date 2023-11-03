@@ -17,6 +17,5 @@ export async function login(username, password) {
 }
 
 export function isAuthenticated() {
-	console.log(localStorage.getItem("token") !== null);
 	return localStorage.getItem("token") !== null;
 }

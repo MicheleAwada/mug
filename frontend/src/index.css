@@ -41,18 +41,10 @@ a {
   gap: 20px;
 }
 
-#post-container {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 3.5fr 1fr;
-}
-#post-container section {
-  background-color: gray;
-}
-#post-container #detail-post-view {
+#detail-post-view {
   background-color: white;
 }
-#post-container #detail-post-view img.post-image {
+#detail-post-view img.post-image {
   min-width: 63%;
   width: 100%;
   max-height: 90vh;
