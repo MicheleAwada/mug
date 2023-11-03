@@ -11,12 +11,9 @@ export default function PostView() {
 	const post = useLoaderData();
 	return (
 		<section className="my-8 mx-20" id="detail-post-view">
-			{/* TODO : add type */}
 			<h3 className="italic text-gray-500">Tutorial</h3>
 			<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
 			<p className="mb-4 text-gray-800">Posted on {post.created_at}</p>
-			{/* TODO : add author */}
-			{/* <p>Posted by <a href="">{post.author.name}</a></p> */}
 			<div className="flex items-center gap-3 mb-8">
 				<img
 					className="author-image w-14 h-14 object-cover rounded-full"

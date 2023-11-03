@@ -14,6 +14,26 @@ from . import serializers
 
 
 
+class CommentsView(viewsets.ModelViewSet):
+    queryset = Comments.objects.all()
+    serializer_class = serializers.CommentSerializers
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAuthenticated()]
+        return [IsAuthorOrReadOnly()]
+    def create(self, request):
+        serializer = serializers.CommentSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.action == 'GET':
+            pass
+            # return HttpResponseBadRequest()
+        return serializers.CommentSerializers
+
+
 class PostsView(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
