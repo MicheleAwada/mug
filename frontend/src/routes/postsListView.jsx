@@ -3,7 +3,6 @@ import { getPosts } from "../api.js";
 
 export async function loader({ request }) {
 	const posts = await getPosts();
-	console.log("hi");
 	return posts.data;
 }
 

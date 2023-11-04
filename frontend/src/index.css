@@ -41,13 +41,17 @@ a {
   gap: 20px;
 }
 
-#detail-post-view {
+#post-view-container {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+}
+#post-view-container #detail-post-view {
   background-color: white;
 }
-#detail-post-view img.post-image {
-  min-width: 63%;
-  width: 100%;
-  max-height: 90vh;
+#post-view-container #detail-post-view img.post-image {
+  min-width: 45%;
+  width: 70%;
+  max-height: max(62vh, 62vw);
 }
 
 #login-main-div {

@@ -14,7 +14,6 @@ export async function action({ request, params }) {
 export default function PostCreateView() {
 	return (
 		<div className="flex-grow">
-			Hell
 			<Form method="POST" action="" encType="multipart/form-data">
 				<label htmlFor="title">Title</label>
 				<input type="text" name="title" id="title" />

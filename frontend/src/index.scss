@@ -44,12 +44,16 @@ a {
 	gap: 20px;
 }
 
-#detail-post-view {
-	background-color: white;
-	img.post-image {
-		min-width: 63%;
-		width: 100%;
-		max-height: 90vh;
+#post-view-container {
+	display: grid;
+	grid-template-columns: 1fr 5fr 1fr;
+	#detail-post-view {
+		background-color: white;
+		img.post-image {
+			min-width: 45%;
+			width: 70%;
+			max-height: max(62vh, 62vw);
+		}
 	}
 }
 
