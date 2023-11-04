@@ -8,7 +8,7 @@ import { login } from "../auth-api";
 
 import { redirect } from "react-router-dom";
 
-export async function action({ request, params }) {
+export async function action({ request, params, setLoading }) {
 	const formData = await request.formData();
 	const username = formData.get("username");
 	const password = formData.get("password");
@@ -30,11 +30,7 @@ export default function Login() {
 	return (
 		<>
 			<div className="flex-grow flex items-center justify-center">
-				<Form
-					method="POST"
-					className="border-gray-300 border-2 rounded-sm p-4"
-					test="batata"
-				>
+				<Form method="POST" className="border-gray-300 border-2 rounded-sm p-4">
 					<fieldset className="flex flex-col">
 						<label htmlFor="username">Username</label>
 						<input

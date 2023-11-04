@@ -47,7 +47,7 @@ class Post(models.Model):
     author = models.ForeignKey("myauth.User", on_delete=models.CASCADE)
     liked = models.ManyToManyField("myauth.User", related_name="liked", blank=True)
 
-    image = models.ImageField(upload_to="thumbnails", blank=True)
+    image = models.ImageField(upload_to="thumbnails")
     thumbnail = ImageSpecField(source='image', processors=[ResizeToFit(576, 324)], format='JPEG',
                              options={'quality': 60})
     def get_likes(self):
