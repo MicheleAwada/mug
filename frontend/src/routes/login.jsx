@@ -1,36 +1,57 @@
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
 import Spinner from "../assets/spinner.svg";
-import { useState } from "react";
-import { useActionData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useActionData, useOutletContext } from "react-router-dom";
 import { login } from "../auth-api";
 
 import { redirect } from "react-router-dom";
 
-export async function action({ request, params, setLoading }) {
+export async function action({ request, params }) {
+	console.log(params);
 	const formData = await request.formData();
 	const username = formData.get("username");
 	const password = formData.get("password");
 	const isAuthenticated = await login(username, password);
 	if (isAuthenticated) {
-		return redirect("/");
+		return true;
 	}
-	return true;
+	return false;
 }
 
 export default function Login() {
+	const navigate = useNavigate();
+	const context = useOutletContext();
+	const {
+		auth: [isAuthenticated, setIsAuthenticated],
+	} = context;
 	const [loading, setLoading] = useState(false);
 	const actionData = useActionData();
-	const error = actionData ? (
-		<p className="text-red-500 text-center mb-8">
-			"Invalid username or password"
-		</p>
-	) : null;
+	const error =
+		actionData === false ? (
+			<p className="text-red-500 text-center mb-8">
+				Invalid username or password
+			</p>
+		) : null;
+	useEffect(() => {
+		if (actionData !== undefined) {
+			setLoading(false);
+		}
+		if (actionData) {
+			setIsAuthenticated(actionData);
+			navigate("/");
+		}
+	}, [actionData]);
+
 	return (
 		<>
 			<div className="flex-grow flex items-center justify-center">
-				<Form method="POST" className="border-gray-300 border-2 rounded-sm p-4">
+				<Form
+					onSubmit={() => setLoading(true)}
+					method="POST"
+					className="border-gray-300 border-2 rounded-sm p-4"
+				>
 					<fieldset className="flex flex-col">
 						<label htmlFor="username">Username</label>
 						<input

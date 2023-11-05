@@ -1,9 +1,8 @@
 import Mug_Logo from "../assets/mug.svg";
 import { Link, NavLink } from "react-router-dom";
 
-import { isAuthenticated } from "../auth-api";
-
-export default function Header() {
+export default function Header({ auth }) {
+	const [isAuthenticated, setIsAuthenticated] = auth;
 	return (
 		<div>
 			<header id="header" className="bg-gray-200 fixed w-full h-20 md:h-16">
@@ -24,7 +23,7 @@ export default function Header() {
 							</a>
 						</nav> */}
 					{/* </div> */}
-					{!isAuthenticated() ? (
+					{!isAuthenticated ? (
 						<nav className="flex">
 							<a
 								href="/login/"
