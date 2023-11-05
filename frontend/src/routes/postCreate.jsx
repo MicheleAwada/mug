@@ -1,4 +1,4 @@
-import { Form, redirect, useActionData } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
 import { postPost } from "../api";
 import { Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
@@ -9,10 +9,10 @@ export async function action({ request, params }) {
 	const formData = await request.formData();
 
 	const result = await postPost(formData);
-	if (result) {
-		return [true];
+	if (result) {	
+		return [true, result];
 	}
-	console.log(result)
+	console.log(result);
 	return [false, result];
 }
 
@@ -20,20 +20,20 @@ export default function PostCreateView() {
 	const actionData = useActionData();
 	// const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
-
-	const error =
-	actionData ? (
-		<p className="text-red-500 text-center my-3">
-			{actionData}
-		</p>
-	) : null;
+	const navigate = useNavigate();
+	let error = null;
+	if (actionData !== undefined) {
+		error = actionData[0] ? null : (
+			<p className="text-red-500 text-center my-3">{actionData[0]}</p>
+		);
+	}
 
 	useEffect(() => {
 		if (actionData !== undefined) {
 			setLoading(false);
-		}
-		if (actionData) {
-			navigate("/");
+			if (actionData[0]) {
+				navigate(`/posts/${actionData[1].id}`);
+			}
 		}
 	}, [actionData]);
 
@@ -66,10 +66,20 @@ export default function PostCreateView() {
 						rows={10}
 						required
 					></textarea>
-			
-					<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
-					<input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" />
 
+					<label
+						className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						htmlFor="image_input"
+					>
+						Upload file
+					</label>
+					<input
+						className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+						id="image_input"
+						type="file"
+						name="image"
+						required
+					/>
 				</fieldset>
 				<button
 					type="sumbit"

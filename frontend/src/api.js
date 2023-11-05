@@ -31,8 +31,6 @@ export async function postPost(data) {
 			data,
 			{ headers: getTokenInHeader() }
 		);
-		console.log("gud");
-		console.log(response);
 		return response.data;
 	} catch (error) {
 		console.error(error);
