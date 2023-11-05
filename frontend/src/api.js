@@ -13,11 +13,15 @@ function getToken() {
 }
 
 export function getPosts() {
-	return axios.get("http://127.0.0.1:8000/api/posts/");
+	return axios.get("http://127.0.0.1:8000/api/posts/", {
+		headers: getTokenInHeader(),
+	});
 }
 
 export function getPost(id) {
-	return axios.get(`http://127.0.0.1:8000/api/posts/${id}/`);
+	return axios.get(`http://127.0.0.1:8000/api/posts/${id}/`, {
+		headers: getTokenInHeader(),
+	});
 }
 
 export async function postPost(data) {

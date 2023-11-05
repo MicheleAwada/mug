@@ -64,7 +64,7 @@ class PostsView(viewsets.ModelViewSet):
         return serializers.PostSerializer
         # return serializers.EditPostSerializer
 
-def AjaxLike(request):
+def Like(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             data = json.load(request)

@@ -61,4 +61,9 @@ a {
   #login-main-div {
     height: calc(100% - 4rem);
   }
+}
+
+#post-create-form {
+  max-width: 70%;
+  min-width: min(480px, 70%);
 }/*# sourceMappingURL=index.css.map */

@@ -10,12 +10,11 @@ export async function login(username, password) {
 		localStorage.setItem("token", token);
 		return true;
 	} catch (error) {
-		console.error("error while authenticating");
-		console.error(error);
+		console.error("error Invalid username or password");
 		return false;
 	}
 }
 
-export function isAuthenticated() {
+export function checkAuthenticated() {
 	return localStorage.getItem("token") !== null;
 }
