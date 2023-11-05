@@ -1,7 +1,7 @@
 import { Form, redirect, useActionData } from "react-router-dom";
 import { postPost } from "../api";
 import { Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Spinner from "../assets/spinner.svg";
 
@@ -10,18 +10,33 @@ export async function action({ request, params }) {
 
 	const result = await postPost(formData);
 	if (result) {
-		return redirect(`/posts/${result.id}`);
+		return [true];
 	}
-	return result;
+	console.log(result)
+	return [false, result];
 }
 
 export default function PostCreateView() {
 	const actionData = useActionData();
-	const [error, setError] = useState(null);
+	// const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
-	if (actionData) {
-		setError(actionData);
-	}
+
+	const error =
+	actionData ? (
+		<p className="text-red-500 text-center my-3">
+			{actionData}
+		</p>
+	) : null;
+
+	useEffect(() => {
+		if (actionData !== undefined) {
+			setLoading(false);
+		}
+		if (actionData) {
+			navigate("/");
+		}
+	}, [actionData]);
+
 	return (
 		<div className="flex-grow flex ">
 			<Form
@@ -29,6 +44,9 @@ export default function PostCreateView() {
 				id="post-create-form"
 				className=" rounded-sm p-4 mt-6 mx-8"
 				encType="multipart/form-data"
+				onSubmit={() => {
+					setLoading(true);
+				}}
 			>
 				<fieldset className="flex flex-col">
 					<label htmlFor="title">Title</label>
@@ -48,43 +66,10 @@ export default function PostCreateView() {
 						rows={10}
 						required
 					></textarea>
-					<div className="flex items-center justify-center w-full">
-						<label
-							htmlFor="dropzone-file"
-							className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-						>
-							<div className="flex flex-col items-center justify-center pt-5 pb-6">
-								<svg
-									className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 20 16"
-								>
-									<path
-										stroke="currentColor"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth="2"
-										d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-									/>
-								</svg>
-								<p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-									<span className="font-semibold">Click to upload</span> or drag
-									and drop
-								</p>
-								<p className="text-xs text-gray-500 dark:text-gray-400">
-									PNG, JPG, or SVG
-								</p>
-							</div>
-							<input
-								id="dropzone-file"
-								type="file"
-								name="image"
-								className="hidden"
-							/>
-						</label>
-					</div>
+			
+					<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload file</label>
+					<input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" />
+
 				</fieldset>
 				<button
 					type="sumbit"

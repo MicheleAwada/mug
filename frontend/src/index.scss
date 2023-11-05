@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 
 $mugblue: #00acff;
 
@@ -8,6 +9,10 @@ html,
 body,
 #root {
 	height: 100%;
+}
+
+.nunito {
+	font-family: "Nunito", sans-serif;
 }
 
 a {
@@ -30,6 +35,9 @@ a {
 }
 
 .mug-blue-bg {
+	background-color: $mugblue;
+}
+.mug-blue-text {
 	background-color: $mugblue;
 }
 

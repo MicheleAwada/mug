@@ -160,7 +160,7 @@ NPM_BIN_PATH = r"npm.cmd"
 # CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
-     'http://127.0.0.2:3000'
+     'http://127.0.0.2'
 ]
 #
 # CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
