@@ -11,8 +11,7 @@ from .permissions import IsAuthorOrReadOnly, IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
-
-
+from rest_framework import permissions
 
 class CommentsView(viewsets.ModelViewSet):
     queryset = Comments.objects.all()
@@ -86,3 +85,4 @@ def Like(request):
                 return JsonResponse({'status': 'Liked'}, status=200)
         return JsonResponse({'status': 'not authenticated'}, status=401)
     return JsonResponse({'status': 'Invalid request'}, status=400)
+

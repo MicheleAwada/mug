@@ -70,7 +70,11 @@ export default function PostView() {
 						{post.is_author && (
 							<>
 								<Dropdown.Divider />
-								<Dropdown.Item as={Link} className="flex items-center">
+								<Dropdown.Item
+									as={Link}
+									to="edit/"
+									className="flex items-center"
+								>
 									<img src={edit_icon} className="w-4 h-4 mr-2" />
 									Edit
 								</Dropdown.Item>

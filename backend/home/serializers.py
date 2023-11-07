@@ -1,10 +1,14 @@
 from .models import Post, Comments
 from rest_framework import serializers
-from myauth.models import User
+from django.contrib.auth import get_user_model
+
+UserModel = get_user_model()
+
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = UserModel
         fields = ('id', 'name', 'username', "avatar")
 
 class PostCommentsSerializer(serializers.ModelSerializer):
@@ -64,3 +68,5 @@ class ListPostSerializer(serializers.ModelSerializer):
     def get_thumbnail(self, obj):
         # PROD change to domain name
         return "http://127.0.0.1:8000" + obj.thumbnail.url
+
+

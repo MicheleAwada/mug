@@ -17,13 +17,13 @@ export default function Header({ auth }) {
 					{!isAuthenticated ? (
 						<nav className="flex">
 							<Link
-								href="/login/"
+								to="/login/"
 								className="bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-amber-100 mx-4 rounded-sm box-border px-6 py-2"
 							>
 								Login
 							</Link>
 							<Link
-								href="#"
+								to="#"
 								className="bg-cyan-600 hover:bg-cyan-700 active:bg-cyan-800 text-cyan-100 mx-4 rounded-sm box-border px-6 py-2"
 							>
 								Signup

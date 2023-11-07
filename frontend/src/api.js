@@ -37,3 +37,16 @@ export async function postPost(data) {
 		return false;
 	}
 }
+export async function editPost(data, id) {
+	try {
+		const response = await axios.patch(
+			`http://127.0.0.1:8000/api/posts/${id}/`,
+			data,
+			{ headers: getTokenInHeader() }
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
