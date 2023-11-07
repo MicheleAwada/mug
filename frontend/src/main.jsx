@@ -15,6 +15,7 @@ import PostEditView, {
 	action as postEditAction,
 	loader as postEditLoader,
 } from "./routes/postEdit";
+import { action as postDeleteAction } from "./routes/postDelete";
 
 import Login, { action as loginAction } from "./routes/login";
 import Logout, { action as logoutAction } from "./routes/logout";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
 				element: <PostEditView />,
 				action: postEditAction,
 				loader: postEditLoader,
+			},
+			{
+				path: "posts/:id/delete/",
+				action: postDeleteAction,
 			},
 			{
 				path: "login/",

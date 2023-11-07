@@ -50,3 +50,16 @@ export async function editPost(data, id) {
 		return false;
 	}
 }
+
+export async function deletePost(id) {
+	try {
+		const response = await axios.delete(
+			`http://127.0.0.1:8000/api/posts/${id}/`,
+			{ headers: getTokenInHeader() }
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}

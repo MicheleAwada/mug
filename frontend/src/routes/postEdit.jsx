@@ -13,13 +13,16 @@ import Spinner from "../assets/spinner.svg";
 
 export async function action({ request, params }) {
 	const formData = await request.formData();
-
 	const id = params.id;
 
-	const update = Object.fromEntries(formData);
-	delete update.image;
+	const image = formData.get("image");
 
-	const result = await editPost(update, id);
+	if (image.name === "") {
+		formData.delete("image");
+	}
+
+	const result = await editPost(formData, id);
+
 	if (result) {
 		return [true, result];
 	}
@@ -30,7 +33,6 @@ export async function action({ request, params }) {
 export async function loader({ params }) {
 	const id = params.id;
 	const posts_data = await getPost(id);
-	console.log(posts_data);
 	return posts_data.data;
 }
 export default function PostEditView() {
@@ -57,7 +59,6 @@ export default function PostEditView() {
 	const [fieldDefault] = useState({
 		title: loaderData.title,
 		body: loaderData.body,
-		image: loaderData.image,
 	});
 
 	console.log(`THISSSSSSSS ${loaderData.image}`);
