@@ -8,7 +8,10 @@ import Root, { loader as rootLoader } from "./routes/root";
 import PostsListView, {
 	loader as postsListViewLoader,
 } from "./routes/postsListView";
-import PostView, { loader as postViewLoader } from "./routes/postView";
+import PostView, {
+	loader as postViewLoader,
+	action as postViewCommentAction,
+} from "./routes/postView";
 import PostCreateView, {
 	action as postCreateAction,
 } from "./routes/postCreate";
@@ -36,6 +39,7 @@ const router = createBrowserRouter([
 				path: "posts/:id/",
 				element: <PostView />,
 				loader: postViewLoader,
+				action: postViewCommentAction,
 			},
 			{
 				path: "posts/create/",

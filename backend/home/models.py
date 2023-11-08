@@ -70,7 +70,8 @@ class Comments(models.Model):
     author = models.ForeignKey("myauth.User", on_delete=models.CASCADE)
     post = models.ForeignKey("home.Post", on_delete=models.CASCADE, related_name="comments")
     liked = models.ManyToManyField("myauth.User", related_name="comment_liked", blank=True)
-
+    class Meta:
+        ordering = ['-created_at']
     def get_likes(self):
         return self.liked.count()
     def __str__(self):

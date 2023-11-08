@@ -1,6 +1,6 @@
-import { getPost } from "../api";
-import { useLoaderData } from "react-router-dom";
-import { Dropdown } from "flowbite-react";
+import { getPost, comment } from "../api";
+import { useLoaderData, useOutletContext } from "react-router-dom";
+import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form } from "react-router-dom";
 
 import vertical_dots_icon from "../assets/3-vertical-dots.svg";
@@ -20,10 +20,21 @@ export async function loader({ request, params }) {
 	return posts_data.data;
 }
 
+export async function action({ request, params }) {
+	const postId = params.id;
+	const formData = await request.formData();
+	formData.append("post", postId);
+	comment(formData);
+	return true;
+}
+
 export default function PostView() {
+	const context = useOutletContext();
+	const [isAuthenticated, setIsAuthenticated] = context.auth;
 	const post = useLoaderData();
 	const [copyTxt, setCopyTxt] = useState("Copy");
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showCommentForm, setShowCommentForm] = useState(false);
 	return (
 		<div id="post-view-container">
 			<section></section>
@@ -139,30 +150,80 @@ export default function PostView() {
 					className="post-image object-cover mx-auto rounded-md mb-8"
 					src={post.image}
 				/>
-				<p className="mx-3 text-gray-800 text-justify">{post.body}</p>
+				<p className="mx-3 text-gray-800 text-justify mb-16">{post.body}</p>
 				<section>
 					<hr />
-					<p>
+					<p className="ml-8 my-4 text-lg">
 						{post.comments.length}{" "}
 						{post.comments.length === 1 ? "comment" : "comments"}
 					</p>
-					<hr />
-					{post.comments.map((comment) => (
-						<div>
-							<div className="flex items-center gap-3">
-								<img
-									className="author-image w-8 h-8 object-cover rounded-full"
-									src={comment.author.avatar}
-								/>
-								<p className="text-lg text-gray-800">
-									{comment.author.username}
-								</p>
-							</div>
-							<div>
-								<p>{comment.body}</p>
-							</div>
+					<Form
+						className="bg-gray-50 rounded-md border-2 border-gray-200 p-0 mb-4"
+						method="post"
+					>
+						{isAuthenticated ? (
+							<textarea
+								rows={showCommentForm ? "3" : "1"}
+								className="border-none bg-transparent w-full p-4 resize-none hide-outline text-gray-800 rounded-md "
+								disabled={!isAuthenticated}
+								id="comment-body"
+								name="body"
+								placeholder="Write your comment here"
+								onFocus={() => setShowCommentForm(true)}
+							></textarea>
+						) : (
+							<Tooltip content="You must Login first to comment">
+								<textarea
+									rows={showCommentForm ? "3" : "1"}
+									className="border-none bg-transparent w-full p-4 resize-none hide-outline text-gray-800 placeholder-gray-400 rounded-md "
+									disabled={!isAuthenticated}
+									id="comment-body"
+									name="body"
+									placeholder="Write your comment here"
+									onFocus={() => setShowCommentForm(true)}
+									onBlur={() => setShowCommentForm(false)}
+								></textarea>
+							</Tooltip>
+						)}
+
+						<div className={"buttons " + (showCommentForm ? "" : " hidden")}>
+							<button
+								className="bg-gray-400 hover:bg-gray-500 acitve:bg-gray-600
+								text-white p-2 px-4 m-2 rounded-md"
+								onClick={() => setShowCommentForm(false)}
+							>
+								Cancel
+							</button>
+							<button
+								type="sumbit"
+								className="bg-blue-500 hover:bg-blue-600 acitve:bg-blue-700
+								text-white p-2 px-4 m-2 rounded-md"
+							>
+								Comment
+							</button>
 						</div>
-					))}
+					</Form>
+					<ul className="comments gap-4 flex flex-col m-0 p-0">
+						{post.comments.map((comment) => (
+							<div
+								className="bg-gray-50 rounded-md border-2 border-gray-200 p-4"
+								key={comment.id}
+							>
+								<a className="flex items-center gap-2 mb-3">
+									<img
+										className="author-image w-8 h-8 object-cover rounded-full"
+										src={comment.author.avatar}
+									/>
+									<p className="text-lg text-gray-800">
+										{comment.author.username}
+									</p>
+								</a>
+								<div>
+									<p>{comment.body}</p>
+								</div>
+							</div>
+						))}
+					</ul>
 				</section>
 			</section>
 			<section></section>
