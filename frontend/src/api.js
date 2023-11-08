@@ -1,25 +1,26 @@
 import axios from "axios";
 import { getTokenInHeader } from "./auth-api";
 
+const domain_name = "http://127.0.0.1:8000";
+
+export const api = axios.create({
+	baseURL: domain_name,
+	headers: {
+		...getTokenInHeader(),
+	},
+});
+
 export function getPosts() {
-	return axios.get("http://127.0.0.1:8000/api/posts/", {
-		headers: getTokenInHeader(),
-	});
+	return api.get("/api/posts/");
 }
 
 export function getPost(id) {
-	return axios.get(`http://127.0.0.1:8000/api/posts/${id}/`, {
-		headers: getTokenInHeader(),
-	});
+	return api.get(`/api/posts/${id}/`);
 }
 
 export async function postPost(data) {
 	try {
-		const response = await axios.post(
-			"http://127.0.0.1:8000/api/posts/",
-			data,
-			{ headers: getTokenInHeader() }
-		);
+		const response = await api.post("/api/posts/", data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -28,11 +29,7 @@ export async function postPost(data) {
 }
 export async function editPost(data, id) {
 	try {
-		const response = await axios.patch(
-			`http://127.0.0.1:8000/api/posts/${id}/`,
-			data,
-			{ headers: getTokenInHeader() }
-		);
+		const response = await api.patch(`/api/posts/${id}/`, data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
@@ -42,10 +39,17 @@ export async function editPost(data, id) {
 
 export async function deletePost(id) {
 	try {
-		const response = await axios.delete(
-			`http://127.0.0.1:8000/api/posts/${id}/`,
-			{ headers: getTokenInHeader() }
-		);
+		const response = await api.delete(`/api/posts/${id}/`);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+export async function comment(data) {
+	try {
+		const response = await api.post("/api/comments/", data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
