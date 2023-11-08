@@ -13,6 +13,8 @@ from rest_framework.response import Response
 from . import serializers
 from rest_framework import permissions
 
+
+
 class CommentsView(viewsets.ModelViewSet):
     queryset = Comments.objects.all()
 
@@ -31,8 +33,8 @@ class CommentsView(viewsets.ModelViewSet):
     def get_serializer_class(self):
         print(self.action)
         if self.request.method == 'GET':
-            return serializers.GetDebugCommentSerializer
-            # return HttpResponseBadRequest()
+            # return serializers.GetDebugCommentSerializer
+            return HttpResponseBadRequest()
         # if self.action == 'create':
         #     print("POSTTTTTT")
         #     return serializers.CreateCommentSerializer

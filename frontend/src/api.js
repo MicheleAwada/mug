@@ -1,16 +1,5 @@
 import axios from "axios";
-
-function getTokenInHeader() {
-	const token = getToken();
-	if (token) {
-		return { Authorization: `Token ${token}` };
-	}
-	return {};
-}
-
-function getToken() {
-	return localStorage.getItem("token");
-}
+import { getTokenInHeader } from "./auth-api";
 
 export function getPosts() {
 	return axios.get("http://127.0.0.1:8000/api/posts/", {

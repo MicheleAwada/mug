@@ -9,7 +9,11 @@ UserModel = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('id', 'name', 'username', "avatar")
+        fields = ('id', 'name', 'username', "avatar", "posts")
+class MyUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ('id', 'name', 'username', "email", "avatar", "posts")
 
 class PostCommentsSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)

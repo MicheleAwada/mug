@@ -44,7 +44,7 @@ class Post(models.Model):
     type = models.CharField(max_length=2, choices=blog_post_types)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey("myauth.User", on_delete=models.CASCADE)
+    author = models.ForeignKey("myauth.User", on_delete=models.CASCADE, related_name='posts')
     liked = models.ManyToManyField("myauth.User", related_name="liked", blank=True)
 
     image = models.ImageField(upload_to="thumbnails")
