@@ -172,7 +172,11 @@ export default function PostView() {
 								onFocus={() => setShowCommentForm(true)}
 							></textarea>
 						) : (
-							<Tooltip content="You must Login first to comment">
+							<Tooltip
+								content="You must Login first to comment"
+								style="light"
+								arrow
+							>
 								<textarea
 									rows={showCommentForm ? "3" : "1"}
 									className="border-none bg-transparent w-full p-4 resize-none hide-outline text-gray-800 placeholder-gray-400 rounded-md "
@@ -191,6 +195,7 @@ export default function PostView() {
 								className="bg-gray-400 hover:bg-gray-500 acitve:bg-gray-600
 								text-white p-2 px-4 m-2 rounded-md"
 								onClick={() => setShowCommentForm(false)}
+								type="button"
 							>
 								Cancel
 							</button>

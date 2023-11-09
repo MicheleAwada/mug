@@ -21,6 +21,7 @@ import PostEditView, {
 } from "./routes/postEdit";
 import { action as postDeleteAction } from "./routes/postDelete";
 
+import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
 import Logout, { action as logoutAction } from "./routes/logout";
 
@@ -60,6 +61,11 @@ const router = createBrowserRouter([
 				path: "login/",
 				element: <Login />,
 				action: loginAction,
+			},
+			{
+				path: "signup/",
+				element: <Signup />,
+				action: signupAction,
 			},
 			{
 				path: "logout/",

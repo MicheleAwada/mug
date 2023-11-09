@@ -1,8 +1,9 @@
 import Mug_Logo from "../assets/mug bg.png";
 import { Link, NavLink } from "react-router-dom";
 
-export default function Header({ auth }) {
-	const [isAuthenticated, setIsAuthenticated] = auth;
+export default function Header({ context }) {
+	const [isAuthenticated] = context.auth;
+	const [currentUser] = context.user;
 	return (
 		<div>
 			<header id="header" className="bg-gray-200 fixed w-full h-20 md:h-16">

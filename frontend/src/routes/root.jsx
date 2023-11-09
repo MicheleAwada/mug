@@ -18,8 +18,18 @@ export default function Root() {
 	return (
 		<>
 			<div id="root-divider">
-				<Header auth={[isAuthenticated, setIsAuthenticated]} />
-				<Outlet context={{ auth: [isAuthenticated, setIsAuthenticated] }} />
+				<Header
+					context={{
+						auth: [isAuthenticated, setIsAuthenticated],
+						user: [currentUser, setCurrentUser],
+					}}
+				/>
+				<Outlet
+					context={{
+						auth: [isAuthenticated, setIsAuthenticated],
+						user: [currentUser, setCurrentUser],
+					}}
+				/>
 			</div>
 		</>
 	);

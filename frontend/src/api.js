@@ -3,12 +3,23 @@ import { getTokenInHeader } from "./auth-api";
 
 const domain_name = "http://127.0.0.1:8000";
 
-export const api = axios.create({
+const api = axios.create({
 	baseURL: domain_name,
-	headers: {
-		...getTokenInHeader(),
-	},
+	headers: getTokenInHeader(),
 });
+
+// this allows for dynamic headers so if a user logs in their token would be found in the header since it actually calls
+// the function everytime
+api.interceptors.request.use((config) => {
+	const token = getTokenInHeader();
+	config.headers = {
+		...config.headers,
+		...token,
+	};
+	return config;
+});
+
+export { api };
 
 export function getPosts() {
 	return api.get("/api/posts/");

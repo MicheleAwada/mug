@@ -6,6 +6,7 @@ export function getToken() {
 }
 
 export function getTokenInHeader() {
+	console.log("WHAT YOU NEEED BABY");
 	const token = getToken();
 	if (token) {
 		return { Authorization: `Token ${token}` };
@@ -13,12 +14,27 @@ export function getTokenInHeader() {
 	return {};
 }
 
-export async function login(username, password) {
+export async function signup(data) {
 	try {
-		const response = await axios.post("http://127.0.0.1:8000/api/token-auth/", {
-			username,
-			password,
-		});
+		const response = await axios.post(
+			"http://127.0.0.1:8000/api/signup/",
+			data
+		);
+		const token = response.data.token;
+		localStorage.setItem("token", token);
+		return [true];
+	} catch (error) {
+		console.log(error);
+		console.error(error.response.data);
+		return [false, error.response.data];
+	}
+}
+export async function login(data) {
+	try {
+		const response = await axios.post(
+			"http://127.0.0.1:8000/api/token-auth/",
+			data
+		);
 		const token = response.data.token;
 		localStorage.setItem("token", token);
 		return true;
