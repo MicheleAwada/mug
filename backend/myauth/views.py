@@ -19,7 +19,7 @@ class RegisterView(APIView):
             user = serializer.save()
             # TODO add token to signal
             token = Token.objects.create(user=user)
-            return Response({"token": token.key})
+            return Response({"token": token.key, "user": serializer.data })
         return Response(serializer.errors, status=400)
 # class UserView(viewsets.ModelViewSet):
 #     queryset = User.objects.all()
