@@ -7,8 +7,7 @@ router = routers.DefaultRouter()
 router.register(r"user", views.UserView, basename="user")
 
 urlpatterns = [
-    path('auth/', include('rest_framework.urls')),
-    path('token-auth/', drf_views.obtain_auth_token),
-    path('signup/', views.RegisterView.as_view()),
+    # path('auth/', include('rest_framework.urls')),
     path('', include(router.urls)),
+    path("login/", views.login.as_view(), name='login')
 ]

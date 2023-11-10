@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.password_validation import validate_password
 
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
@@ -17,6 +18,7 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, **extra_fields)
 
+        validate_password(password)
         user.set_password(password)
 
         user.save()
