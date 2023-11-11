@@ -1,5 +1,6 @@
 import axios from "axios";
 import { api } from "./api";
+import { loadConfigFromFile } from "vite";
 
 export function getToken() {
 	return localStorage.getItem("token");
@@ -16,17 +17,17 @@ export function getTokenInHeader() {
 
 export async function signup(data) {
 	try {
-		const response = await axios.post(
-			"http://127.0.0.1:8000/api/signup/",
-			data
-		);
+		const response = await axios.post("http://127.0.0.1:8000/api/user/", data);
 		const token = response.data.token;
+		const user = response.data.user;
 		localStorage.setItem("token", token);
-		return [true];
+		localStorage.setItem("user", JSON.stringify(user));
+
+		return { is_authenticated: true, user };
 	} catch (error) {
 		console.log(error);
 		console.error(error.response.data);
-		return [false, error.response.data];
+		return { is_authenticated: false, error: error.response.data, user: null };
 	}
 }
 export async function login(data) {
@@ -44,8 +45,11 @@ export async function login(data) {
 	}
 }
 
-export function checkAuthenticated() {
-	return localStorage.getItem("token") !== null;
+export function getAuthInfo() {
+	const is_authenticated = localStorage.getItem("token") !== null;
+	const user = localStorage.getItem("user");
+	user = JSON.parse(user);
+	return { is_authenticated, user };
 }
 
 export async function getUser() {

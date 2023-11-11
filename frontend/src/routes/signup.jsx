@@ -22,21 +22,27 @@ export default function Signup() {
 	const context = useOutletContext();
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
+		user: [currentUser, setCurrentUser],
 	} = context;
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
 	const actionData = useActionData();
 	console.log(actionData);
-	const error =
-		actionData && actionData[0] === false ? (
-			<p className="text-red-500 text-center my-3">{actionData[1]}</p>
-		) : null;
+	// const error =
+	// 	 && actionData[0] === false ? (
+	// 		<p className="text-red-500 text-center my-3">{actionData[1]}</p>
+	// 	) : null;
 	useEffect(() => {
 		if (actionData) {
 			setLoading(false);
-			if (actionData[0]) {
-				setIsAuthenticated(actionData[0]);
-
+			if (actionData.is_authenticated) {
+				setIsAuthenticated(actionData.is_authenticated);
+				setCurrentUser(actionData.user);
 				navigate("/");
+			} else {
+				setError(
+					<p className="text-red-500 text-center my-3">{actionData.error}</p>
+				);
 			}
 		}
 	}, [actionData]);

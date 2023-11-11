@@ -13,11 +13,8 @@ import auth_illustration from "../assets/auth illustration.svg";
 export async function action({ request, params }) {
 	console.log(params);
 	const formData = await request.formData();
-	const isAuthenticated = await login(formData);
-	if (isAuthenticated) {
-		return true;
-	}
-	return false;
+	const response = await login(formData);
+	return response;
 }
 
 export default function Login() {
@@ -25,6 +22,7 @@ export default function Login() {
 	const context = useOutletContext();
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
+		user: [currentUser, setCurrentUser],
 	} = context;
 	const [loading, setLoading] = useState(false);
 	const actionData = useActionData();
@@ -36,7 +34,7 @@ export default function Login() {
 		setLoading(false);
 		if (actionData) {
 			setIsAuthenticated(actionData);
-
+			setCurrentUser(actionData);
 			navigate("/");
 		}
 	}, [actionData]);
