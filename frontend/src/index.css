@@ -8,8 +8,17 @@ body,
   height: 100%;
 }
 
-.nunito {
+.nunito,
+* {
   font-family: "Nunito", sans-serif;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.extrabold {
+  font-weight: 700;
 }
 
 a {
@@ -21,9 +30,9 @@ a {
 }
 
 #root-divider {
-  display: flex;
-  flex-flow: column;
+  display: grid;
   min-height: 100%;
+  grid-template-rows: auto 1fr;
 }
 
 * {

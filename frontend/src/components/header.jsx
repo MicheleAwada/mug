@@ -51,29 +51,28 @@ export default function Header({ context }) {
 									<img
 										src={currentUser.avatar}
 										alt="Profile Logo"
-										className="p-2 h-full rounded-none"
+										className="p-2 h-full rounded-none cursor-pointer"
 									/>
 								)}
 							>
 								<Dropdown.Header>
 									<span className="block text-sm">
-										<span className="bold">Hello, </span>
-										{currentUser.username}
+										Hello, <span className="bold">{currentUser.username}</span>
 									</span>
 								</Dropdown.Header>
-								<Dropdown.Item as={Link} className="flex items-center" href="#">
+								<Dropdown.Item as={Link} className="flex items-center" a="#">
 									<CgProfile className="w-4 h-4 mr-2" />
 									Profile
 								</Dropdown.Item>
 								<Dropdown.Item
 									as={Link}
 									className="flex items-center"
-									href="/posts/create/"
+									a="/posts/create/"
 								>
 									<HiOutlineNewspaper className="w-4 h-4 mr-2" />
 									Posts
 								</Dropdown.Item>
-								<Dropdown.Item as={Link} className="flex items-center" href="#">
+								<Dropdown.Item as={Link} className="flex items-center" a="#">
 									<IoSettingsOutline className="w-4 h-4 mr-2" />
 									Settings
 								</Dropdown.Item>
@@ -81,7 +80,7 @@ export default function Header({ context }) {
 								<Dropdown.Item
 									as={Link}
 									className="flex items-center"
-									href="/logout/"
+									to="/logout/"
 								>
 									<HiOutlineLogout className="w-4 h-4 mr-2" />
 									Logout
