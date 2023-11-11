@@ -23,6 +23,7 @@ export default function Signup() {
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
 		user: [currentUser, setCurrentUser],
+		messages: { simpleAddMessage },
 	} = context;
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -38,6 +39,11 @@ export default function Signup() {
 			if (actionData.is_authenticated) {
 				setIsAuthenticated(actionData.is_authenticated);
 				setCurrentUser(actionData.user);
+				simpleAddMessage(
+					"You have succesfully Signed up",
+					"success",
+					"Success!"
+				);
 				navigate("/");
 			} else {
 				setError(
@@ -49,7 +55,7 @@ export default function Signup() {
 
 	return (
 		<>
-			<div className="flex-grow flex items-center justify-around w-full overflow-hidden w-full">
+			<div className="h-full flex items-center justify-around w-full overflow-hidden w-full">
 				<img
 					src={auth_illustration}
 					className="h-[30rem] w-auto hidden lg:block"
