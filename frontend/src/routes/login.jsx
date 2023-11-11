@@ -23,26 +23,35 @@ export default function Login() {
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
 		user: [currentUser, setCurrentUser],
+		messages: { simpleAddMessage },
 	} = context;
 	const [loading, setLoading] = useState(false);
 	const actionData = useActionData();
-	const error =
-		actionData === false ? (
-			<p className="text-red-500 text-center my-3">{actionData}</p>
-		) : null;
+	const [error, setError] = useState(null);
 	useEffect(() => {
-		setLoading(false);
 		if (actionData) {
-			setIsAuthenticated(actionData);
-			setCurrentUser(actionData);
-			navigate("/");
+			setLoading(false);
+			if (actionData.is_authenticated) {
+				setIsAuthenticated(actionData.is_authenticated);
+				setCurrentUser(actionData.user);
+				simpleAddMessage(
+					"You have succesfully Logged in",
+					"success",
+					"Success! "
+				);
+				navigate("/");
+			} else {
+				setError(
+					<p className="text-red-500 text-center my-3">{actionData.error}</p>
+				);
+			}
 		}
 	}, [actionData]);
 
 	return (
 		<>
-			<div className="flex-grow flex items-center justify-around w-full overflow-hidden">
-				<div className="flex-grow flex items-center justify-around w-[150vw]">
+			<div className="h-full flex items-center justify-around w-full overflow-hidden">
+				<div className="flex-grow flex items-center justify-around w-full">
 					<Form
 						onSubmit={() => setLoading(true)}
 						method="POST"
