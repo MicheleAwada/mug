@@ -13,7 +13,7 @@ import {
 } from "react-icons/hi";
 
 export function loader() {
-	return null;
+	return getAuthInfo();
 }
 function simpleMakeMessage(
 	message,
@@ -76,8 +76,11 @@ function addMessageWithSetMessage(messageElement, setMessages) {
 
 export default function Root() {
 	const loaderData = useLoaderData();
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [currentUser, setCurrentUser] = useState(null);
+	const [isAuthenticated, setIsAuthenticated] = useState(
+		loaderData.is_authenticated
+	);
+	const [currentUser, setCurrentUser] = useState(loaderData.user);
+
 	const [messages, setMessages] = useState([]);
 	const addMessage = (message) =>
 		addMessageWithSetMessage(message, setMessages);
@@ -85,11 +88,7 @@ export default function Root() {
 		addMessage(
 			simpleMakeMessage(message, type, boldMessage, messages, setMessages)
 		);
-	useEffect(() => {
-		const auth_info = getAuthInfo();
-		setIsAuthenticated(auth_info.is_authenticated);
-		setCurrentUser(auth_info.user);
-	}, []);
+
 	return (
 		<>
 			<div id="root-divider">
