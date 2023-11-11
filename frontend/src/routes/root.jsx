@@ -19,13 +19,14 @@ function simpleMakeMessage(
 	message,
 	type,
 	boldMessage = "",
-	dismissFunction = () => {}
+	messages,
+	setMessages
 ) {
 	let color;
 	let icon;
 	if (type === "error") {
 		color = "failure";
-		icon = HiOutlineExclamation;
+		icon = HiOutlineExclamationCircle;
 		boldMessage = "Error, " + boldMessage;
 	} else if (type === "success") {
 		color = "success";
@@ -35,27 +36,46 @@ function simpleMakeMessage(
 		icon = HiInformationCircle;
 	} else if (type === "warning") {
 		color = "warning";
-		icon = HiOutlineExclamationCircle;
+		icon = HiOutlineExclamation;
+	}
+
+	function dismissMessage() {
+		const index = messages.length; //doesnt exist yet
+		try {
+			setMessages((prevList) => prevList.splice(index, 1));
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	const timeout = setTimeout(dismissMessage, 4500);
+
+	function dismissNow() {
+		clearTimeout(timeout);
+		dismissMessage();
 	}
 	return (
-		<Alert color={color} icon={icon} onDismiss={dismissFunction}>
+		<Alert
+			color={color}
+			icon={icon}
+			onDismiss={dismissNow}
+			className="shadow-sm"
+		>
 			{boldMessage && <span className="font-medium">{boldMessage + " "}</span>}
 			{message}
 		</Alert>
 	);
 }
 
-function addMessageWithSetMessage(messageElement, messages, setMessages) {
-	const index = messages.length;
-	console.log("message should've messaged");
+function addMessageWithSetMessage(messageElement, setMessages) {
 	setMessages((prevList) => [...prevList, messageElement]);
-	const timeClearMessage = setTimeout(() => {
-		setMessages((prevList) => prevList.splice(index, 1));
-	}, 4500);
-	return function dismissNow() {
-		clearTimeout(timeClearMessage);
-		setMessages((prevList) => prevList.splice(index, 1));
-	};
+	// const timeClearMessage = setTimeout(() => {
+	// 	setMessages((prevList) => prevList.splice(index, 1));
+	// }, 4500);
+	// return function dismissNow() {
+	// 	clearTimeout(timeClearMessage);
+	// 	setMessages((prevList) => prevList.splice(index, 1));
+	// };
 }
 
 export default function Root() {
@@ -64,9 +84,11 @@ export default function Root() {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [messages, setMessages] = useState([]);
 	const addMessage = (message) =>
-		addMessageWithSetMessage(message, messages, setMessages);
+		addMessageWithSetMessage(message, setMessages);
 	const simpleAddMessage = (message, type, boldMessage = "") =>
-		addMessage(simpleMakeMessage(message, type, boldMessage));
+		addMessage(
+			simpleMakeMessage(message, type, boldMessage, messages, setMessages)
+		);
 	useEffect(() => {
 		const auth_info = getAuthInfo();
 		setIsAuthenticated(auth_info.is_authenticated);
@@ -84,7 +106,7 @@ export default function Root() {
 				<div className="relative">
 					<div
 						id="messages"
-						className="absolute top-0 right-0 flex flex-col items-center"
+						className="absolute top-0 right-0 flex flex-col items-center p-8"
 					>
 						{messages
 							.slice()
