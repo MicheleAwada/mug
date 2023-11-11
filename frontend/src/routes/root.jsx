@@ -39,8 +39,9 @@ function simpleMakeMessage(
 		icon = HiOutlineExclamation;
 	}
 
+	const index = messages.length; //doesnt exist yet
+
 	function dismissMessage() {
-		const index = messages.length; //doesnt exist yet
 		try {
 			setMessages((prevList) => prevList.splice(index, 1));
 		} catch (e) {
@@ -54,12 +55,14 @@ function simpleMakeMessage(
 		clearTimeout(timeout);
 		dismissMessage();
 	}
+
 	return (
 		<Alert
 			color={color}
 			icon={icon}
 			onDismiss={dismissNow}
 			className="shadow-sm"
+			key={index}
 		>
 			{boldMessage && <span className="font-medium">{boldMessage + " "}</span>}
 			{message}
@@ -69,13 +72,6 @@ function simpleMakeMessage(
 
 function addMessageWithSetMessage(messageElement, setMessages) {
 	setMessages((prevList) => [...prevList, messageElement]);
-	// const timeClearMessage = setTimeout(() => {
-	// 	setMessages((prevList) => prevList.splice(index, 1));
-	// }, 4500);
-	// return function dismissNow() {
-	// 	clearTimeout(timeClearMessage);
-	// 	setMessages((prevList) => prevList.splice(index, 1));
-	// };
 }
 
 export default function Root() {
