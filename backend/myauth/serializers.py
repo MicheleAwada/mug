@@ -14,10 +14,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user_obj
 
 class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "avatar", "posts")
+    def get_avatar(self, obj):
+        return "http://127.0.0.1:8000" + obj.avatar.url
 class MyUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "email", "avatar")
+    def get_avatar(self, obj):
+        return "http://127.0.0.1:8000" + obj.avatar.url
