@@ -18,6 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "avatar", "posts")
+
+    # PROD change domain
     def get_avatar(self, obj):
         return "http://127.0.0.1:8000" + obj.avatar.url
 class MyUserSerializer(serializers.ModelSerializer):
@@ -26,5 +28,7 @@ class MyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "email", "avatar")
+
+    # PROD change domain
     def get_avatar(self, obj):
         return "http://127.0.0.1:8000" + obj.avatar.url

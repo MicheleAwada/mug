@@ -7,7 +7,7 @@
 	.st1{fill:#FF8B20;}
 </style>
 <g>
-	<path class="st0" d="M88,100H12c-6.6,0-12-5.4-12-12V12C0,5.4,5.4,0,12,0h76c6.6,0,12,5.4,12,12v76C100,94.6,94.6,100,88,100z"/>
+	<rect class="st0" width="100" height="100"/>
 </g>
 <g>
 	<circle class="st1" cx="50" cy="38" r="16"/>

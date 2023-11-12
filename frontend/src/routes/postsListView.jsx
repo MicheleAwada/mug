@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, Link, useOutletContext } from "react-router-dom";
 import { getPosts } from "../api.js";
 
 export async function loader({ request }) {
@@ -8,6 +8,8 @@ export async function loader({ request }) {
 
 export default function PostsListView() {
 	const posts = useLoaderData();
+	const context = useOutletContext();
+	const { simpleAddMessage } = context.messages;
 	return (
 		<div
 			id="contents"

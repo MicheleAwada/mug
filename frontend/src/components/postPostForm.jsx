@@ -66,7 +66,7 @@ export function PostPostForm({ actionData, create = true, defaults = null }) {
 						id="image_input"
 						type="file"
 						name="image"
-						required
+						required={create}
 					/>
 				</fieldset>
 				<button
@@ -80,9 +80,8 @@ export function PostPostForm({ actionData, create = true, defaults = null }) {
 							(loading ? "animate-spin cursor-not-allowed" : "hidden") +
 							" h-full"
 						}
-						required={create}
 					/>
-					Post
+					{create ? "Post" : "Edit"}
 				</button>
 				{error}
 			</Form>

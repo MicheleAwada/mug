@@ -11,8 +11,6 @@ import { CgProfile } from "react-icons/cg";
 export default function Header({ context }) {
 	const [isAuthenticated] = context.auth;
 	const [currentUser] = context.user;
-	console.log("YEMPEJ");
-	console.log(currentUser);
 	return (
 		<div>
 			<header
@@ -48,11 +46,13 @@ export default function Header({ context }) {
 								label=""
 								dismissOnClick={true}
 								renderTrigger={() => (
-									<img
-										src={currentUser.avatar}
-										alt="Profile Logo"
-										className="p-2 h-full rounded-none cursor-pointer"
-									/>
+									<div className="h-full p-2">
+										<img
+											src={currentUser.avatar}
+											alt="Profile Logo"
+											className=" h-full rounded-md cursor-pointer"
+										/>
+									</div>
 								)}
 							>
 								<Dropdown.Header>
@@ -60,19 +60,19 @@ export default function Header({ context }) {
 										Hello, <span className="bold">{currentUser.username}</span>
 									</span>
 								</Dropdown.Header>
-								<Dropdown.Item as={Link} className="flex items-center" a="#">
+								<Dropdown.Item as={Link} className="flex items-center" to="#">
 									<CgProfile className="w-4 h-4 mr-2" />
 									Profile
 								</Dropdown.Item>
 								<Dropdown.Item
 									as={Link}
 									className="flex items-center"
-									a="/posts/create/"
+									to="/posts/create/"
 								>
 									<HiOutlineNewspaper className="w-4 h-4 mr-2" />
 									Posts
 								</Dropdown.Item>
-								<Dropdown.Item as={Link} className="flex items-center" a="#">
+								<Dropdown.Item as={Link} className="flex items-center" to="#">
 									<IoSettingsOutline className="w-4 h-4 mr-2" />
 									Settings
 								</Dropdown.Item>

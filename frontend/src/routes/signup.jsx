@@ -11,7 +11,6 @@ import { redirect } from "react-router-dom";
 import auth_illustration from "../assets/auth illustration.svg";
 
 export async function action({ request, params }) {
-	console.log(params);
 	const formData = await request.formData();
 	const isAuthenticated = await signup(formData);
 	return isAuthenticated;
@@ -28,11 +27,6 @@ export default function Signup() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const actionData = useActionData();
-	console.log(actionData);
-	// const error =
-	// 	 && actionData[0] === false ? (
-	// 		<p className="text-red-500 text-center my-3">{actionData[1]}</p>
-	// 	) : null;
 	useEffect(() => {
 		if (actionData) {
 			setLoading(false);

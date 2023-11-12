@@ -15,6 +15,23 @@ import {
 export function loader() {
 	return getAuthInfo();
 }
+
+function getLastKey(dict) {
+	if (!dict) {
+		return -1;
+	}
+	const keys = Object.keys(dict);
+	console.log(keys);
+	console.log(dict);
+	const last_key = keys[keys.length - 1];
+	return last_key;
+}
+
+function addMessageToSetMessage(dict, value) {
+	const last_key = getLastKey(dict);
+	const new_dict = { ...dict, [last_key + 1]: value };
+	return new_dict;
+}
 function simpleMakeMessage(
 	message,
 	type,
@@ -39,14 +56,14 @@ function simpleMakeMessage(
 		icon = HiOutlineExclamation;
 	}
 
-	const index = messages.length; //doesnt exist yet
+	const key = getLastKey(messages) + 1; //doesnt exist yet
 
 	function dismissMessage() {
-		try {
-			setMessages((prevList) => prevList.splice(index, 1));
-		} catch (e) {
-			console.log(e);
-		}
+		setMessages((prevList) => {
+			const newList = { ...prevList };
+			delete newList[key];
+			return newList;
+		});
 	}
 
 	const timeout = setTimeout(dismissMessage, 4500);
@@ -62,7 +79,7 @@ function simpleMakeMessage(
 			icon={icon}
 			onDismiss={dismissNow}
 			className="shadow-sm"
-			key={index}
+			key={key}
 		>
 			{boldMessage && <span className="font-medium">{boldMessage + " "}</span>}
 			{message}
@@ -71,7 +88,9 @@ function simpleMakeMessage(
 }
 
 function addMessageWithSetMessage(messageElement, setMessages) {
-	setMessages((prevList) => [...prevList, messageElement]);
+	setMessages((prevList) =>
+		addMessageToSetMessage({ ...prevList }, messageElement)
+	);
 }
 
 export default function Root() {
@@ -81,7 +100,7 @@ export default function Root() {
 	);
 	const [currentUser, setCurrentUser] = useState(loaderData.user);
 
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState({});
 	const addMessage = (message) =>
 		addMessageWithSetMessage(message, setMessages);
 	const simpleAddMessage = (message, type, boldMessage = "") =>
@@ -103,10 +122,9 @@ export default function Root() {
 						id="messages"
 						className="absolute top-0 right-0 flex flex-col items-center p-8"
 					>
-						{messages
-							.slice()
+						{Object.keys(messages)
 							.reverse()
-							.map((message) => message)}
+							.map((message) => messages[message])}
 					</div>
 					<Outlet
 						context={{

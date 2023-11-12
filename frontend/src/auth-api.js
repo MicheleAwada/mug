@@ -24,8 +24,7 @@ export async function signup(data) {
 
 		return { is_authenticated: true, user: parsed_user };
 	} catch (error) {
-		console.log(error);
-		console.error(error.response.data);
+		console.error(error);
 		return { is_authenticated: false, error: error.response.data, user: null };
 	}
 }
