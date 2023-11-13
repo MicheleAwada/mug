@@ -1,4 +1,8 @@
-import { useActionData, useLoaderData } from "react-router-dom";
+import {
+	useActionData,
+	useLoaderData,
+	useOutletContext,
+} from "react-router-dom";
 import { editPost, getPost } from "../api";
 
 import { PostPostForm } from "../components/postPostForm";
@@ -32,13 +36,15 @@ export async function loader({ params }) {
 export default function PostEditView() {
 	const loaderData = useLoaderData();
 	const actionData = useActionData();
+	const context = useOutletContext();
+	const { simpleAddMessage } = context.messages;
 
-	//defaults is loaderData here because loader gives the values of the post before you want to edit it
 	return (
 		<PostPostForm
 			actionData={actionData}
 			create={false}
 			defaults={loaderData}
+			simpleAddMessage={simpleAddMessage}
 		/>
 	);
 }

@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-export function PostPostForm({ actionData, create = true, defaults = null }) {
+export function PostPostForm({
+	actionData,
+	create = true,
+	defaults = null,
+	simpleAddMessage,
+}) {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	let error = null;
@@ -18,6 +23,11 @@ export function PostPostForm({ actionData, create = true, defaults = null }) {
 		if (actionData !== undefined) {
 			setLoading(false);
 			if (actionData[0]) {
+				if (create) {
+					simpleAddMessage("Post created", "success", "Success!");
+				} else {
+					simpleAddMessage("Post edited", "success", "Success!");
+				}
 				navigate(`/posts/${actionData[1].id}`);
 			}
 		}

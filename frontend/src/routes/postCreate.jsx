@@ -1,4 +1,10 @@
-import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
+import {
+	Form,
+	redirect,
+	useActionData,
+	useNavigate,
+	useOutletContext,
+} from "react-router-dom";
 import { postPost } from "../api";
 import { Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
@@ -19,5 +25,13 @@ export async function action({ request, params }) {
 
 export default function PostCreateView() {
 	const actionData = useActionData();
-	return <PostPostForm actionData={actionData} create={true} />;
+	const context = useOutletContext();
+	const { simpleAddMessage } = context.messages;
+	return (
+		<PostPostForm
+			actionData={actionData}
+			create={true}
+			simpleAddMessage={simpleAddMessage}
+		/>
+	);
 }
