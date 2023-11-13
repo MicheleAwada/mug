@@ -67,3 +67,15 @@ export async function comment(data) {
 		return false;
 	}
 }
+
+export async function like(type, id) {
+	try {
+		const data = { object_id: id, type: type };
+		const data_stringified = JSON.stringify(data);
+		const response = await api.post("/api/comments/", data_stringified);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}

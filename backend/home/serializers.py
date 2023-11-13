@@ -17,9 +17,12 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 class PostCommentsSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
+    is_author = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Comments
-        fields = ('id', 'body', 'author')
+        fields = ('id', 'body', 'author', 'is_author')
+    def get_is_author(self, obj):
+        return obj.author == self.context["request"].user
 
 # PROD useless serializer below
 class GetDebugCommentSerializer(serializers.ModelSerializer):

@@ -1,18 +1,21 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Post, Comments
-from myauth.models import User
 from django.http import HttpResponseBadRequest, JsonResponse
 import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from .forms import comment_form, create_blog
 from .permissions import IsAuthorOrReadOnly, IsAuthenticated
+from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
 from rest_framework import permissions
+from rest_framework.views import APIView
 
+
+User = get_user_model()
 
 
 class CommentsView(viewsets.ModelViewSet):
@@ -65,10 +68,14 @@ class PostsView(viewsets.ModelViewSet):
         return serializers.PostSerializer
         # return serializers.EditPostSerializer
 
+
+
+
 def Like(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
-            data = json.load(request)
+            print(request.data)
+            data = json.load(request.data)
             object_id = data.get('object_id')
             object_type = data.get("object_type")
             if object_type == "post":

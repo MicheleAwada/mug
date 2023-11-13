@@ -60,7 +60,6 @@ a {
 }
 
 #post-view-container {
-  display: grid;
   grid-template-columns: 1fr 5fr 1fr;
 }
 #post-view-container #detail-post-view {

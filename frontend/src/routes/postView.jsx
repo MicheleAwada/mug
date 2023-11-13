@@ -1,4 +1,4 @@
-import { getPost, comment } from "../api";
+import { getPost, comment, like } from "../api";
 import { useLoaderData, useOutletContext } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form } from "react-router-dom";
@@ -9,6 +9,8 @@ import edit_icon from "../assets/edit.png";
 import bin_icon from "../assets/bin.png";
 import share_icon from "../assets/share.png";
 import copy_icon from "../assets/link.png";
+import heart from "../assets/heart.svg";
+import heart_filled from "../assets/heart filled.svg";
 
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
@@ -36,9 +38,9 @@ export default function PostView() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showCommentForm, setShowCommentForm] = useState(false);
 	return (
-		<div id="post-view-container">
-			<section></section>
-			<section className="my-8 mx-20" id="detail-post-view">
+		<div id="post-view-container" className="block lg:grid">
+			<section className="hidden lg:block"></section>
+			<section className="my-8 mx-20" id="detail-post-view lg:w-full">
 				<div className="modals">
 					<Modal
 						show={showDeleteModal}
@@ -74,6 +76,17 @@ export default function PostView() {
 				<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
 				<p className="text-gray-800 p-0">Posted on {post.created_at}</p>
 				<nav className=" flex items-center gap-4 my-3">
+					<button className="h-6 w-6 rounded-full bg-gray-200 p-1">
+						<img
+							src={post.is_liked ? heart_filled : heart}
+							alt={post.is_liked ? "UnLike" : "Like"}
+							onClick={
+								await () => {
+
+								}
+							}
+						/>
+					</button>
 					<Dropdown
 						dismissOnClick={false}
 						renderTrigger={() => (
@@ -214,15 +227,48 @@ export default function PostView() {
 								className="bg-gray-50 rounded-md border-2 border-gray-200 p-4"
 								key={comment.id}
 							>
-								<a className="flex items-center gap-2 mb-3">
-									<img
-										className="author-image w-8 h-8 object-cover rounded-full"
-										src={comment.author.avatar}
-									/>
-									<p className="text-lg text-gray-800">
-										{comment.author.username}
-									</p>
-								</a>
+								<div className="flex items-center justify-between gap-2 mb-3">
+									<a className="flex items-center gap-2 mb-3">
+										<img
+											className="author-image w-8 h-8 object-cover rounded-full"
+											src={comment.author.avatar}
+										/>
+										<p className="text-lg text-gray-800">
+											{comment.author.username}
+										</p>
+									</a>
+									<Dropdown
+										dismissOnClick={true}
+										renderTrigger={() => (
+											<img
+												className="cursor-pointer rounded-full w-6 h-6 p-1 bg-gray-200 hover:bg-gray-300 active:bg-gray-400"
+												src={vertical_dots_icon}
+											/>
+										)}
+									>
+										<Dropdown.Item as={Link} className="flex items-center">
+											<img src={report_icon} className="w-4 h-4 mr-2" />
+											Report
+										</Dropdown.Item>
+										{comment.is_author && (
+											<>
+												<Dropdown.Divider />
+												<Dropdown.Item className="flex items-center">
+													<img src={edit_icon} className="w-4 h-4 mr-2" />
+													Edit
+												</Dropdown.Item>
+												<Dropdown.Item
+													// as="button"
+													// onClick={() => setShowDeleteModal(true)}
+													className="flex items-center"
+												>
+													<img src={bin_icon} className="w-4 h-4 mr-2" />
+													Delete
+												</Dropdown.Item>
+											</>
+										)}
+									</Dropdown>
+								</div>
 								<div>
 									<p>{comment.body}</p>
 								</div>
@@ -231,7 +277,7 @@ export default function PostView() {
 					</ul>
 				</section>
 			</section>
-			<section></section>
+			<section className="hidden lg:block"></section>
 		</div>
 	);
 }
