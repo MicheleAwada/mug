@@ -120,7 +120,7 @@ export default function Root() {
 				<div className="relative">
 					<div
 						id="messages"
-						className="absolute top-0 right-0 flex flex-col items-center p-8"
+						className="fixed gap-2 top-16 md:top-12 right-0 flex flex-col items-center p-8"
 					>
 						{Object.keys(messages)
 							.reverse()
