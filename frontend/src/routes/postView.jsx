@@ -16,6 +16,8 @@ import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
+import { short_nums } from "../utils";
+
 export async function loader({ request, params }) {
 	const id = params.id;
 	const posts_data = await getPost(id);
@@ -82,7 +84,7 @@ export default function PostView() {
 							type="sumbit"
 							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
 						>
-							<p className="text-gray-950">{post.likes}</p>
+							<p className="text-gray-950">{short_nums(post.likes)}</p>
 							<img
 								className="w-4 h-4"
 								src={post.is_liked ? heart_filled : heart}
@@ -249,7 +251,9 @@ export default function PostView() {
 												type="sumbit"
 												className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
 											>
-												<p className="text-gray-950">{comment.likes}</p>
+												<p className="text-gray-950">
+													{short_nums(short_nums(comment.likes))}
+												</p>
 												<img
 													className="w-4 h-4"
 													src={comment.is_liked ? heart_filled : heart}
