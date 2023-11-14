@@ -1,5 +1,5 @@
 import { getPost, comment, like } from "../api";
-import { useLoaderData, useOutletContext } from "react-router-dom";
+import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form, useFetcher } from "react-router-dom";
 
@@ -27,7 +27,7 @@ export async function action({ request, params }) {
 	const formData = await request.formData();
 	formData.append("post", postId);
 	comment(formData);
-	return true;
+	return redirect(`/posts/${postId}/`);
 }
 
 export default function PostView() {
@@ -80,7 +80,7 @@ export default function PostView() {
 					<fetcher.Form action={`/posts/${post.id}/like/`} method="post">
 						<button
 							type="sumbit"
-							className="h-6  rounded-full bg-gray-200 p-1 flex items-center gap-2"
+							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
 						>
 							<p className="text-gray-950">{post.likes}</p>
 							<img
@@ -247,7 +247,7 @@ export default function PostView() {
 										>
 											<button
 												type="sumbit"
-												className="h-6  rounded-full bg-gray-200 p-1 flex items-center gap-2"
+												className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
 											>
 												<p className="text-gray-950">{comment.likes}</p>
 												<img
