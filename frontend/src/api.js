@@ -70,9 +70,8 @@ export async function comment(data) {
 
 export async function like(type, id) {
 	try {
-		const data = { object_id: id, type: type };
-		const data_stringified = JSON.stringify(data);
-		const response = await api.post("/api/comments/", data_stringified);
+		const data = { object_id: id, object_type: type };
+		const response = await api.post("/api/like/", data);
 		return response.data;
 	} catch (error) {
 		console.error(error);
