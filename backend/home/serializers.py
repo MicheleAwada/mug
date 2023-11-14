@@ -9,7 +9,7 @@ UserModel = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('id', 'name', 'username', "avatar", "posts")
+        fields = ('id', 'name', 'username', "avatar")
 class MyUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
@@ -18,11 +18,18 @@ class MyUserSerializer(serializers.ModelSerializer):
 class PostCommentsSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     is_author = serializers.SerializerMethodField(read_only=True)
+    likes = serializers.SerializerMethodField(read_only=True)
+    is_liked = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Comments
-        fields = ('id', 'body', 'author', 'is_author')
+        fields = ('id', 'body', 'author', 'is_author', "likes", "is_liked")
     def get_is_author(self, obj):
         return obj.author == self.context["request"].user
+    def get_is_liked(self, obj):
+        user = self.context["request"].user
+        return obj.is_liked_by(user)
+    def get_likes(self,obj):
+        return obj.get_likes()
 
 # PROD useless serializer below
 class GetDebugCommentSerializer(serializers.ModelSerializer):

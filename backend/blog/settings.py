@@ -162,9 +162,9 @@ NPM_BIN_PATH = r"npm.cmd"
 CORS_ORIGIN_WHITELIST = [
      'http://127.0.0.2'
 ]
-#
-# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:3000']
-#
+
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.2']
+
 # CSRF_COOKIE_SAMESITE = 'Strict'
 # SESSION_COOKIE_SAMESITE = 'Strict'
 # CSRF_COOKIE_HTTPONLY = True

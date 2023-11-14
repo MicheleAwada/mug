@@ -74,6 +74,8 @@ class Comments(models.Model):
         ordering = ['-created_at']
     def get_likes(self):
         return self.liked.count()
+    def is_liked_by(self, user):
+        return user in self.liked.all()
     def __str__(self):
         return f"{self.author.name} {self.body[:40]}"
 

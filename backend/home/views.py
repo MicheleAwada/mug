@@ -71,27 +71,27 @@ class PostsView(viewsets.ModelViewSet):
 
 
 
-def Like(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            print(request.data)
-            data = json.load(request.data)
-            object_id = data.get('object_id')
-            object_type = data.get("object_type")
-            if object_type == "post":
-                object = get_object_or_404(Post, pk=object_id)
-                already_liked = request.user.liked.filter(id=object_id).exists()
-            elif object_type == "comment":
-                object = get_object_or_404(Comments, pk=object_id)
-                already_liked = request.user.comment_liked.filter(id=object_id).exists()
-            if already_liked:
-                object.liked.remove(request.user)
-                object.save()
-                return JsonResponse({'status': 'Unliked'}, status=200)
-            else:
-                object.liked.add(request.user)
-                object.save()
-                return JsonResponse({'status': 'Liked'}, status=200)
-        return JsonResponse({'status': 'not authenticated'}, status=401)
-    return JsonResponse({'status': 'Invalid request'}, status=400)
+class LikeView(APIView):
+    def post(self, request):
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                data = request.data
+                object_id = data.get('object_id')
+                object_type = data.get("object_type")
+                if object_type == "post":
+                    object = get_object_or_404(Post, pk=object_id)
+                    already_liked = request.user.liked.filter(id=object_id).exists()
+                elif object_type == "comment":
+                    object = get_object_or_404(Comments, pk=object_id)
+                    already_liked = request.user.comment_liked.filter(id=object_id).exists()
+                if already_liked:
+                    object.liked.remove(request.user)
+                    object.save()
+                    return JsonResponse({'status': 'Unliked'}, status=200)
+                else:
+                    object.liked.add(request.user)
+                    object.save()
+                    return JsonResponse({'status': 'Liked'}, status=200)
+            return JsonResponse({'status': 'not authenticated'}, status=401)
+        return JsonResponse({'status': 'Invalid request'}, status=400)
 
