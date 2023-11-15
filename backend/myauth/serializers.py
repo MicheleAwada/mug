@@ -26,15 +26,18 @@ class UserSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
+    is_followed = serializers.SerializerMethodField()
     class Meta:
         model = UserModel
-        fields = ('id', 'name', 'username', "avatar", "posts", "likes", "followers", "following")
+        fields = ('id', 'name', 'username', "avatar", "posts", "likes", "followers", "following", "is_followed")
         # TODO make it use lookup field of slug
         #lookup_field = 'username'
     def get_followers(self, obj):
         return obj.followers.count()
     def get_following(self, obj):
         return obj.following.count()
+    def get_is_followed(self, obj):
+        return obj.is_followed_by(self.context["request"].user)
     def get_likes(self, obj):
         return obj.get_total_likes()
 

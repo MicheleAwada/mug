@@ -27,7 +27,10 @@ import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
 import Logout, { action as logoutAction } from "./routes/logout";
 
-import Author, { loader as authorLoader } from "./routes/author";
+import Author, {
+	loader as authorLoader,
+	action as followAction,
+} from "./routes/author";
 
 const router = createBrowserRouter([
 	{
@@ -44,6 +47,7 @@ const router = createBrowserRouter([
 				path: "author/:id/",
 				element: <Author />,
 				loader: authorLoader,
+				action: followAction,
 			},
 			{
 				path: "posts/:id/",

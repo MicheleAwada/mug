@@ -89,3 +89,13 @@ export function getAuthor(id) {
 		return false;
 	}
 }
+
+export function follow(id) {
+	try {
+		const response = api.post(`/api/follow/`, { user_id: id });
+		return response;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}

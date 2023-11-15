@@ -1,16 +1,32 @@
-import { Link, useLoaderData } from "react-router-dom";
+import {
+	Form,
+	Link,
+	redirect,
+	useLoaderData,
+	useOutletContext,
+} from "react-router-dom";
 import { getAuthor } from "../api";
 import { short_nums } from "../utils";
 import heart_filled from "../assets/heart filled.svg";
+
+import { follow } from "../api";
 
 export async function loader({ params }) {
 	const respone = await getAuthor(params.id);
 	return respone.data;
 }
 
+export async function action({ request, params }) {
+	console.log("did something");
+	const response = await follow(params.id);
+	return redirect(`/author/${params.id}/`);
+}
+
 export default function Author() {
 	const author = useLoaderData();
 	const posts = author.posts;
+	const context = useOutletContext();
+	const [currentUser] = context.user;
 	return (
 		<>
 			<div className="w-full flex justify-center">
@@ -37,12 +53,22 @@ export default function Author() {
 						</div>
 						<div className="flex flex-col">
 							<div>
-								<p>{short_nums(40) + " Following"}</p>
+								<p>{short_nums(author.following) + " Following"}</p>
 							</div>
 							<div>
-								<p>{short_nums(40) + " Followers"}</p>
+								<p>{short_nums(author.followers) + " Followers"}</p>
 							</div>
 						</div>
+						{currentUser.id != author.id && (
+							<Form method="post">
+								<button
+									type="submit"
+									className="bg-cyan-500 text-white rounded-md px-4 py-2"
+								>
+									{author.is_followed ? "Unfollow" : "Follow"}
+								</button>
+							</Form>
+						)}
 					</div>
 				</div>
 			</div>

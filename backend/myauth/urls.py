@@ -9,5 +9,6 @@ router.register(r"user", views.UserView, basename="user")
 urlpatterns = [
     # path('auth/', include('rest_framework.urls')),
     path('', include(router.urls)),
-    path("login/", views.login.as_view(), name='login')
+    path("login/", views.login.as_view(), name='login'),
+    path("follow/", views.FollowView.as_view(), name='follow'),
 ]

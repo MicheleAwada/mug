@@ -56,6 +56,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_total_likes(self):
         likes = sum(post.get_likes() for post in self.posts.all())
         return likes
+    def is_followed_by(self, user):
+        return user.following.filter(id=self.id).exists()
+    def follow_or_unfollow(self, user):
+        if self.is_followed_by(user):
+            return self.followers.remove(user)
+        return self.followers.add(user)
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         print(self.pk)

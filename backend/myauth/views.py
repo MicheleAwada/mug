@@ -13,7 +13,7 @@ User = get_user_model()
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-
+from django.shortcuts import get_object_or_404
 class login(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -57,3 +57,20 @@ class UserView(
         if self.action == "list":
             return [IsAuthenticated()]
         return []
+
+class FollowView(APIView):
+    def post(self, request):
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                data = request.data
+                author_id = data.get('user_id')
+                author = get_object_or_404(User, pk=author_id)
+                user = request.user
+                if author==user:
+                    return Response({"status": "you can't follow yourself"},status=400)
+
+                author.follow_or_unfollow(user)
+
+                return Response(status=200)
+            return Response({'status': 'not authenticated'}, status=401)
+        return Response({'status': 'Invalid request'}, status=400)
