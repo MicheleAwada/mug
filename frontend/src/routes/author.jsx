@@ -14,7 +14,7 @@ export default function Author() {
 	return (
 		<>
 			<div className="w-full flex justify-center">
-				<div className="flex m-8">
+				<div className="flex m-8 gap-6">
 					<div className="flex items-center gap-3 ">
 						<img
 							className="author-image w-14 h-14 object-cover rounded-full"
@@ -25,10 +25,23 @@ export default function Author() {
 							<p className="text-lg text-gray-500">@{author.username}</p>
 						</div>
 					</div>
-					<div className="flex flex-col">
-						<div className="flex items-center">
-							<img className="w-6" src={heart_filled} />
-							<p>{short_nums(author.likes) + " Likes"}</p>
+					<div className="flex items-center gap-4">
+						<div className="flex flex-col">
+							<div className="flex items-center">
+								<img className="w-6" src={heart_filled} />
+								<p>{short_nums(author.likes) + " Likes"}</p>
+							</div>
+							<div>
+								<p>{short_nums(posts.length) + " Posts"}</p>
+							</div>
+						</div>
+						<div className="flex flex-col">
+							<div>
+								<p>{short_nums(40) + " Following"}</p>
+							</div>
+							<div>
+								<p>{short_nums(40) + " Followers"}</p>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -36,6 +36,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=125)
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField()
+
+    following = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     avatar = ProcessedImageField(upload_to='avatar', processors=[ResizeToFit(1000, 1000)], format='JPEG',
