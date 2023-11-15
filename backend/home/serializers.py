@@ -2,21 +2,19 @@ from .models import Post, Comments
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
+
 UserModel = get_user_model()
 
 
 
-class UserSerializer(serializers.ModelSerializer):
+class PostUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "avatar")
-class MyUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserModel
-        fields = ('id', 'name', 'username', "email", "avatar", "posts")
+
 
 class PostCommentsSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    author = PostUserSerializer(read_only=True)
     is_author = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
@@ -50,7 +48,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # created_at = serializers.DateTimeField(read_only=True)
-    author = UserSerializer(read_only=True)
+    author = PostUserSerializer(read_only=True)
     comments = PostCommentsSerializer(many=True, read_only=True)
 
     likes = serializers.SerializerMethodField(read_only=True)

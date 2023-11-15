@@ -1,9 +1,42 @@
 from rest_framework import serializers
-
 from django.contrib.auth import get_user_model
+from django.apps import apps
 
+Post = apps.get_model('home', 'Post')
 
 UserModel = get_user_model()
+
+
+class ListPostSerializer(serializers.ModelSerializer):
+    thumbnail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Post
+        fields = ('id', 'title', "thumbnail")
+
+    def get_thumbnail(self, obj):
+        # PROD change to domain name
+        return "http://127.0.0.1:8000" + obj.thumbnail.url
+
+
+
+class UserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    posts = ListPostSerializer(many=True, read_only=True)
+    likes = serializers.SerializerMethodField()
+    class Meta:
+        model = UserModel
+        fields = ('id', 'name', 'username', "avatar", "posts", "likes")
+        # TODO make it use lookup field of slug
+        #lookup_field = 'username'
+
+    def get_likes(self, obj):
+        return obj.get_total_likes()
+
+
+    # PROD change domain
+    def get_avatar(self, obj):
+        return "http://127.0.0.1:8000" + obj.avatar.url
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,16 +45,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, data):
         user_obj = UserModel.objects.create_user(name=data['name'], username=data['username'], email=data['email'], password=data['password'])
         return user_obj
-
-class UserSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()
-    class Meta:
-        model = UserModel
-        fields = ('id', 'name', 'username', "avatar", "posts")
-
-    # PROD change domain
-    def get_avatar(self, obj):
-        return "http://127.0.0.1:8000" + obj.avatar.url
 class MyUserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
 

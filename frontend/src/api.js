@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getTokenInHeader } from "./auth-api";
 
+// PROD change domain_name
 const domain_name = "http://127.0.0.1:8000";
 
 const api = axios.create({
@@ -73,6 +74,16 @@ export async function like(type, id) {
 		const data = { object_id: id, object_type: type };
 		const response = await api.post("/api/like/", data);
 		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+export function getAuthor(id) {
+	try {
+		const response = api.get(`/api/user/${id}/`);
+		return response;
 	} catch (error) {
 		console.error(error);
 		return false;

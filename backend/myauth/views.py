@@ -30,7 +30,7 @@ class login(ObtainAuthToken):
 
 #todo add delete option
 class UserView(
-        # mixins.CreateModelMixin,
+        mixins.CreateModelMixin,
         mixins.RetrieveModelMixin,
         # mixins.UpdateModelMixin,
         # mixins.DestroyModelMixin,

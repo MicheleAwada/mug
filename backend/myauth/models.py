@@ -38,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField()
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    avatar = ProcessedImageField(upload_to='avatar', processors=[ResizeToFit(100, 100)], format='JPEG',
+    avatar = ProcessedImageField(upload_to='avatar', processors=[ResizeToFit(1000, 1000)], format='JPEG',
                              options={'quality': 60}, blank=True)
 
     objects = UserManager()
@@ -51,6 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    def get_total_likes(self):
+        likes = sum(post.get_likes() for post in self.posts.all())
+        return likes
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         print(self.pk)
