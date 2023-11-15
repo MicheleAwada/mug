@@ -59,9 +59,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_followed_by(self, user):
         return user.following.filter(id=self.id).exists()
     def follow_or_unfollow(self, user):
-        if self.is_followed_by(user):
-            return self.followers.remove(user)
-        return self.followers.add(user)
+        if user.is_followed_by(self):
+            return self.following.remove(user)
+        return self.following.add(user)
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         print(self.pk)

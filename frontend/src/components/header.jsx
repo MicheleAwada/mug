@@ -67,7 +67,7 @@ export default function Header({ context }) {
 								<Dropdown.Item
 									as={Link}
 									className="flex items-center"
-									to="/posts/create/"
+									to={`/author/${currentUser.id}/`}
 								>
 									<HiOutlineNewspaper className="w-4 h-4 mr-2" />
 									Posts

@@ -69,7 +69,7 @@ class FollowView(APIView):
                 if author==user:
                     return Response({"status": "you can't follow yourself"},status=400)
 
-                author.follow_or_unfollow(user)
+                user.follow_or_unfollow(author)
 
                 return Response(status=200)
             return Response({'status': 'not authenticated'}, status=401)
