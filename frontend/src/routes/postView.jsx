@@ -152,18 +152,22 @@ export default function PostView() {
 						)}
 					</Dropdown>
 				</nav>
-				<div className="flex items-center gap-3 mb-8">
+				<Link
+					to={`/author/${post.author.id}/`}
+					className="flex items-center gap-3 mb-8"
+				>
 					<img
 						className="author-image w-14 h-14 object-cover rounded-full"
 						src={post.author.avatar}
 					/>
-					<p className="text-lg text-gray-800">
-						{post.author.username}
-						<span className="text-orange-400">
+					<div className="flex flex-col">
+						<p className="text-lg">{post.author.name}</p>
+						<p className="text-lg text-gray-500">@{post.author.username}</p>
+						{/* <span className="text-orange-400">
 							{post.is_author ? " (You)" : ""}
-						</span>
-					</p>
-				</div>
+						</span> */}
+					</div>
+				</Link>
 				<img
 					className="post-image object-cover mx-auto rounded-md mb-8"
 					src={post.image}
