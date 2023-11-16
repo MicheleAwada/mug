@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'social_django',
+    'rest_social_auth',
     'imagekit',
 ]
 # LOGIN_URL='/admin/'
@@ -181,11 +183,23 @@ CSRF_TRUSTED_ORIGINS = ['http://127.0.0.2']
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
 
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+SOCIAL_AUTH_FACEBOOK_KEY = 'your app client id'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'your app client secret'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # optional
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'locale': 'ru_RU'}  # optional
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    # and maybe some others ...
+    'django.contrib.auth.backends.ModelBackend',
+)
