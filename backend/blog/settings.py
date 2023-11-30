@@ -29,7 +29,6 @@ DEBUG = devdata('DEBUG', cast=bool, default=False)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,11 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'social_django',
-    'rest_social_auth',
     'imagekit',
 ]
-# LOGIN_URL='/admin/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,20 +131,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#oauth2
-# OAUTH2_PROVIDER = {
-#     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
-# }
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-#     ),
-#
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-# }
-
 AUTH_USER_MODEL = 'myauth.User'
 
 TAILWIND_APP_NAME = 'theme'
@@ -159,26 +141,10 @@ INTERNAL_IPS = [
 
 NPM_BIN_PATH = r"npm.cmd"
 
-# CORS_ALLOW_CREDENTIALS = True
-
 CORS_ORIGIN_WHITELIST = [
-     'http://127.0.0.2'
+     'http://127.0.0.1:3000',
+     'http://localhost:3000'
 ]
-
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.2']
-
-# CSRF_COOKIE_SAMESITE = 'Strict'
-# SESSION_COOKIE_SAMESITE = 'Strict'
-# CSRF_COOKIE_HTTPONLY = True
-# SESSION_COOKIE_HTTPONLY = True
-#
-# CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOW_CREDENTIALS = True
-#
-# # PROD ONLY
-# # CSRF_COOKIE_SECURE = True
-# # SESSION_COOKIE_SECURE = True
-
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
@@ -192,14 +158,23 @@ REST_FRAMEWORK = {
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-SOCIAL_AUTH_FACEBOOK_KEY = 'your app client id'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'your app client secret'
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # optional
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'locale': 'ru_RU'}  # optional
+# SOCIAL_AUTH_GOOGLE_KEY = '1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOGGLE_SECRET = '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'
 
 
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookOAuth2',
-    # and maybe some others ...
-    'django.contrib.auth.backends.ModelBackend',
-)
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

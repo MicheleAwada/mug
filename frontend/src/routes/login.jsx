@@ -60,7 +60,7 @@ export default function Login() {
 						<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
 							Welcome Back
 						</legend>
-						<div className="flex flex-row flex-wrap content-stretch items-stretch justify-center gap-4 mb-4">
+						{/* <div className="flex flex-row flex-wrap content-stretch items-stretch justify-center gap-4 mb-4">
 							<a className="border-gray-200 border-2 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-md">
 								<img src={Google} alt="Google" className="h-8" />
 								Login With Google
@@ -70,7 +70,7 @@ export default function Login() {
 								Login With Meta
 							</a>
 						</div>
-						<HrText />
+						<HrText /> */}
 						<fieldset className="flex flex-col">
 							<label className="text-gray-700" htmlFor="username">
 								Username
