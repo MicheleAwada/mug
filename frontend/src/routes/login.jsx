@@ -11,7 +11,6 @@ import { redirect } from "react-router-dom";
 import auth_illustration from "../assets/auth illustration.svg";
 
 export async function action({ request, params }) {
-	console.log(params);
 	const formData = await request.formData();
 	const response = await login(formData);
 	return response;

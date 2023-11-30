@@ -24,8 +24,10 @@ export async function signup(data) {
 
 		return { is_authenticated: true, user: parsed_user };
 	} catch (error) {
-		console.error(error);
-		return { is_authenticated: false, error: error.response.data, user: null };
+		const error_message = error.message
+		try {const error_message = error.response.data.non_field_errors[0]}
+		catch(e) {}
+		return { is_authenticated: false, error: error_message, user: null };
 	}
 }
 export async function login(data) {
@@ -38,8 +40,10 @@ export async function login(data) {
 		localStorage.setItem("user", user);
 		return { is_authenticated: true, user: parsed_user };
 	} catch (error) {
-		console.error("error Invalid username or password");
-		return { is_authenticated: false, error: error.response.data, user: null };
+		const error_message = error.message
+		try {const error_message = error.response.data.non_field_errors[0]}
+		catch(e) {}
+		return { is_authenticated: false, error: error_message, user: null };
 	}
 }
 
@@ -56,10 +60,8 @@ export async function getUser() {
 			const response = await api.get("/api/user/", {
 				headers: getTokenInHeader(),
 			});
-			console.log(response.data);
 			return response.data;
 		} catch (error) {
-			console.error(error);
 			return false;
 		}
 	}
