@@ -37,6 +37,7 @@ export default function PostView() {
 	const context = useOutletContext();
 	const post = useLoaderData();
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
+	const { simpleAddMessage } = context.messages;
 	const [copyTxt, setCopyTxt] = useState("Copy");
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showCommentForm, setShowCommentForm] = useState(false);
@@ -81,8 +82,14 @@ export default function PostView() {
 				<nav className=" flex items-center gap-4 my-3">
 					<fetcher.Form action={`/posts/${post.id}/like/`} method="post">
 						<button
-							type="sumbit"
+							type={isAuthenticated ? "sumbit":"button"}
 							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
+							onClick={isAuthenticated ? "" : () => {
+								simpleAddMessage(
+									"Please login to like posts",
+									"error",
+								)
+							}}
 						>
 							<p className="text-gray-950">{short_nums(post.likes)}</p>
 							<img
@@ -252,11 +259,17 @@ export default function PostView() {
 											method="post"
 										>
 											<button
-												type="sumbit"
+												type={isAuthenticated ? "sumbit" : "button"}
 												className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
+												onClick={isAuthenticated ? "" : () => {
+													simpleAddMessage(
+														"Please login to like posts",
+														"error",
+													)
+												}}
 											>
 												<p className="text-gray-950">
-													{short_nums(short_nums(comment.likes))}
+													{short_nums(comment.likes)}
 												</p>
 												<img
 													className="w-4 h-4"

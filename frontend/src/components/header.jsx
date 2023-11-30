@@ -20,7 +20,7 @@ export default function Header({ context }) {
 				<div className="flex justify-between items-center h-full">
 					{/* <div className="flex items-center h-full"> */}
 					<div className="flex items-center h-full">
-						<Link href="/" className="h-full p-2 pl-6">
+						<Link to="/" className="h-full p-2 pl-6">
 							<img src={Mug_Logo} alt="Logo" className="h-full" />
 						</Link>
 						<p className="nunito text-2xl">Mug</p>
