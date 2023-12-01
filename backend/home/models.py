@@ -93,10 +93,10 @@ class Report(models.Model):
         ("other", "Other"),
     )
     type = models.CharField(max_length=20, choices=choices)
-    name = models.CharField(max_length=125)
+    name = models.CharField(max_length=125, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey("myauth.User", on_delete=models.CASCADE, related_name="reports", null=True, blank=True)
+    author = models.ForeignKey("myauth.User", on_delete=models.CASCADE, related_name="reports")
     post = models.ForeignKey("home.Post", on_delete=models.CASCADE, related_name="reports", null=True, blank=True)
     comment = models.ForeignKey("home.Comment", on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
     def __str__(self):

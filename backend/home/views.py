@@ -71,11 +71,9 @@ class PostsView(viewsets.ModelViewSet):
 
 
 class ReportView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     def post(self,request):
         data = request.data
-        print("data)")
-        print(data)
         serializer_data = serializers.ReportSerializer(data=data, context={"request": request})
         if not serializer_data.is_valid():
             return Response(serializer_data.errors, status=400)

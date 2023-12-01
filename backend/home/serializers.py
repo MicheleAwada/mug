@@ -83,6 +83,7 @@ class ListPostSerializer(serializers.ModelSerializer):
 def xor_valid(val1, val2):
     return bool(val1) != bool(val2)
 
+
 class ReportSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
@@ -93,6 +94,7 @@ class ReportSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'post': {'required': False},
             'comment': {'required': False},
+            'name': {'required': False},
         }
 
 
