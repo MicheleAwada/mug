@@ -2,7 +2,7 @@ import { Outlet, useLoaderData } from "react-router-dom";
 import Header from "../components/header";
 import React, { useEffect, useState } from "react";
 
-import { getAuthInfo, getUser } from "../auth-api";
+import { getUser } from "../auth-api";
 
 import { Alert } from "flowbite-react";
 import {
@@ -13,7 +13,7 @@ import {
 } from "react-icons/hi";
 
 export function loader() {
-	return getAuthInfo();
+	return getUser();
 }
 
 function getLastKey(dict) {

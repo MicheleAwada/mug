@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { api } from "./api";
 
 export function getToken() {
@@ -47,24 +47,33 @@ export async function login(data) {
 	}
 }
 
-export function getAuthInfo() {
+export async function getAuthInfo() {
 	const is_authenticated = localStorage.getItem("token") !== null;
 	const stringified_user = localStorage.getItem("user");
-	const user = JSON.parse(stringified_user);
+	let user = JSON.parse(stringified_user);
 	return { is_authenticated, user };
 }
 
 export async function getUser() {
-	if (getAuthInfo().is_authenticated) {
+	const auth_info = await getAuthInfo();
+
+	//weird sceneros
+	if (auth_info.is_authenticated && !auth_info.user) {
 		try {
 			const response = await api.get("/api/user/", {
 				headers: getTokenInHeader(),
 			});
+			console.log(response.data);
+			const user = response.data;
+			const stringified_user = JSON.stringify(user)
+			localStorage.setItem("user", stringified_user);
 			return response.data;
 		} catch (error) {
 			return false;
 		}
+	} else if (!auth_info.is_authenticated && auth_info.user) {
+		localStorage.clear("user")
 	}
-	return null;
+	return auth_info
 }
 
