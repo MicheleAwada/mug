@@ -12,7 +12,7 @@ import copy_icon from "../assets/link.png";
 import heart from "../assets/heart.svg";
 import heart_filled from "../assets/heart filled.svg";
 
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Radio, Label, Textarea } from "flowbite-react";
 import { useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -39,8 +39,11 @@ export default function PostView() {
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
 	const { simpleAddMessage } = context.messages;
 	const [copyTxt, setCopyTxt] = useState("Copy");
-	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showCommentForm, setShowCommentForm] = useState(false);
+	
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showReportModal, setShowReportModal] = useState(false);
+	const [reportCommentId, setReportCommentId] = useState(0);
 	return (
 		<div id="post-view-container" className="block lg:grid">
 			<section className="hidden lg:block"></section>
@@ -75,6 +78,61 @@ export default function PostView() {
 							</div>
 						</Modal.Body>
 					</Modal>
+					<Modal
+						show={showReportModal}
+						size="md"
+						onClose={() => setShowReportModal(false)}
+						popup
+					>
+						<Modal.Header />
+						<Modal.Body>
+							<div className="text-center">
+								<h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+									Report {reportCommentId===0 ? "Post" : "Comment"}
+								</h3>
+
+								<Form action={reportCommentId===0 ? "report/" : `report/${reportCommentId}`} method="post" className="w-full" onSubmit={() => setShowReportModal(false)}>
+									<div className="flex flex-col gap-8">
+										<div className="flex flex-wrap gap-x-6 gap-y-2 content-center">
+											<div className="flex items-center gap-2">
+												<Radio name="type" value="spam" id="spam" required />
+												<Label htmlFor="spam">Spam</Label>
+											</div>
+											<div className="flex items-center gap-2">
+												<Radio name="type" value="abuse" id="abuse" required />
+												<Label htmlFor="abuse">Abuse</Label>
+											</div>
+											<div className="flex items-center gap-2">
+												<Radio name="type" value="sexual" id="sexual" required />
+												<Label htmlFor="sexual">Sexual Content</Label>
+											</div>
+											<div className="flex items-center gap-2">
+												<Radio name="type" value="inappropriate" id="inappropriate" required />
+												<Label htmlFor="inappropriate">Inappropriate Content</Label>
+											</div>
+											<div className="flex items-center gap-2">
+												<Radio name="type" value="other" id="other" required />
+												<Label htmlFor="other">Other</Label>
+											</div>
+										</div>
+										<Textarea id="extra-report-info" placeholder="Care to tell us more?" rows={2} name="name" />
+										<div className="flex items-center justify-end gap-4">
+											<Button type="button" onClick={() => setShowReportModal(false)} color="gray" className="w-20">
+												Cancel
+											</Button>
+											<Button
+												className="w-20"
+												color="failure"
+												type="sumbit"
+											>
+												Report
+											</Button>
+										</div>
+									</div>
+								</Form>
+							</div>
+						</Modal.Body>
+					</Modal>
 				</div>
 				<h3 className="italic text-gray-500">Tutorial</h3>
 				<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
@@ -84,7 +142,7 @@ export default function PostView() {
 						<button
 							type={isAuthenticated ? "sumbit":"button"}
 							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
-							onClick={isAuthenticated ? "" : () => {
+							onClick={isAuthenticated ? () => {} : () => {
 								simpleAddMessage(
 									"Please login to like posts",
 									"error",
@@ -132,7 +190,17 @@ export default function PostView() {
 							/>
 						)}
 					>
-						<Dropdown.Item as={Link} className="flex items-center">
+						<Dropdown.Item as="button" onClick={() => {
+							if (!isAuthenticated) {
+								simpleAddMessage(
+									"Please login to report posts",
+									"error",
+								)
+								return
+							}
+							setReportCommentId(0)
+							setShowReportModal(true)
+							}} className="flex items-center">
 							<img src={report_icon} className="w-4 h-4 mr-2" />
 							Report
 						</Dropdown.Item>
@@ -261,7 +329,7 @@ export default function PostView() {
 											<button
 												type={isAuthenticated ? "sumbit" : "button"}
 												className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
-												onClick={isAuthenticated ? "" : () => {
+												onClick={isAuthenticated ? () => {} : () => {
 													simpleAddMessage(
 														"Please login to like posts",
 														"error",
@@ -287,7 +355,17 @@ export default function PostView() {
 												/>
 											)}
 										>
-											<Dropdown.Item as={Link} className="flex items-center">
+											<Dropdown.Item as="button" onClick={() => {
+													if (!isAuthenticated) {
+														simpleAddMessage(
+															"Please login to report posts",
+															"error",
+														)
+														return
+													}
+												setReportCommentId(comment.id)
+												setShowReportModal(true)
+											}} className="flex items-center">
 												<img src={report_icon} className="w-4 h-4 mr-2" />
 												Report
 											</Dropdown.Item>

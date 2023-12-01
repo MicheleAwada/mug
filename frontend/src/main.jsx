@@ -21,7 +21,8 @@ import PostEditView, {
 } from "./routes/postEdit";
 import { action as postDeleteAction } from "./routes/postDelete";
 
-import { actionPostLike, actionCommentLike } from "./routes/like";
+import { actionLikePost, actionLikeComment } from "./loaders_actions/like";
+import { actionReportPost, actionReportComment } from "./loaders_actions/report";
 
 import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
@@ -56,12 +57,20 @@ const router = createBrowserRouter([
 				action: postViewCommentAction,
 			},
 			{
+				path: "posts/:id/report/",
+				action: actionReportPost,
+			},
+			{
+				path: "posts/:id/report/:comment_id/",
+				action: actionReportComment,
+			},
+			{
 				path: "posts/:id/like/",
-				action: actionPostLike,
+				action: actionLikePost,
 			},
 			{
 				path: "posts/:id/like/:comment_id/",
-				action: actionCommentLike,
+				action: actionLikeComment,
 			},
 			{
 				path: "posts/create/",

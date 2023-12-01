@@ -99,3 +99,14 @@ export function follow(id) {
 		return false;
 	}
 }
+
+
+export async function report(data) {
+	try {
+		const response = await api.post("/api/report/", data);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
