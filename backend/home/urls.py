@@ -13,6 +13,7 @@ router.register(r'comments', views.CommentsView, 'comments')
 urlpatterns = [
     path("api/", include(router.urls)),
     path("api/like/", views.LikeView.as_view(), name="like"),
+    path("api/report/", views.ReportView.as_view(), name="report"),
 ]
 
 if settings.DEBUG:

@@ -11,6 +11,9 @@ class Tags(models.Model):
     def __str__(self):
         return self.name
 
+
+
+
 class Post(models.Model):
     blog_post_types = [
         ("tu", "Tutorial"),
@@ -61,7 +64,7 @@ class Post(models.Model):
         ordering = ['-id']
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     #manual
     body = models.TextField()
 
@@ -76,6 +79,25 @@ class Comments(models.Model):
         return self.liked.count()
     def is_liked_by(self, user):
         return user in self.liked.all()
+    def get_reported(self):
+        return self.reports.count()
     def __str__(self):
         return f"{self.author.name} {self.body[:40]}"
 
+class Report(models.Model):
+    choices = (
+        ("spam", "Spam"),
+        ("abuse", "Abuse"),
+        ("sexual", "Sexual Content"),
+        ("inappropriate", "Inappropriate Content"),
+        ("other", "Other"),
+    )
+    type = models.CharField(max_length=20, choices=choices)
+    name = models.CharField(max_length=125)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey("myauth.User", on_delete=models.CASCADE, related_name="reports", null=True, blank=True)
+    post = models.ForeignKey("home.Post", on_delete=models.CASCADE, related_name="reports", null=True, blank=True)
+    comment = models.ForeignKey("home.Comment", on_delete=models.CASCADE, related_name='reports', null=True, blank=True)
+    def __str__(self):
+        return self.type + self.name

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from .models import Post, Comments
+from .models import Post, Comment
 from django.http import HttpResponseBadRequest, JsonResponse
 import json
 from django.utils import timezone
@@ -19,7 +19,7 @@ User = get_user_model()
 
 
 class CommentsView(viewsets.ModelViewSet):
-    queryset = Comments.objects.all()
+    queryset = Comment.objects.all()
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -70,28 +70,39 @@ class PostsView(viewsets.ModelViewSet):
 
 
 
+class ReportView(APIView):
+    # permission_classes = [permissions.IsAuthenticated]
+    def post(self,request):
+        data = request.data
+        print("data)")
+        print(data)
+        serializer_data = serializers.ReportSerializer(data=data, context={"request": request})
+        if not serializer_data.is_valid():
+            return Response(serializer_data.errors, status=400)
+        serializer_data.save()
+        return Response(serializer_data.data, status=200)
+
+
 
 class LikeView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     def post(self, request):
-        if request.method == 'POST':
-            if request.user.is_authenticated:
-                data = request.data
-                object_id = data.get('object_id')
-                object_type = data.get("object_type")
-                if object_type == "post":
-                    object = get_object_or_404(Post, pk=object_id)
-                    already_liked = request.user.liked.filter(id=object_id).exists()
-                elif object_type == "comment":
-                    object = get_object_or_404(Comments, pk=object_id)
-                    already_liked = request.user.comment_liked.filter(id=object_id).exists()
-                if already_liked:
-                    object.liked.remove(request.user)
-                    object.save()
-                    return JsonResponse({'status': 'Unliked'}, status=200)
-                else:
-                    object.liked.add(request.user)
-                    object.save()
-                    return JsonResponse({'status': 'Liked'}, status=200)
-            return JsonResponse({'status': 'not authenticated'}, status=401)
-        return JsonResponse({'status': 'Invalid request'}, status=400)
+        data = request.data
+        object_id = data.get('object_id')
+        object_type = data.get("object_type")
+        if object_type == "post":
+            object = get_object_or_404(Post, pk=object_id)
+            already_liked = request.user.liked.filter(id=object_id).exists()
+        elif object_type == "comment":
+            object = get_object_or_404(Comment, pk=object_id)
+            already_liked = request.user.comment_liked.filter(id=object_id).exists()
+        if already_liked:
+            object.liked.remove(request.user)
+            object.save()
+            return JsonResponse({'status': 'Unliked'}, status=200)
+        else:
+            object.liked.add(request.user)
+            object.save()
+            return JsonResponse({'status': 'Liked'}, status=200)
+
 

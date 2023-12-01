@@ -1,7 +1,6 @@
-from .models import Post, Comments
+from .models import Post, Comment, Report
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
 
 UserModel = get_user_model()
 
@@ -19,7 +18,7 @@ class PostCommentsSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     class Meta:
-        model = Comments
+        model = Comment
         fields = ('id', 'body', 'author', 'is_author', "likes", "is_liked")
     def get_is_author(self, obj):
         return obj.author == self.context["request"].user
@@ -32,18 +31,18 @@ class PostCommentsSerializer(serializers.ModelSerializer):
 # PROD useless serializer below
 class GetDebugCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comments
+        model = Comment
         fields = ('id', 'body', 'author', 'post')
         read_only_fields = ("author", "post")
         depth=1
 class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Comments
+        model = Comment
         fields = ('id', 'body')
 class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comments
+        model = Comment
         fields = ('id', 'body', "post")
 
 class PostSerializer(serializers.ModelSerializer):
@@ -81,4 +80,23 @@ class ListPostSerializer(serializers.ModelSerializer):
         # PROD change to domain name
         return "http://127.0.0.1:8000" + obj.thumbnail.url
 
+def xor_valid(val1, val2):
+    return bool(val1) != bool(val2)
 
+class ReportSerializer(serializers.ModelSerializer):
+    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+
+    class Meta:
+        model = Report
+        fields = ('id', 'type', 'name', 'post', 'comment', "author")
+        extra_kwargs = {
+            'post': {'required': False},
+            'comment': {'required': False},
+        }
+
+
+    def validate(self, data):
+        if not xor_valid(data.get('post'), data.get('comment')): # xor for both fields
+            raise serializers.ValidationError("Please select either post or comment")
+        return data
