@@ -39,7 +39,7 @@ class UserView(
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 
-    def post(self, request):
+    def create(self, request):
         serializer = serializers.UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
