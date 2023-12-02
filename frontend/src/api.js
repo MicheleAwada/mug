@@ -22,12 +22,19 @@ api.interceptors.request.use((config) => {
 
 export { api };
 
+let posts_cache = {};
+
 export function getPosts() {
 	return api.get("/api/posts/");
 }
 
 export function getPost(id) {
-	return api.get(`/api/posts/${id}/`);
+	if (posts_cache[id]) {
+		return posts_cache[id];
+	}
+	const post = api.get(`/api/posts/${id}/`);
+	posts_cache[post.id] = post;
+	return post
 }
 
 export async function postPost(data) {
