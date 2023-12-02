@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.apps import apps
+from django.contrib.auth.password_validation import validate_password
 
 Post = apps.get_model('home', 'Post')
 
@@ -53,6 +54,9 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def create(self, data):
         user_obj = UserModel.objects.create_user(name=data['name'], username=data['username'], email=data['email'], password=data['password'])
         return user_obj
+    def validate_password(self, password):
+        validate_password(password)
+        return password
 class MyUserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
 
