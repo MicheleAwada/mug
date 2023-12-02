@@ -24,8 +24,9 @@ export async function signup(data) {
 
 		return { is_authenticated: true, user: parsed_user };
 	} catch (error) {
-		const error_message = error.message
-		try {const error_message = error.response.data.non_field_errors[0]}
+		let error_message = error.message
+		console.log(error)
+		try {error_message = error.response.data}
 		catch(e) {}
 		return { is_authenticated: false, error: error_message, user: null };
 	}
@@ -63,7 +64,6 @@ export async function getUser() {
 			const response = await api.get("/api/user/", {
 				headers: getTokenInHeader(),
 			});
-			console.log(response.data);
 			const user = response.data;
 			const stringified_user = JSON.stringify(user)
 			localStorage.setItem("user", stringified_user);

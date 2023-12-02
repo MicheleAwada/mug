@@ -16,6 +16,17 @@ export async function action({ request, params }) {
 	return isAuthenticated;
 }
 
+function ErrorText({errors}) {
+	if (!errors) {return null}
+	const errorList = (<ul className="list-disc px-4">{errors.map((error) => {
+		return <li key={error}>
+			<p className="text-red-500">{error}</p>
+		</li>
+	})}</ul>)
+	return errorList
+	
+}
+
 export default function Signup() {
 	const navigate = useNavigate();
 	const context = useOutletContext();
@@ -25,7 +36,7 @@ export default function Signup() {
 		messages: { simpleAddMessage },
 	} = context;
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const [error, setError] = useState({});
 	const actionData = useActionData();
 	useEffect(() => {
 		if (actionData) {
@@ -40,9 +51,7 @@ export default function Signup() {
 				);
 				navigate("/");
 			} else {
-				setError(
-					<p className="text-red-500 text-center my-3">{actionData.error}</p>
-				);
+				setError({...actionData.error});
 			}
 		}
 	}, [actionData]);
@@ -86,6 +95,7 @@ export default function Signup() {
 									className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 									required
 								></input>
+								<ErrorText errors={error.name} />
 							</div>
 							<div className="flex flex-col">
 								<label className="text-gray-700" htmlFor="email">
@@ -98,6 +108,7 @@ export default function Signup() {
 									className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 									required
 								></input>
+								<ErrorText errors={error.email} />
 							</div>
 						</div>
 						<label className="text-gray-700" htmlFor="username">
@@ -110,6 +121,7 @@ export default function Signup() {
 							className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 							required
 						></input>
+						<ErrorText errors={error.username} />
 						<label className="text-gray-700" htmlFor="password">
 							Password
 						</label>
@@ -120,8 +132,9 @@ export default function Signup() {
 							className="bg-gray-50 p-2 rounded-md border-gray-200 border-2 outline-0"
 							required
 						></input>
+						<ErrorText errors={error.password} />
 					</fieldset>
-					{error}
+					<ErrorText errors={error.non_field_errors} />
 					<button
 						type="sumbit"
 						className="flex items-center h-8 gap-2 w-full justify-center my-6 py-1 px-4 text-white bg-[#deab28] hover:bg-[#d48f00] active:bg-[#c78910] rounded-md"
