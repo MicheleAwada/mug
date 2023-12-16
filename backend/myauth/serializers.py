@@ -1,7 +1,11 @@
+import random
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.apps import apps
 from django.contrib.auth.password_validation import validate_password
+
+from rest_framework.exceptions import ValidationError
 
 Post = apps.get_model('home', 'Post')
 
@@ -47,11 +51,27 @@ class UserSerializer(serializers.ModelSerializer):
     def get_avatar(self, obj):
         return "http://127.0.0.1:8000" + obj.avatar.url
 
+def random_username_from_name(name):
+    username = ""
+    i = 0
+    incrementor = 1
+    while True:
+        i += 1
+        if i > 100:
+            i = 0
+            incrementor += 1
+        username = name + str(random.randint(10 ** incrementor, 10 ** (incrementor + 1) - 1))
+        if not UserModel.objects.filter(username=username).exists():
+            break
+    return username
 class UserRegisterSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=False, max_length=50)
     class Meta:
         model = UserModel
         fields = "__all__"
     def create(self, data):
+        if data.get("username", "") == "":
+            data["username"] = random_username_from_name(data.get("name"))
         user_obj = UserModel.objects.create_user(name=data['name'], username=data['username'], email=data['email'], password=data['password'])
         return user_obj
     def validate_password(self, password):

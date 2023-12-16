@@ -12,17 +12,19 @@ export function getTokenInHeader() {
 	}
 	return {};
 }
-
+function setUser(token, user) {
+	const stringified_user = JSON.stringify(user);
+	localStorage.setItem("token", token);
+	localStorage.setItem("user", stringified_user);
+	return { token: token, user: user };
+}
 export async function signup(data) {
 	try {
 		const response = await api.post("/api/user/", data);
 		const token = response.data.token;
 		const parsed_user = response.data.user;
 		const user = JSON.stringify(parsed_user);
-		localStorage.setItem("token", token);
-		localStorage.setItem("user", user);
-
-		return { is_authenticated: true, user: parsed_user };
+		return setUser(token, user);
 	} catch (error) {
 		let error_message = error.message
 		console.log(error)
@@ -35,11 +37,8 @@ export async function login(data) {
 	try {
 		const response = await api.post("/api/login/", data);
 		const token = response.data.token;
-		const parsed_user = response.data.user;
-		const user = JSON.stringify(parsed_user);
-		localStorage.setItem("token", token);
-		localStorage.setItem("user", user);
-		return { is_authenticated: true, user: parsed_user };
+		const user = response.data.user;
+		return setUser(token, user);
 	} catch (error) {
 		const error_message = error.message
 		try {const error_message = error.response.data.non_field_errors[0]}
@@ -77,3 +76,16 @@ export async function getUser() {
 	return auth_info
 }
 
+export function googlelogin(data) {
+	try {
+		const response = api.post("/api/login/google/", data);
+		const token = response.data.token;
+		const user = response.data.user;
+		return setUser(token, user);
+	} catch (error) {
+		const error_message = error.message
+		try {const error_message = error.response.data.non_field_errors[0]}
+		catch(e) {}
+		return { is_authenticated: false, error: error_message, user: null };
+	}
+}

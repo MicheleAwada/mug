@@ -27,6 +27,8 @@ export default function Author() {
 	const posts = author.posts;
 	const context = useOutletContext();
 	const [currentUser] = context.user;
+
+	const isCurrentUser = currentUser.id === author.id;
 	return (
 		<>
 			<div className="w-full flex justify-center">
@@ -59,7 +61,14 @@ export default function Author() {
 								<p>{short_nums(author.followers) + " Followers"}</p>
 							</div>
 						</div>
-						{currentUser.id != author.id && (
+						{isCurrentUser ? (
+								<a
+									href="/posts/create/"
+									className="bg-cyan-500 text-white rounded-md px-4 py-2"
+								>
+									Create Post
+								</a>
+							) : (
 							<Form method="post">
 								<button
 									type="submit"
@@ -76,7 +85,7 @@ export default function Author() {
 				id="contents"
 				className="flex flex-wrap justify-around items-stretch w-full"
 			>
-				{posts.map((post) => (
+				{posts == [] ? posts.map((post) => (
 					<div className="post m-4 w-64" key={post.id}>
 						<Link to={`/posts/${post.id}/`}>
 							<img
@@ -88,7 +97,9 @@ export default function Author() {
 							</div>
 						</Link>
 					</div>
-				))}
+				)) : (
+					<p>No Posts {isCurrentUser && (<a href="/posts/create/">Create One?</a>)}</p>
+				)}
 			</div>
 		</>
 	);

@@ -5,7 +5,7 @@ import { Dropdown } from "flowbite-react";
 
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineNewspaper } from "react-icons/hi2";
-import { HiOutlineLogout } from "react-icons/hi";
+import { HiOutlineLogout, HiOutlinePencil } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 
 export default function Header({ context }) {
@@ -63,6 +63,14 @@ export default function Header({ context }) {
 								<Dropdown.Item as={Link} className="flex items-center" to="#">
 									<CgProfile className="w-4 h-4 mr-2" />
 									Profile
+								</Dropdown.Item>
+								<Dropdown.Item
+									as={Link}
+									className="flex items-center"
+									to={`/posts/create/`}
+								>
+									<HiOutlinePencil className="w-4 h-4 mr-2" />
+									Create Post
 								</Dropdown.Item>
 								<Dropdown.Item
 									as={Link}

@@ -11,4 +11,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path("login/", views.login.as_view(), name='login'),
     path("follow/", views.FollowView.as_view(), name='follow'),
+    path("login/google", views.GoogleAuth.as_view(), name="google-auth")
 ]

@@ -1,0 +1,49 @@
+version: "3.4"
+services:
+  frontend_static:
+    container_name: frontend_static
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/dist:/dist
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/mug/.env
+    expose:
+      - 8080
+    command: gunicorn mug.wsgi:application --bind 0.0.0.0:8080 --log-level debug
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./backend/mug/db.env
+    environment:
+      POSTGRES_DB: Mug
+      POSTGRES_USER: postgres
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80 
+      - 8000:8000
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/dist:/dist
+      - static:/static
+      - media:/media
+volumes:
+  postgres_data:
+  media:
+  static:

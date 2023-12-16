@@ -63,7 +63,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.following.add(user)
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        print(self.pk)
         if not self.avatar:
             random_image_path = f"/default/avatar/default_avatar_{self.id % 3}.svg"
             self.avatar = random_image_path

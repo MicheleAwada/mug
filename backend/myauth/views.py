@@ -10,10 +10,21 @@ from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
+
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+
+from django.conf import settings
+
+
+from .  serializers import random_username_from_name
+import jwt
+
+from jwt.exceptions import InvalidSignatureError, ImmatureSignatureError, ExpiredSignatureError
+google_secret = settings.GOOGLE_CLIENT_SECRET
+
 class login(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -45,7 +56,7 @@ class UserView(
             user = serializer.save()
             # TODO add token to signal
             userdata = serializers.MyUserSerializer(user)
-            token = Token.objects.create(user=user)
+            token = Token.objects.get_or_create(user=user)
             return Response({"token": token.key, "user": userdata.data })
         return Response(serializer.errors, status=400)
 
@@ -74,3 +85,28 @@ class FollowView(APIView):
                 return Response(status=200)
             return Response({'status': 'not authenticated'}, status=401)
         return Response({'status': 'Invalid request'}, status=400)
+
+class GoogleAuth(APIView):
+    def post(self, request):
+        data = request.data
+        encoded_jwt = data.get('credential')
+        try:
+            user_info = jwt.decode(encoded_jwt, google_secret, algorithms=["HS256"])
+        except InvalidSignatureError:
+            return Response({'status': 'Invalid signature, please try again'}, status=400)
+        except ImmatureSignatureError:
+            return Response({'status': 'Immature signature, please try again'}, status=400)
+        except ExpiredSignatureError:
+            return Response({'status': 'Expired signature, please try again'}, status=400)
+        else:
+            email = user_info.get('email')
+            name = user_info.get("name")
+            username = random_username_from_name(name)
+            user = User.objects.create_user(username=username, email=email, name=name, password="")
+            userdata = serializers.MyUserSerializer(user)
+            token = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key, "user": userdata.data })
+
+
+
+

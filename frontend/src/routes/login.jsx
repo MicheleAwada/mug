@@ -4,9 +4,10 @@ import Meta from "../assets/meta.svg";
 import Spinner from "../assets/spinner.svg";
 import { useEffect, useState } from "react";
 import { useActionData, useOutletContext } from "react-router-dom";
-import { login } from "../auth-api";
+import { login, googlelogin } from "../auth-api";
 import HrText from "../components/hr-text";
 import { redirect } from "react-router-dom";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 
 import auth_illustration from "../assets/auth illustration.svg";
 
@@ -48,7 +49,8 @@ export default function Login() {
 	}, [actionData]);
 
 	return (
-		<>
+		<>	
+		<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
 			<div className="h-full flex items-center justify-around w-full overflow-hidden">
 				<div className="flex-grow flex items-center justify-around w-full">
 					<Form
@@ -70,6 +72,15 @@ export default function Login() {
 							</a>
 						</div>
 						<HrText /> */}
+						<GoogleLogin
+							onSuccess={response => {
+								console.log(response);
+								const g =googlelogin(response);
+								console.log(g)
+							}}
+							onError={() => console.log('Login Failed')}
+							
+						/>
 						<fieldset className="flex flex-col">
 							<label className="text-gray-700" htmlFor="username">
 								Username
@@ -179,6 +190,7 @@ export default function Login() {
 					</Form> */}
 				</div>
 			</div>
+			</GoogleOAuthProvider>;
 		</>
 	);
 }
