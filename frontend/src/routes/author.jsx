@@ -24,6 +24,7 @@ export async function action({ request, params }) {
 export default function Author() {
 	const author = useLoaderData();
 	const posts = author.posts;
+	const are_posts_empty = posts.length === 0;
 	const context = useOutletContext();
 	const [currentUser] = context.user;
 	const [isAuthenticated] = context.auth;
@@ -85,7 +86,9 @@ export default function Author() {
 				id="contents"
 				className="flex flex-wrap justify-around items-stretch w-full"
 			>
-				{posts.length !== 0 ? posts.map((post) => (
+				{are_posts_empty ?  (
+					<p>No Posts {isCurrentUser && (<a href="/posts/create/">Create One?</a>)}</p>
+				) : posts.map((post) => (
 					<div className="post m-4 w-64" key={post.id}>
 						<Link to={`/posts/${post.id}/`}>
 							<img
@@ -97,9 +100,7 @@ export default function Author() {
 							</div>
 						</Link>
 					</div>
-				)) : (
-					<p>No Posts {isCurrentUser && (<a href="/posts/create/">Create One?</a>)}</p>
-				)}
+				))}
 			</div>
 		</>
 	);

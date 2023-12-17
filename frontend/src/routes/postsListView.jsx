@@ -8,7 +8,14 @@ export async function loader() {
 
 export default function PostsListView() {
 	const posts = useLoaderData();
+	const are_posts_empty = posts.length===0
 	return (
+		are_posts_empty ? 
+		<div
+		id="contents"
+		className="flex flex-wrap justify-around items-stretch w-full"
+		><p className="text-2xl pt-16">Weird?! Their doesnt seem to be any posts here.. <a href="/posts/create/">Create One?</a></p>
+		</div> :
 		<div
 			id="contents"
 			className="flex flex-wrap justify-around items-stretch w-full"
