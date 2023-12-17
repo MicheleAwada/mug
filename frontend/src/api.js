@@ -34,8 +34,6 @@ export function getPost(id) {
 		return posts_cache[id];
 	}
 	const post = api.get(`/api/posts/${id}/`);
-	console.log("hi")
-	console.log(post)
 	posts_cache[post.id] = post;
 	return post
 }
