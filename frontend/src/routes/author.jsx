@@ -85,7 +85,7 @@ export default function Author() {
 				id="contents"
 				className="flex flex-wrap justify-around items-stretch w-full"
 			>
-				{posts == [] ? posts.map((post) => (
+				{posts.length !== 0 ? posts.map((post) => (
 					<div className="post m-4 w-64" key={post.id}>
 						<Link to={`/posts/${post.id}/`}>
 							<img
