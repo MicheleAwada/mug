@@ -25,12 +25,14 @@ export async function action({ request, params }) {
 export default function PostCreateView() {
 	const actionData = useActionData();
 	const context = useOutletContext();
+	const [isAuthenticated] = context.auth;
 	const { simpleAddMessage } = context.messages;
 	return (
 		<PostPostForm
 			actionData={actionData}
 			create={true}
 			simpleAddMessage={simpleAddMessage}
+			isAuthenticated={isAuthenticated}
 		/>
 	);
 }

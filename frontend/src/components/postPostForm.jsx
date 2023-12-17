@@ -3,12 +3,14 @@ import Spinner from "../assets/spinner.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { Tooltip } from "flowbite-react";
 
 export function PostPostForm({
 	actionData,
 	create = true,
 	defaults = null,
 	simpleAddMessage,
+	isAuthenticated = true,
 }) {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
@@ -79,6 +81,7 @@ export function PostPostForm({
 						required={create}
 					/>
 				</fieldset>
+				{isAuthenticated ? 
 				<button
 					type="sumbit"
 					className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
@@ -92,7 +95,27 @@ export function PostPostForm({
 						}
 					/>
 					{create ? "Post" : "Edit"}
-				</button>
+				</button> : <Tooltip
+				content="You must be logged in to post"
+				style="light"
+				arrow
+				>
+					<button
+						type="sumbit"
+						className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+						disabled
+					>
+						<img
+							src={Spinner}
+							alt="loading"
+							className={
+								(loading ? "animate-spin cursor-not-allowed" : "hidden") +
+								" h-full"
+							}
+						/>
+						{create ? "Post" : "Edit"}
+					</button>
+				</Tooltip>}
 				{error}
 			</Form>
 		</div>

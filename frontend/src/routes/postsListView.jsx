@@ -1,4 +1,4 @@
-import { useLoaderData, Link, useOutletContext } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import { getPosts } from "../api.js";
 
 export async function loader() {
