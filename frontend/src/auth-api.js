@@ -24,10 +24,10 @@ export async function signup(data) {
 		const token = response.data.token;
 		const parsed_user = response.data.user;
 		const user = JSON.stringify(parsed_user);
-		return setUser(token, user);
+		setUser(token, user);
+		return getAuthInfo();
 	} catch (error) {
 		let error_message = error.message
-		console.log(error)
 		try {error_message = error.response.data}
 		catch(e) {}
 		return { is_authenticated: false, error: error_message, user: null };
@@ -38,7 +38,8 @@ export async function login(data) {
 		const response = await api.post("/api/login/", data);
 		const token = response.data.token;
 		const user = response.data.user;
-		return setUser(token, user);
+		setUser(token, user);
+		return getAuthInfo();
 	} catch (error) {
 		const error_message = error.message
 		try {const error_message = error.response.data.non_field_errors[0]}
@@ -76,13 +77,16 @@ export async function getUser() {
 	return auth_info
 }
 
-export function googlelogin(data) {
+export async function googlelogin(data) {
 	try {
-		const response = api.post("/api/login/google/", data);
+		const response = await api.post("/api/login/google/", data);
 		const token = response.data.token;
 		const user = response.data.user;
-		return setUser(token, user);
+		setUser(token, user);
+		return getAuthInfo();
 	} catch (error) {
+		console.error(error)
+		console.table(error)
 		const error_message = error.message
 		try {const error_message = error.response.data.non_field_errors[0]}
 		catch(e) {}

@@ -42,6 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_following(self, obj):
         return obj.following.count()
     def get_is_followed(self, obj):
+        if not self.context["request"].user.is_authenticated:
+            return False
         return obj.is_followed_by(self.context["request"].user)
     def get_likes(self, obj):
         return obj.get_total_likes()
@@ -49,29 +51,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     # PROD change domain
     def get_avatar(self, obj):
+        print("http://127.0.0.1:8000" + obj.avatar.url)
         return "http://127.0.0.1:8000" + obj.avatar.url
 
-def random_username_from_name(name):
-    username = ""
-    i = 0
-    incrementor = 1
-    while True:
-        i += 1
-        if i > 100:
-            i = 0
-            incrementor += 1
-        username = name + str(random.randint(10 ** incrementor, 10 ** (incrementor + 1) - 1))
-        if not UserModel.objects.filter(username=username).exists():
-            break
-    return username
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False, max_length=50)
     class Meta:
         model = UserModel
         fields = "__all__"
     def create(self, data):
-        if data.get("username", "") == "":
-            data["username"] = random_username_from_name(data.get("name"))
+        # if data.get("username", "") == "":
+        #     data["username"] = random_username_from_name(data.get("name"))
         user_obj = UserModel.objects.create_user(name=data['name'], username=data['username'], email=data['email'], password=data['password'])
         return user_obj
     def validate_password(self, password):

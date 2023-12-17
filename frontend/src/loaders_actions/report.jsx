@@ -4,7 +4,6 @@ import { report } from "../api";
 export async function actionReportPost({ request, params }) {
     const post_id = params.id;
     const formData = await request.formData();
-    console.log("wtf")
 	formData.append("post", post_id);
 	const response = report(formData);
 	return redirect(`/posts/${post_id}/`);

@@ -4,12 +4,12 @@ from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
-
-
-class PostUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserModel
-        fields = ('id', 'name', 'username', "avatar")
+from myauth.serializers import UserSerializer
+PostUserSerializer = UserSerializer
+# class PostUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserModel
+#         fields = ('id', 'name', 'username', "avatar")
 
 
 class PostCommentsSerializer(serializers.ModelSerializer):
@@ -47,6 +47,7 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # created_at = serializers.DateTimeField(read_only=True)
+    image = serializers.ImageField(required=Fals)
     author = PostUserSerializer(read_only=True)
     comments = PostCommentsSerializer(many=True, read_only=True)
 

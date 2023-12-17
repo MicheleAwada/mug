@@ -24,7 +24,6 @@ export async function action({ request, params }) {
 	if (result) {
 		return [true, result];
 	}
-	console.log(result);
 	return [false, result];
 }
 

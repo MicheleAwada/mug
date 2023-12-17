@@ -17,8 +17,19 @@ export async function action({ request, params }) {
 	return response;
 }
 
+
 export default function Login() {
 	const navigate = useNavigate();
+	function logged_in_user(is_auth, user) {
+		setIsAuthenticated(is_auth);
+		setCurrentUser(user);
+		simpleAddMessage(
+			"You have succesfully Logged in",
+			"success",
+			"Success! "
+		);
+		navigate("/");
+	}
 	const context = useOutletContext();
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
@@ -32,14 +43,7 @@ export default function Login() {
 		if (actionData) {
 			setLoading(false);
 			if (actionData.is_authenticated) {
-				setIsAuthenticated(actionData.is_authenticated);
-				setCurrentUser(actionData.user);
-				simpleAddMessage(
-					"You have succesfully Logged in",
-					"success",
-					"Success! "
-				);
-				navigate("/");
+				logged_in_user(actionData.is_authenticated, actionData.user);
 			} else {
 				setError(
 					<p className="text-red-500 text-center my-3">{actionData.error}</p>
@@ -50,7 +54,6 @@ export default function Login() {
 
 	return (
 		<>	
-		<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
 			<div className="h-full flex items-center justify-around w-full overflow-hidden">
 				<div className="flex-grow flex items-center justify-around w-full">
 					<Form
@@ -72,15 +75,25 @@ export default function Login() {
 							</a>
 						</div>
 						<HrText /> */}
-						<GoogleLogin
-							onSuccess={response => {
-								console.log(response);
-								const g =googlelogin(response);
-								console.log(g)
-							}}
-							onError={() => console.log('Login Failed')}
-							
-						/>
+						<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
+							<GoogleLogin
+								onSuccess={async function(response) {
+									try {
+										const g = await googlelogin(response);
+										if (g.is_authenticated) {
+											return logged_in_user(g.is_authenticated, g.user);
+										}
+										return setError(
+											<p className="text-red-500 text-center my-3">{g.error}</p>
+										);
+									}
+									catch (e) {
+										console.error(e)
+									}
+								}}
+								onError={() => console.error('Login Failed')}
+							/>
+						</GoogleOAuthProvider>
 						<fieldset className="flex flex-col">
 							<label className="text-gray-700" htmlFor="username">
 								Username
@@ -190,7 +203,6 @@ export default function Login() {
 					</Form> */}
 				</div>
 			</div>
-			</GoogleOAuthProvider>;
 		</>
 	);
 }

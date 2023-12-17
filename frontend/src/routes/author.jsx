@@ -17,7 +17,6 @@ export async function loader({ params }) {
 }
 
 export async function action({ request, params }) {
-	console.log("did something");
 	const response = await follow(params.id);
 	return redirect(`/author/${params.id}/`);
 }
@@ -27,8 +26,9 @@ export default function Author() {
 	const posts = author.posts;
 	const context = useOutletContext();
 	const [currentUser] = context.user;
+	const [isAuthenticated] = context.auth;
 
-	const isCurrentUser = currentUser.id === author.id;
+	const isCurrentUser = (isAuthenticated && currentUser.id || -1) === author.id;
 	return (
 		<>
 			<div className="w-full flex justify-center">

@@ -21,8 +21,6 @@ function getLastKey(dict) {
 		return -1;
 	}
 	const keys = Object.keys(dict);
-	console.log(keys);
-	console.log(dict);
 	const last_key = keys[keys.length - 1];
 	return last_key;
 }
