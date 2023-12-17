@@ -47,7 +47,6 @@ class CreateCommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # created_at = serializers.DateTimeField(read_only=True)
-    image = serializers.ImageField(required=Fals)
     author = PostUserSerializer(read_only=True)
     comments = PostCommentsSerializer(many=True, read_only=True)
 
@@ -71,15 +70,12 @@ class EditPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'title', 'body', 'image')
 class ListPostSerializer(serializers.ModelSerializer):
-    thumbnail = serializers.SerializerMethodField()
+    thumbnail = serializers.ImageField()
 
     class Meta:
         model = Post
         fields = ('id', 'title', "thumbnail")
 
-    def get_thumbnail(self, obj):
-        # PROD change to domain name
-        return "http://127.0.0.1:8000" + obj.thumbnail.url
 
 def xor_valid(val1, val2):
     return bool(val1) != bool(val2)

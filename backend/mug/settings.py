@@ -151,12 +151,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    # "UPLOADED_FILES_USE_URL": ""
+    "UPLOADED_FILES_USE_URL": True,
 }
 
+DOMAIN_URL = "http://127.0.0.1:8000"
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = 'http://127.0.0.1:8000/media/'
+MEDIA_URL = f'{DOMAIN_URL}/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'

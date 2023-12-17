@@ -26,7 +26,7 @@ class ListPostSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()
+    avatar = serializers.ImageField()
     posts = ListPostSerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField()
     followers = serializers.SerializerMethodField()
@@ -49,10 +49,10 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_total_likes()
 
 
-    # PROD change domain
-    def get_avatar(self, obj):
-        print("http://127.0.0.1:8000" + obj.avatar.url)
-        return "http://127.0.0.1:8000" + obj.avatar.url
+    # # PROD change domain
+    # def get_avatar(self, obj):
+    #     print("http://127.0.0.1:8000" + obj.avatar.url)
+    #     return "http://127.0.0.1:8000" + obj.avatar.url
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -69,12 +69,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         validate_password(password)
         return password
 class MyUserSerializer(serializers.ModelSerializer):
-    avatar = serializers.SerializerMethodField()
+    avatar = serializers.ImageField()
 
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "email", "avatar")
-
-    # PROD change domain
-    def get_avatar(self, obj):
-        return "http://127.0.0.1:8000" + obj.avatar.url
