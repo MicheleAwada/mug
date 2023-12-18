@@ -14,6 +14,7 @@ import {
 
 import { googlelogin } from "../auth-api";
 import { useGoogleOneTapLogin } from "@react-oauth/google"
+import { return_auth_feedback_functions } from "./login";
 
 export function loader() {
 	return getUser();
@@ -111,45 +112,14 @@ export default function Root() {
 			);
 			
 			
-	function success_login(is_auth, user, nav=navigate) {
-		setIsAuthenticated(is_auth);
-		setCurrentUser(user);
-		simpleAddMessage(
-			"You have succesfully Logged in",
-			"success",
-			"Success! "
-		);
-		nav("/");
-	}
-	function failed_login(is_auth, user) {
-		setIsAuthenticated(is_auth);
-		setCurrentUser(user);
-		simpleAddMessage(
-			"Their was an error loggin you in",
-			"error",
-			"Whops! "
-		);
-	}
-	async function google_handle_success(response) {
-		try {
-			const g = await googlelogin(response);
-			return success_login(g.is_authenticated, g.user, navigate);
-		}
-		catch (e) {
-			return failed_login(g.is_authenticated, g.user);
-		}
-	}
-	async function google_handle_error() {
-		simpleAddMessage(
-			"Their was an error on google's side",
-			"error",
-			"Whops! "
-		)
-	}
+	const { success_login, failed_login, google_handle_success, google_handle_error } = return_auth_feedback_functions(setIsAuthenticated, setCurrentUser, simpleAddMessage, navigate);
+
 	useGoogleOneTapLogin({
 		onSuccess: google_handle_success,
 		onError: google_handle_error,
+		disabled: isAuthenticated,
 	})
+
 
 
 	const context = {
@@ -157,16 +127,10 @@ export default function Root() {
 		user: [currentUser, setCurrentUser],
 		messages: { messages, setMessages, addMessage, simpleAddMessage },
 		routes: {
-			login: {
-				success_login,
-				failed_login,
-				google: {
-					handle_success: google_handle_success,
-					handle_error: google_handle_error,
-				}
-			}
 		}
 	}
+	
+
 	return (
 		<>
 			<div id="root-divider">
@@ -190,3 +154,5 @@ export default function Root() {
 		</>
 	);
 }
+
+

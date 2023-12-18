@@ -1,5 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { api } from "./api";
+import { googleLogout } from '@react-oauth/google';
+
 
 export function getToken() {
 	return localStorage.getItem("token");
@@ -97,7 +99,6 @@ export async function googlelogin(data) {
 	}
 }
 
-import { googleLogout } from '@react-oauth/google';
 
 export function logout() {
 	localStorage.removeItem("token");

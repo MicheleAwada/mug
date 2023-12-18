@@ -125,7 +125,7 @@ def add_image_from_url(obj, image_field_name, image_url):
     # Save the image to the image field
     image_field = getattr(obj, image_field_name)
     image_field.save(
-        'google user image.jpg',  # Change 'image_name.jpg' to the desired filename
+        'google user image.png',  # Change 'image_name.jpg' to the desired filename
         ContentFile(image_content),
         save=True
     )
@@ -135,7 +135,6 @@ class GoogleAuth(APIView):
     def post(self, request):
         data = request.data
         token = data.get('credential')
-
         try:
             idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
 
