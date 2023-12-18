@@ -6,9 +6,11 @@ import {
 	useNavigate,
 	useOutletContext,
 } from "react-router-dom";
+import { logout } from '../auth-api';
+
 
 export function action() {
-	localStorage.clear("token");
+	logout();
 	return true;
 }
 

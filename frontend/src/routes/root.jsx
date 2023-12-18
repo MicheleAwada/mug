@@ -12,6 +12,8 @@ import {
 	HiOutlineCheckCircle,
 } from "react-icons/hi";
 
+import { useGoogleOneTapLogin } from "@react-oauth/google"
+
 export function loader() {
 	return getUser();
 }
@@ -105,6 +107,61 @@ export default function Root() {
 		addMessage(
 			simpleMakeMessage(message, type, boldMessage, messages, setMessages)
 		);
+	// function OneTapGoogleIfAuthed({ children }) {
+	// 	if (!isAuthenticated) {
+	// 		function logged_in_user(is_auth, user) {
+	// 			setIsAuthenticated(is_auth);
+	// 			setCurrentUser(user);
+	// 			simpleAddMessage(
+	// 				"You have succesfully Logged in",
+	// 				"success",
+	// 				"Success! "
+	// 			);
+	// 			navigate("/");
+	// 		}
+	// 		return (<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
+	// 					{useGoogleOneTapLogin({
+	// 						onSuccess: async function(response) {
+	// 							try {
+	// 								const g = await googlelogin(response);
+	// 								if (g.is_authenticated) {
+	// 									return logged_in_user(g.is_authenticated, g.user);
+	// 								}
+	// 								return setError(
+	// 									<p className="text-red-500 text-center my-3">{g.error}</p>
+	// 								);
+	// 							}
+	// 							catch (e) {
+	// 								console.error(e)
+	// 							}
+	// 						},
+	// 						onError: () => console.error('Login Failed')
+	// 					})}
+	// 				{children}
+	// 			</GoogleOAuthProvider>)
+
+	// 	}
+	// 	return children
+
+	// }
+
+	useGoogleOneTapLogin({
+		onSuccess: async function(response) {
+			try {
+				const g = await googlelogin(response);
+				if (g.is_authenticated) {
+					return logged_in_user(g.is_authenticated, g.user);
+				}
+				return setError(
+					<p className="text-red-500 text-center my-3">{g.error}</p>
+				);
+			}
+			catch (e) {
+				console.error(e)
+			}
+		},
+		onError: () => console.error('Login Failed')
+	})
 
 	return (
 		<>

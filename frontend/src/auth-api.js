@@ -24,6 +24,7 @@ export async function signup(data) {
 		const token = response.data.token;
 		const parsed_user = response.data.user;
 		const user = JSON.stringify(parsed_user);
+		user.type = "normal"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
@@ -38,6 +39,7 @@ export async function login(data) {
 		const response = await api.post("/api/login/", data);
 		const token = response.data.token;
 		const user = response.data.user;
+		user.type = "normal"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
@@ -82,6 +84,7 @@ export async function googlelogin(data) {
 		const response = await api.post("/api/login/google/", data);
 		const token = response.data.token;
 		const user = response.data.user;
+		user.type = "google"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
@@ -92,4 +95,21 @@ export async function googlelogin(data) {
 		catch(e) {}
 		return { is_authenticated: false, error: error_message, user: null };
 	}
+}
+
+import { googleLogout } from '@react-oauth/google';
+
+export function logout() {
+	localStorage.clear("token");
+
+	const stringified_user = localStorage.getItem("user")
+	const parsed_user = JSON.parse(stringified_user);
+	const type = parsed_user.type
+	localStorage.clear("user");
+
+	if (type === "google") {
+		googleLogout();
+	}
+	
+	return true;
 }

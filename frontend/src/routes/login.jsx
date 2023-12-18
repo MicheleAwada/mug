@@ -7,7 +7,7 @@ import { useActionData, useOutletContext } from "react-router-dom";
 import { login, googlelogin } from "../auth-api";
 import HrText from "../components/hr-text";
 import { redirect } from "react-router-dom";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
+import { GoogleLogin, useGoogleOneTapLogin } from "@react-oauth/google"
 
 import auth_illustration from "../assets/auth illustration.svg";
 
@@ -75,7 +75,6 @@ export default function Login() {
 							</a>
 						</div>
 						<HrText /> */}
-						<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
 							<GoogleLogin
 								onSuccess={async function(response) {
 									try {
@@ -93,7 +92,6 @@ export default function Login() {
 								}}
 								onError={() => console.error('Login Failed')}
 							/>
-						</GoogleOAuthProvider>
 						<fieldset className="flex flex-col">
 							<label className="text-gray-700" htmlFor="username">
 								Username

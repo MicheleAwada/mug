@@ -8,6 +8,8 @@ from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
 
+from django.core.exceptions import ValidationError
+
 User = get_user_model()
 
 import random
@@ -23,6 +25,12 @@ from django.contrib.auth.models import Group
 
 from google.auth.transport import requests
 from google.oauth2 import id_token
+
+import requests
+from django.core.files.base import ContentFile
+from django.core.files import File
+
+
 
 google_client_id = settings.GOOGLE_CLIENT_ID
 google_secret = settings.GOOGLE_CLIENT_SECRET
@@ -104,6 +112,23 @@ def random_username_from_name(name):
             break
     return username
 
+def add_image_from_url(obj, image_field_name, image_url):
+    response = requests.get(image_url)
+
+    if response.status_code != 200:
+        raise ValidationError("Invalid image URL")
+
+    image_content = response.content
+
+    # Save the image to the image field
+    image_field = getattr(obj, image_field_name)
+    image_field.save(
+        'google user image.jpg',  # Change 'image_name.jpg' to the desired filename
+        ContentFile(image_content),
+        save=True
+    )
+
+
 class GoogleAuth(APIView):
     def post(self, request):
         data = request.data
@@ -111,7 +136,15 @@ class GoogleAuth(APIView):
 
         try:
             # Specify the CLIENT_ID of the app that accesses the backend:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), data.get("client_id"))
+            #DEBUG
+            print("invalid token google")
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), google_client_id)
+
+            if idinfo["aud"] != google_client_id:
+                #DEBUG
+                print(idinfo["aud"])
+                print(google_client_id)
+                raise ValidationError("Invalid client ID.")
         except:
             # Invalid token
             return Response({"status": "invalid token"}, status=400)
@@ -125,12 +158,18 @@ class GoogleAuth(APIView):
             user = google_users_group.user_set.filter(google_id=userid)
             user_exists = user.exists()
             if user_exists:# login account
+                #DEBUG
+                print("google login")
                 user = user.first()
             else: # create account
+                #DEBUG
+                print("google sign up")
                 username = random_username_from_name(name)
                 user = User.objects.create_user(username=username, email=email, name=name, password="",
-                                                groups=[google_users_group], hash=False, google_id=userid,
-                                                avatar=idinfo.get("picture", None))
+                                                groups=[google_users_group], hash=False, google_id=userid)
+                picture_url = idinfo.get("picture", None)
+                if picture_url is not None:
+                    add_image_from_url(user, "avatar", picture_url)
             userdata = serializers.MyUserSerializer(user)
             token, created = Token.objects.get_or_create(user=user)
             return Response({"token": token.key, "user": userdata.data })
