@@ -23,7 +23,7 @@ from django.conf import settings
 
 from django.contrib.auth.models import Group
 
-from google.auth.transport import requests
+from google.auth.transport import requests as google_requests
 from google.oauth2 import id_token
 
 import requests
@@ -35,6 +35,14 @@ from django.core.files import File
 google_client_id = settings.GOOGLE_CLIENT_ID
 google_secret = settings.GOOGLE_CLIENT_SECRET
 
+def return_user_data(user):
+    userdata = serializers.MyUserSerializer(user)
+    token, created = Token.objects.get_or_create(user=user)
+    return Response({
+        'token': token.key,
+        'user': userdata.data
+    })
+
 class login(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -42,12 +50,8 @@ class login(ObtainAuthToken):
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        userdata = serializers.MyUserSerializer(user)
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user': userdata.data
-        })
+        return return_user_data(user)
+
 
 #todo add delete option
 class UserView(
@@ -65,9 +69,7 @@ class UserView(
         if serializer.is_valid():
             user = serializer.save()
             # TODO add token to signal
-            userdata = serializers.MyUserSerializer(user)
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "user": userdata.data })
+            return return_user_data(user)
         return Response(serializer.errors, status=400)
 
     def list(self, request):
@@ -135,15 +137,9 @@ class GoogleAuth(APIView):
         token = data.get('credential')
 
         try:
-            # Specify the CLIENT_ID of the app that accesses the backend:
-            #DEBUG
-            print("invalid token google")
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), google_client_id)
+            idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
 
-            if idinfo["aud"] != google_client_id:
-                #DEBUG
-                print(idinfo["aud"])
-                print(google_client_id)
+            if not (idinfo["aud"] == google_client_id == data.get("clientId")):
                 raise ValidationError("Invalid client ID.")
         except:
             # Invalid token
@@ -158,18 +154,12 @@ class GoogleAuth(APIView):
             user = google_users_group.user_set.filter(google_id=userid)
             user_exists = user.exists()
             if user_exists:# login account
-                #DEBUG
-                print("google login")
                 user = user.first()
             else: # create account
-                #DEBUG
-                print("google sign up")
                 username = random_username_from_name(name)
                 user = User.objects.create_user(username=username, email=email, name=name, password="",
                                                 groups=[google_users_group], hash=False, google_id=userid)
                 picture_url = idinfo.get("picture", None)
                 if picture_url is not None:
                     add_image_from_url(user, "avatar", picture_url)
-            userdata = serializers.MyUserSerializer(user)
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "user": userdata.data })
+            return return_user_data(user)

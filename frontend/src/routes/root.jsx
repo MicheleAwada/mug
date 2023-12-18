@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import React, { useEffect, useState } from "react";
 
@@ -12,6 +12,7 @@ import {
 	HiOutlineCheckCircle,
 } from "react-icons/hi";
 
+import { googlelogin } from "../auth-api";
 import { useGoogleOneTapLogin } from "@react-oauth/google"
 
 export function loader() {
@@ -95,82 +96,82 @@ function addMessageWithSetMessage(messageElement, setMessages) {
 
 export default function Root() {
 	const loaderData = useLoaderData();
+	const navigate = useNavigate();
 	const [isAuthenticated, setIsAuthenticated] = useState(
 		loaderData.is_authenticated
-	);
+		);
 	const [currentUser, setCurrentUser] = useState(loaderData.user);
 
 	const [messages, setMessages] = useState({});
 	const addMessage = (message) =>
-		addMessageWithSetMessage(message, setMessages);
+	addMessageWithSetMessage(message, setMessages);
 	const simpleAddMessage = (message, type, boldMessage = "") =>
 		addMessage(
 			simpleMakeMessage(message, type, boldMessage, messages, setMessages)
+			);
+			
+			
+	function success_login(is_auth, user, nav=navigate) {
+		setIsAuthenticated(is_auth);
+		setCurrentUser(user);
+		simpleAddMessage(
+			"You have succesfully Logged in",
+			"success",
+			"Success! "
 		);
-	// function OneTapGoogleIfAuthed({ children }) {
-	// 	if (!isAuthenticated) {
-	// 		function logged_in_user(is_auth, user) {
-	// 			setIsAuthenticated(is_auth);
-	// 			setCurrentUser(user);
-	// 			simpleAddMessage(
-	// 				"You have succesfully Logged in",
-	// 				"success",
-	// 				"Success! "
-	// 			);
-	// 			navigate("/");
-	// 		}
-	// 		return (<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
-	// 					{useGoogleOneTapLogin({
-	// 						onSuccess: async function(response) {
-	// 							try {
-	// 								const g = await googlelogin(response);
-	// 								if (g.is_authenticated) {
-	// 									return logged_in_user(g.is_authenticated, g.user);
-	// 								}
-	// 								return setError(
-	// 									<p className="text-red-500 text-center my-3">{g.error}</p>
-	// 								);
-	// 							}
-	// 							catch (e) {
-	// 								console.error(e)
-	// 							}
-	// 						},
-	// 						onError: () => console.error('Login Failed')
-	// 					})}
-	// 				{children}
-	// 			</GoogleOAuthProvider>)
-
-	// 	}
-	// 	return children
-
-	// }
-
+		nav("/");
+	}
+	function failed_login(is_auth, user) {
+		setIsAuthenticated(is_auth);
+		setCurrentUser(user);
+		simpleAddMessage(
+			"Their was an error loggin you in",
+			"error",
+			"Whops! "
+		);
+	}
+	async function google_handle_success(response) {
+		try {
+			const g = await googlelogin(response);
+			return success_login(g.is_authenticated, g.user, navigate);
+		}
+		catch (e) {
+			return failed_login(g.is_authenticated, g.user);
+		}
+	}
+	async function google_handle_error() {
+		simpleAddMessage(
+			"Their was an error on google's side",
+			"error",
+			"Whops! "
+		)
+	}
 	useGoogleOneTapLogin({
-		onSuccess: async function(response) {
-			try {
-				const g = await googlelogin(response);
-				if (g.is_authenticated) {
-					return logged_in_user(g.is_authenticated, g.user);
-				}
-				return setError(
-					<p className="text-red-500 text-center my-3">{g.error}</p>
-				);
-			}
-			catch (e) {
-				console.error(e)
-			}
-		},
-		onError: () => console.error('Login Failed')
+		onSuccess: google_handle_success,
+		onError: google_handle_error,
 	})
 
+
+	const context = {
+		auth: [isAuthenticated, setIsAuthenticated],
+		user: [currentUser, setCurrentUser],
+		messages: { messages, setMessages, addMessage, simpleAddMessage },
+		routes: {
+			login: {
+				success_login,
+				failed_login,
+				google: {
+					handle_success: google_handle_success,
+					handle_error: google_handle_error,
+				}
+			}
+		}
+	}
 	return (
 		<>
 			<div id="root-divider">
 				<Header
-					context={{
-						auth: [isAuthenticated, setIsAuthenticated],
-						user: [currentUser, setCurrentUser],
-					}}
+					context={context}
 				/>
 				<div className="relative">
 					<div
@@ -182,11 +183,7 @@ export default function Root() {
 							.map((message) => messages[message])}
 					</div>
 					<Outlet
-						context={{
-							auth: [isAuthenticated, setIsAuthenticated],
-							user: [currentUser, setCurrentUser],
-							messages: { messages, setMessages, addMessage, simpleAddMessage },
-						}}
+						context={context}
 					/>
 				</div>
 			</div>

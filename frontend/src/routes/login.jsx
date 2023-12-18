@@ -20,17 +20,8 @@ export async function action({ request, params }) {
 
 export default function Login() {
 	const navigate = useNavigate();
-	function logged_in_user(is_auth, user) {
-		setIsAuthenticated(is_auth);
-		setCurrentUser(user);
-		simpleAddMessage(
-			"You have succesfully Logged in",
-			"success",
-			"Success! "
-		);
-		navigate("/");
-	}
 	const context = useOutletContext();
+	const { success_login, failed_login, google: { google_handle_success, google_handle_failure } } = context.routes.login
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
 		user: [currentUser, setCurrentUser],
@@ -43,8 +34,9 @@ export default function Login() {
 		if (actionData) {
 			setLoading(false);
 			if (actionData.is_authenticated) {
-				logged_in_user(actionData.is_authenticated, actionData.user);
+				success_login(actionData.is_authenticated, actionData.user, navigate);
 			} else {
+				failed_login(actionData.is_authenticated, actionData.user);
 				setError(
 					<p className="text-red-500 text-center my-3">{actionData.error}</p>
 				);
@@ -64,34 +56,10 @@ export default function Login() {
 						<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
 							Welcome Back
 						</legend>
-						{/* <div className="flex flex-row flex-wrap content-stretch items-stretch justify-center gap-4 mb-4">
-							<a className="border-gray-200 border-2 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-md">
-								<img src={Google} alt="Google" className="h-8" />
-								Login With Google
-							</a>
-							<a className="border-gray-200 border-2 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-md">
-								<img src={Meta} alt="Meta" className="h-8" />
-								Login With Meta
-							</a>
-						</div>
-						<HrText /> */}
-							<GoogleLogin
-								onSuccess={async function(response) {
-									try {
-										const g = await googlelogin(response);
-										if (g.is_authenticated) {
-											return logged_in_user(g.is_authenticated, g.user);
-										}
-										return setError(
-											<p className="text-red-500 text-center my-3">{g.error}</p>
-										);
-									}
-									catch (e) {
-										console.error(e)
-									}
-								}}
-								onError={() => console.error('Login Failed')}
-							/>
+						<GoogleLogin
+							onSuccess={google_handle_success}
+							onError={google_handle_failure}
+						/>
 						<fieldset className="flex flex-col">
 							<label className="text-gray-700" htmlFor="username">
 								Username

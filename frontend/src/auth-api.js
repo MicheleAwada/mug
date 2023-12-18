@@ -74,8 +74,9 @@ export async function getUser() {
 			return false;
 		}
 	} else if (!auth_info.is_authenticated && auth_info.user) {
-		localStorage.clear("user")
+		localStorage.removeItem("user")
 	}
+
 	return auth_info
 }
 
@@ -89,7 +90,6 @@ export async function googlelogin(data) {
 		return getAuthInfo();
 	} catch (error) {
 		console.error(error)
-		console.table(error)
 		const error_message = error.message
 		try {const error_message = error.response.data.non_field_errors[0]}
 		catch(e) {}
@@ -100,12 +100,12 @@ export async function googlelogin(data) {
 import { googleLogout } from '@react-oauth/google';
 
 export function logout() {
-	localStorage.clear("token");
-
+	localStorage.removeItem("token");
+	
 	const stringified_user = localStorage.getItem("user")
 	const parsed_user = JSON.parse(stringified_user);
 	const type = parsed_user.type
-	localStorage.clear("user");
+	localStorage.removeItem("user");
 
 	if (type === "google") {
 		googleLogout();
