@@ -40,13 +40,10 @@ class UserManager(BaseUserManager):
 
         return self.create_user(username, email, password, **extra_fields)
 
-def validate_username(username):
-    if " " not in username and username:
-        return True
-    raise ValidationError("Username must not contain spaces")
+
 class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=125)
-    username = models.CharField(max_length=50, unique=True, validators=[validate_username])
+    username = models.CharField(max_length=50, unique=True)
     email = models.EmailField()
 
     following = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)

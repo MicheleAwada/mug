@@ -69,9 +69,6 @@ class UserView(
         serializer = serializers.MyUserSerializer(request.user)
         return Response(serializer.data)
 
-    def retrieve(self, request):
-        serializer = serializers.UserSerializer(request.user)
-        return Response(serializer.data)
     def create(self, request):
         serializer = serializers.UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -92,7 +89,15 @@ class UserView(
     def get_permissions(self):
         if self.action == "retrieve" or self.action=="create":
             return []
-        return [IsAuthenticated, IsUserOrReadOnly]
+        if self.action == "list":
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), IsUserOrReadOnly()]
+    def get_serializer_class(self):
+        if self.action == "create":
+            return serializers.UserRegisterSerializer
+        if self.action == 'retrieve':
+            return serializers.UserSerializer
+        return serializers.MyUserSerializer
 
 
 class FollowView(APIView):

@@ -1,6 +1,8 @@
 import random
 
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from django.contrib.auth import get_user_model
 from django.apps import apps
 from django.contrib.auth.password_validation import validate_password
@@ -48,11 +50,20 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.get_total_likes()
 
 
-
+def validate_username(username):
+    errors = []
+    if " " in username:
+        errors.append("Username must not contain spaces")
+    if len(username) <= 2:
+        errors.append("Username must be at least 3 characters long")
+    if not username:
+        errors.append("Username must not be empty")
+    if errors == []:
+        return username
+    raise ValidationError(errors)
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=False, max_length=50)
     class Meta:
         model = UserModel
         fields = "__all__"
@@ -64,9 +75,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     def validate_password(self, password):
         validate_password(password)
         return password
+    def validate_username(self, username):
+        return validate_username(username)
 class MyUserSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()
 
     class Meta:
         model = UserModel
         fields = ('id', 'name', 'username', "email", "avatar")
+    def validate_username(self, username):
+        return validate_username(username)
