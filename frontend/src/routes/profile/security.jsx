@@ -1,6 +1,6 @@
 import { Form } from "react-router-dom"
 
-function action() {
+export function action() {
     //todo
 }
 
