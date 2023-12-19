@@ -5,13 +5,13 @@ import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from .forms import comment_form, create_blog
-from .permissions import IsAuthorOrReadOnly, IsAuthenticated
+from .permissions import IsAuthorOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
-from rest_framework import permissions
 from rest_framework.views import APIView
 
 
@@ -71,7 +71,7 @@ class PostsView(viewsets.ModelViewSet):
 
 
 class ReportView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def post(self,request):
         data = request.data
         serializer_data = serializers.ReportSerializer(data=data, context={"request": request})
@@ -83,7 +83,7 @@ class ReportView(APIView):
 
 
 class LikeView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         data = request.data
         object_id = data.get('object_id')

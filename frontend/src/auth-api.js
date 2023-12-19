@@ -52,7 +52,7 @@ export async function login(data) {
 	}
 }
 
-export async function getAuthInfo() {
+export function getAuthInfo() {
 	const is_authenticated = localStorage.getItem("token") !== null;
 	const stringified_user = localStorage.getItem("user");
 	let user = JSON.parse(stringified_user);
@@ -60,7 +60,7 @@ export async function getAuthInfo() {
 }
 
 export async function getUser() {
-	const auth_info = await getAuthInfo();
+	const auth_info = getAuthInfo();
 
 	//weird sceneros
 	if (auth_info.is_authenticated && !auth_info.user) {
@@ -113,4 +113,31 @@ export function logout() {
 	}
 	
 	return true;
+}
+
+export async function changeInfo(formdata) {
+	try {
+		const old_user = getUser()
+		const userid = old_user.id
+		const response = await api.patch(`/api/user/${userid}/`, formdata)
+		const user = response.data;
+		const stringified_user = JSON.stringify(user)
+		localStorage.setItem("user", stringified_user);
+		return [true, user];
+	} catch (error) {
+		const error_message = error.message
+		return [false, error.message];
+	}
+}
+
+export function deleteAccount() {
+	try {
+		const user = getUser()
+		const userid = user.id
+		const response = api.delete(`/api/user/${userid}/`)
+		logout()
+		return true
+	} catch (error) {
+		return false
+	}
 }

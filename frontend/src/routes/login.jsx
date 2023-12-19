@@ -21,7 +21,6 @@ export async function action({ request, params }) {
 export default function Login() {
 	const navigate = useNavigate();
 	const context = useOutletContext();
-	console.log(context)
 	const {
 		auth: [isAuthenticated, setIsAuthenticated],
 		user: [currentUser, setCurrentUser],
@@ -126,6 +125,7 @@ export function return_auth_feedback_functions(setIsAuthenticated, setCurrentUse
 			"success",
 			"Success! "
 		);
+		navigate("/")
 	}
 	function failed_login(is_auth, user) {
 		setIsAuthenticated(is_auth);

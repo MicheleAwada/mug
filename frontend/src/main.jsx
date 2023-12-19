@@ -34,6 +34,11 @@ import Author, {
 	action as followAction,
 } from "./routes/author";
 
+import Profile from "./routes/profile/profile";
+import Details, { action as changeDetailsAction } from "./routes/profile/details";
+import Security, { action as changePasswordAction } from "./routes/profile/security";
+import DeleteAccount, { action as deleteAccountAction } from "./routes/profile/delete-account";
+
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -102,6 +107,27 @@ const router = createBrowserRouter([
 				path: "logout/",
 				element: <Logout />,
 				action: logoutAction,
+			},
+			{
+				path: "profile/",
+				element: <Profile />,
+				children: [
+					{
+						path: "details/",
+						element: <Details />,
+						action: changeDetailsAction,
+					},
+					{
+						path: "security/",
+						element: <Security />,
+						action: changePasswordAction,
+					},
+					{
+						path: "delete-account/",
+						element: <DeleteAccount />,
+						action: deleteAccountAction,
+					},
+				]
 			},
 		],
 	},

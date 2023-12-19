@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
+from .permissions import IsUserOrReadOnly
 
 from django.core.exceptions import ValidationError
 
@@ -57,29 +58,42 @@ class login(ObtainAuthToken):
 class UserView(
         mixins.CreateModelMixin,
         mixins.RetrieveModelMixin,
-        # mixins.UpdateModelMixin,
-        # mixins.DestroyModelMixin,
+        mixins.UpdateModelMixin,
+        mixins.DestroyModelMixin,
         mixins.ListModelMixin,
         GenericViewSet):
     queryset = User.objects.all()
-    serializer_class = serializers.UserSerializer
-
-    def create(self, request):
-        serializer = serializers.UserRegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-            # TODO add token to signal
-            return return_user_data(user)
-        return Response(serializer.errors, status=400)
+    serializer_class = serializers.MyUserSerializer
 
     def list(self, request):
         serializer = serializers.MyUserSerializer(request.user)
         return Response(serializer.data)
 
+    def retrieve(self, request):
+        serializer = serializers.UserSerializer(request.user)
+        return Response(serializer.data)
+    def create(self, request):
+        serializer = serializers.UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return return_user_data(user)
+        return Response(serializer.errors, status=400)
+
+
+    # def update(self, request):
+    #     serializer = serializers.MyUserSerializer(request.user)
+    #     return Response(serializer.data)
+    # def partial_update(self, request):
+    #     serializer = serializers.MyUserSerializer(request.user)
+    #     return Response(serializer.data)
+    # def destroy(self, request, *args, **kwargs):
+    #     serializer = serializers.MyUserSerializer(request.user)
+    #     return Response(serializer.data)
     def get_permissions(self):
-        if self.action == "list":
-            return [IsAuthenticated()]
-        return []
+        if self.action == "retrieve" or self.action=="create":
+            return []
+        return [IsAuthenticated, IsUserOrReadOnly]
+
 
 class FollowView(APIView):
     def post(self, request):
@@ -135,10 +149,15 @@ class GoogleAuth(APIView):
     def post(self, request):
         data = request.data
         token = data.get('credential')
+        print("hello data is", data)
         try:
             idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
 
             if not (idinfo["aud"] == google_client_id == data.get("clientId")):
+                print("isnt equal")
+                print(idinfo["aud"])
+                print(google_client_id)
+                print(data.get("clientId"))
                 raise ValidationError("Invalid client ID.")
         except:
             # Invalid token
