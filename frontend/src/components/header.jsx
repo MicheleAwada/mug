@@ -60,7 +60,7 @@ export default function Header({ context }) {
 										Hello, <span className="bold">{currentUser.username}</span>
 									</span>
 								</Dropdown.Header>
-								<Dropdown.Item as={Link} className="flex items-center" to="#">
+								<Dropdown.Item to="/profile/" as={Link} className="flex items-center">
 									<CgProfile className="w-4 h-4 mr-2" />
 									Profile
 								</Dropdown.Item>
@@ -80,10 +80,10 @@ export default function Header({ context }) {
 									<HiOutlineNewspaper className="w-4 h-4 mr-2" />
 									Posts
 								</Dropdown.Item>
-								<Dropdown.Item as={Link} className="flex items-center" to="#">
+								{/* <Dropdown.Item as={Link} className="flex items-center" to="#">
 									<IoSettingsOutline className="w-4 h-4 mr-2" />
 									Settings
-								</Dropdown.Item>
+								</Dropdown.Item> */}
 								<Dropdown.Divider />
 								<Dropdown.Item
 									as={Link}
