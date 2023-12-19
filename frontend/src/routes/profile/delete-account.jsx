@@ -5,8 +5,8 @@ import { Form, useActionData, useOutletContext } from "react-router-dom";
 
 import { deleteAccount } from "../../auth-api"
 
-export function action() {
-    const response = deleteAccount()
+export async function action() {
+    const response = await deleteAccount()
     return response
 }
 
@@ -27,6 +27,7 @@ export default function DeleteAccount() {
                 simpleAddMessage("Your account has been deleted", "success", "Success!")
                 setIsAuthenticated(false);
                 setCurrentUser(null);
+                setShowDeleteModal(false)
             } else if (actionData === false) {
                 simpleAddMessage("Your account could not be deleted, perhaps try again", "error", "Error!")    
             }
