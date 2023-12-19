@@ -2,7 +2,7 @@ import { Form, useNavigate } from "react-router-dom";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
 import Spinner from "../assets/spinner.svg";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useActionData, useOutletContext } from "react-router-dom";
 import { signup } from "../auth-api";
 import HrText from "../components/hr-text";
@@ -10,14 +10,28 @@ import { redirect } from "react-router-dom";
 
 import auth_illustration from "../assets/auth illustration.svg";
 
+import { getNestedProperty } from "../utils";
+
 export async function action({ request, params }) {
 	const formData = await request.formData();
 	const isAuthenticated = await signup(formData);
 	return isAuthenticated;
 }
 
-function ErrorText({errors}) {
-	if (!errors) {return null}
+export function ErrorTextObj({main_obj, child}) {
+	if (main_obj === undefined) {
+		return null
+	}
+	const errors = getNestedProperty(main_obj, child)
+	if (errors === undefined || !Array.isArray(errors) || errors.length === 0) {
+		return null
+	}
+	if (errors.some((obj) => {
+		if (typeof obj === "string") {
+			return false
+		}
+		return true
+	})) {return null}
 	const errorList = (<ul className="list-disc px-4">{errors.map((error) => {
 		return <li key={error}>
 			<p className="text-red-500">{error}</p>
@@ -56,6 +70,8 @@ export default function Signup() {
 		}
 	}, [actionData]);
 
+	const ErrorText = ({ child }) => <ErrorTextObj main_obj={actionData.error} child={child} />
+
 	return (
 		<>
 			<div className="h-full flex items-center justify-around w-full overflow-hidden w-full">
@@ -71,17 +87,6 @@ export default function Signup() {
 					<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
 						Hello, Sign up
 					</legend>
-					{/* <div className="flex flex-row flex-wrap content-stretch items-stretch justify-center gap-4 mb-4">
-						<a className="border-gray-200 border-2 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-md">
-							<img src={Google} alt="Google" className="h-8" />
-							Sign up With Google
-						</a>
-						<a className="border-gray-200 border-2 bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-700 cursor-pointer flex items-center gap-2 h-8 py-6 px-3 rounded-md">
-							<img src={Meta} alt="Meta" className="h-8" />
-							Sign up With Meta
-						</a>
-					</div>
-					<HrText /> */}
 					<fieldset className="flex flex-col">
 						<div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
 							<div className="flex flex-col">
@@ -95,7 +100,7 @@ export default function Signup() {
 									className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 									required
 								></input>
-								<ErrorText errors={error.name} />
+								<ErrorText child="name" />
 							</div>
 							<div className="flex flex-col">
 								<label className="text-gray-700" htmlFor="email">
@@ -108,7 +113,7 @@ export default function Signup() {
 									className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 									required
 								></input>
-								<ErrorText errors={error.email} />
+								<ErrorText child="email" />
 							</div>
 						</div>
 						<label className="text-gray-700" htmlFor="username">
@@ -121,7 +126,7 @@ export default function Signup() {
 							className="bg-gray-50 p-2 rounded-md mb-3 border-gray-200 border-2 outline-0"
 							required
 						></input>
-						<ErrorText errors={error.username} />
+						<ErrorText child="username" />
 						<label className="text-gray-700" htmlFor="password">
 							Password
 						</label>
@@ -132,9 +137,10 @@ export default function Signup() {
 							className="bg-gray-50 p-2 rounded-md border-gray-200 border-2 outline-0"
 							required
 						></input>
-						<ErrorText errors={error.password} />
+						<ErrorText child="password" />
 					</fieldset>
-					<ErrorText errors={error.non_field_errors} />
+					<ErrorText child="non_field_errors" />
+					<ErrorText child="" />
 					<button
 						type="sumbit"
 						className="flex items-center h-8 gap-2 w-full justify-center my-6 py-1 px-4 text-white bg-[#deab28] hover:bg-[#d48f00] active:bg-[#c78910] rounded-md"
@@ -147,12 +153,12 @@ export default function Signup() {
 						Signup
 					</button>
 					<hr />
-					<a
+					<Link
 						href="/login/"
 						className="text-center bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md"
 					>
 						Login to account instead?
-					</a>
+					</Link>
 				</Form>
 			</div>
 		</>

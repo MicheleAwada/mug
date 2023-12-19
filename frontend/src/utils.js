@@ -10,3 +10,30 @@ export function short_nums(numinp, dec = 3) {
 		Math.floor(numinp / 10 ** (len - (len % 3) - dec)) / 10 ** dec;
 	return `${first_digits} ${Big_Names[exp]}`;
 }
+
+
+export function accessNestedPropertyList(obj, arr) {
+    return arr.reduce((nestedObj, key) => {
+        if (key === "") {
+            return nestedObj;
+        }
+        return (nestedObj !== undefined && nestedObj[key] !== undefined) ? nestedObj[key] : undefined;
+    }, obj);
+}
+
+export function getNestedProperty(obj, string) {
+    const arr = string.split(".")
+    return accessNestedPropertyList(obj, arr)
+
+    
+}
+
+
+export function attempValuesOfObject(obj, ...props) {
+    for (let prop of props) {
+        const value = getNestedProperty(obj, prop);
+        if (value !== undefined) {
+            return value;
+        }
+    }
+}

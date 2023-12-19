@@ -2,6 +2,7 @@ import axios, { isAxiosError } from "axios";
 import { api } from "./api";
 import { googleLogout } from '@react-oauth/google';
 
+import { attempValuesOfObject, getNestedProperty } from "./utils";
 
 export function getToken() {
 	return localStorage.getItem("token");
@@ -30,10 +31,8 @@ export async function signup(data) {
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
-		let error_message = error.message
-		try {error_message = error.response.data}
-		catch(e) {}
-		return { is_authenticated: false, error: error_message, user: null };
+		error = attempValuesOfObject(error, "response.data", "message")
+		return { is_authenticated: false, error: error, user: null };
 	}
 }
 export async function login(data) {
@@ -45,9 +44,7 @@ export async function login(data) {
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
-		const error_message = error.message
-		try {const error_message = error.response.data.non_field_errors[0]}
-		catch(e) {}
+		const error_message = attempValuesOfObject(error, "data.non_field_errors.0", "message")
 		return { is_authenticated: false, error: error_message, user: null };
 	}
 }
@@ -91,10 +88,7 @@ export async function googlelogin(data) {
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
-		console.error(error)
-		const error_message = error.message
-		try {const error_message = error.response.data.non_field_errors[0]}
-		catch(e) {}
+		const error_message = attempValuesOfObject(error, "response.data.status", "message")
 		return { is_authenticated: false, error: error_message, user: null };
 	}
 }
@@ -117,27 +111,30 @@ export function logout() {
 
 export async function changeInfo(formdata) {
 	try {
-		const old_user = getUser()
-		const userid = old_user.id
-		const response = await api.patch(`/api/user/${userid}/`, formdata)
-		const user = response.data;
-		const stringified_user = JSON.stringify(user)
+		const auth_info = await getUser()
+		const user = auth_info.user
+		const response = await api.patch(`/api/user/${user.id}/`, formdata)
+		const new_user = response.data;
+		const stringified_user = JSON.stringify(new_user)
 		localStorage.setItem("user", stringified_user);
-		return [true, user];
+		return [true, new_user];
 	} catch (error) {
-		const error_message = error.message
-		return [false, error.message];
+		console.log(error)
+		const error_message = attempValuesOfObject(error, "response.data", "message")
+		console.log(error_message)
+		return [false, error_message];
 	}
 }
 
-export function deleteAccount() {
+export async function deleteAccount() {
 	try {
-		const user = getUser()
-		const userid = user.id
-		const response = api.delete(`/api/user/${userid}/`)
+		const auth_info =  await getUser()
+		const user = auth_info.user
+		const response = await api.delete(`/api/user/${user.id}/`)
 		logout()
 		return true
 	} catch (error) {
+		console.error(error)
 		return false
 	}
 }

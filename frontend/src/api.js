@@ -1,6 +1,8 @@
 import axios from "axios";
 import { getTokenInHeader } from "./auth-api";
 
+import { attempValuesOfObject, getNestedProperty } from "./utils";
+
 // PROD change domain_name
 const domain_name = "http://127.0.0.1:8000";
 
