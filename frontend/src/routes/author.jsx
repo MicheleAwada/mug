@@ -32,7 +32,7 @@ export default function Author() {
 	const isCurrentUser = (isAuthenticated && currentUser.id || -1) === author.id;
 	return (
 		<>
-			<div className="w-full flex justify-center">
+			<div className="w-full flex flex-wrap justify-center">
 				<div className="flex m-8 gap-6">
 					<div className="flex items-center gap-3 ">
 						<img
@@ -63,12 +63,12 @@ export default function Author() {
 							</div>
 						</div>
 						{isCurrentUser ? (
-								<a
+								<Link
 									href="/posts/create/"
 									className="bg-cyan-500 text-white rounded-md px-4 py-2"
 								>
 									Create Post
-								</a>
+								</Link>
 							) : (
 							<Form method="post">
 								<button

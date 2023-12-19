@@ -98,12 +98,12 @@ export default function Login() {
 							Login
 						</button>
 						<hr />
-						<a
+						<Link
 							href="/signup/"
 							className="text-center bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md"
 						>
 							Create a account instead?
-						</a>
+						</Link>
 					</Form>
 					<img
 						src={auth_illustration}

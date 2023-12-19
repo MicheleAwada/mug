@@ -312,7 +312,7 @@ export default function PostView() {
 								key={comment.id}
 							>
 								<div className="flex items-center justify-between gap-2 mb-3">
-									<a className="flex items-center gap-2 mb-3">
+									<Link className="flex items-center gap-2 mb-3">
 										<img
 											className="author-image w-8 h-8 object-cover rounded-full"
 											src={comment.author.avatar}
@@ -320,7 +320,7 @@ export default function PostView() {
 										<p className="text-lg text-gray-800">
 											{comment.author.username}
 										</p>
-									</a>
+									</Link>
 									<div className="flex items-center gap-2">
 										<Form
 											action={`/posts/${post.id}/like/${comment.id}/`}
