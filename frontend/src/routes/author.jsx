@@ -64,7 +64,7 @@ export default function Author() {
 						</div>
 						{isCurrentUser ? (
 								<Link
-									href="/posts/create/"
+									to="/posts/create/"
 									className="bg-cyan-500 text-white rounded-md px-4 py-2"
 								>
 									Create Post
