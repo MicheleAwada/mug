@@ -1,4 +1,4 @@
-import { Form, useNavigate } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import Google from "../assets/google.svg";
 import Meta from "../assets/meta.svg";
 import Spinner from "../assets/spinner.svg";
@@ -6,10 +6,18 @@ import { useEffect, useState } from "react";
 import { useActionData, useOutletContext } from "react-router-dom";
 import { login, googlelogin } from "../auth-api";
 import HrText from "../components/hr-text";
-import { redirect } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google"
+import { resetPassword } from "../auth-api"
 
 import auth_illustration from "../assets/auth illustration.svg";
+
+
+export async function resetPasswordAction({ request, params }) {
+	const formData = request.formData();
+	const response = resetPassword();
+	return response
+}
+
 
 export async function action({ request, params }) {
 	const formData = await request.formData();
@@ -52,9 +60,9 @@ export default function Login() {
 					<Form
 						onSubmit={() => setLoading(true)}
 						method="POST"
-						className="border-gray-300 border-2 rounded-md p-4 mx-8"
+						className="border-gray-300 border-2 rounded-md p-4 mx-8 w-[22rem] flex flex-col items-center"
 					>
-						<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
+						<legend className="text-center text-2xl mb-6 ml-2 mt-2 text-gray-800">
 							Welcome Back
 						</legend>
 						<GoogleLogin
@@ -63,7 +71,7 @@ export default function Login() {
 						/>
 						<div className="pb-3" />
 						<HrText />
-						<fieldset className="flex flex-col">
+						<fieldset className="flex flex-col w-full px-2">
 							<label className="text-gray-700" htmlFor="username">
 								Username
 							</label>
@@ -85,6 +93,12 @@ export default function Login() {
 								required
 							></input>
 						</fieldset>
+						<Link
+							to="reset/"
+							className="text-center text-cyan-500 py-1 px-2 block mb-2 rounded-md"
+						>
+							Forgot password
+						</Link>
 						{error}
 						<button
 							type="sumbit"
@@ -99,8 +113,8 @@ export default function Login() {
 						</button>
 						<hr />
 						<Link
-							href="/signup/"
-							className="text-center bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md"
+							to="/signup/"
+							className="text-center w-full bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md"
 						>
 							Create a account instead?
 						</Link>

@@ -26,7 +26,7 @@ import { actionLikePost, actionLikeComment } from "./loaders_actions/like";
 import { actionReportPost, actionReportComment } from "./loaders_actions/report";
 
 import Signup, { action as signupAction } from "./routes/signup";
-import Login, { action as loginAction } from "./routes/login";
+import Login, { action as loginAction, resetPasswordAction } from "./routes/login";
 import Logout, { action as logoutAction } from "./routes/logout";
 
 import Author, {
@@ -97,6 +97,12 @@ const router = createBrowserRouter([
 				path: "login/",
 				element: <Login />,
 				action: loginAction,
+				children: [
+					{
+						path: "reset/",
+						action: resetPasswordAction
+					}
+				]
 			},
 			{
 				path: "signup/",
