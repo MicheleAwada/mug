@@ -2,6 +2,8 @@ import { useActionData, useOutletContext, Form } from "react-router-dom"
 import { changePassword } from "../../auth-api";
 import { useEffect } from "react";
 
+import { Tooltip } from "flowbite-react";
+
 export async function action({ request, params }) {
     const formData = await request.formData();
     const response = changePassword(formData);
@@ -11,6 +13,7 @@ export async function action({ request, params }) {
 export default function Security() {
     const actionData = useActionData();
     const context = useOutletContext();
+    const [isAuthenticated] = context.auth;
     const {simpleAddMessage} = context.messages;
     useEffect(() => {
         if (actionData===undefined) {}
@@ -29,7 +32,15 @@ export default function Security() {
                     <input className="rounded-md" type="password" name="new_password2" placeholder="confirm password" />
                 </fieldset>
 
-                <button type="submit" className="px-6 py-2 bg-red-400 text-white rounded-lg">Change Password</button>
+                {isAuthenticated ? <button type="submit" className="px-6 py-2 bg-red-400 text-white rounded-lg">
+                    Change Password
+                </button> : <Tooltip
+								content="You must Login first to change your password"
+								style="light"
+								arrow
+							><button type="button" className="px-6 py-2 bg-red-400 text-white rounded-lg">
+                            Change Password
+                        </button></Tooltip>}
             </Form>
         </div>
     )

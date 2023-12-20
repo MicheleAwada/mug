@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Form, useOutletContext, useActionData } from "react-router-dom"
 
+import { Tooltip } from "flowbite-react";
+
 import { changeInfo } from "../../auth-api"
 import { useEffect } from "react";
 
@@ -24,8 +26,9 @@ export default function Details() {
     const context = useOutletContext();
     const actionData = useActionData();
     const [currentUser, setCurrentUser] = context.user;
+    const [isAuthenticated, setIsAuthenticated] = context.auth;
 
-    const {simpleAddMessage} = context.messages
+    const { simpleAddMessage } = context.messages
 
     useEffect(() => {
             if (actionData !== undefined) {
@@ -46,9 +49,7 @@ export default function Details() {
             }
     }, [actionData])
 	const ErrorText = ({ child }) => <ErrorTextObj main_obj={actionData && actionData[1] || {} } child={child} />
-
-
-
+    
     return (
         <>
             <Form className="pb-10" method="POST">
@@ -72,30 +73,36 @@ export default function Details() {
                             </div>
                             <div>
                                 <p className="text-gray-900 text-sm">Current: </p>
-                                <img src={currentUser.avatar} alt="avatar" className="w-12 h-12 rounded-md" />
+                                <img src={currentUser && currentUser.avatar || ""} alt="avatar" className="w-12 h-12 rounded-md" />
                             </div>
                         </div>
                         <div>
                             <p>Change Name</p>
-                            <input name="name" defaultValue={currentUser.name} className="px-6 py-3 bg-gray-100" />
+                            <input name="name" defaultValue={currentUser && currentUser.name || ""} className="px-6 py-3 bg-gray-100" />
                             <ErrorText child="name" />
                         </div>
                         <div>
                             <p>Change Username</p>
-                            <input name="username" defaultValue={currentUser.username} className="px-6 py-3 bg-gray-100" />
+                            <input name="username" defaultValue={currentUser && currentUser.username || ""} className="px-6 py-3 bg-gray-100" />
                             <ErrorText child="username" />
                         </div>
                         <div>
                             <p>Change Email</p>
-                            <input name="email" defaultValue={currentUser.email} className="px-6 py-3 bg-gray-100" />
+                            <input name="email" defaultValue={currentUser && currentUser.email || ""} className="px-6 py-3 bg-gray-100" />
                             <ErrorText child="email" />
                         </div>
                     </fieldset>
                     <ErrorText child="non_field_errors" />
                     <ErrorText child="" />
-                    <button type="sumbit" className="px-6 py-2 bg-cyan-500 text-white rounded-lg">
+                    {isAuthenticated ? <button type="sumbit" className="px-6 py-2 bg-cyan-500 text-white rounded-lg">
                         Save Changes
-                    </button>
+                    </button> : <Tooltip
+								content="You must Login first to change your details"
+								style="light"
+								arrow
+							><button type="button" className="px-6 py-2 bg-cyan-500 text-white rounded-lg">
+                        Save Changes
+                    </button></Tooltip>}
             </Form>
         </>
     )

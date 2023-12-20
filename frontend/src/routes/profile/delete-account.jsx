@@ -5,6 +5,8 @@ import { Form, useActionData, useOutletContext } from "react-router-dom";
 
 import { deleteAccount } from "../../auth-api"
 
+import { Tooltip } from "flowbite-react";
+
 export async function action() {
     const response = await deleteAccount()
     return response
@@ -56,9 +58,17 @@ export default function DeleteAccount() {
 										Cancel
 									</Button>
 									<Form method="post" className="w-full">
-										<Button type="submit" color="gray" className="w-full">
+										{isAuthenticated ? <Button type="submit" color="gray" className="w-full">
 											Delete
-										</Button>
+										</Button> : <Tooltip
+										content="You must Login first to delete your account"
+										style="light"
+										className="w-full"
+										arrow>
+											<Button type="button" color="gray" className="w-full">
+												Delete
+											</Button>
+										</Tooltip>}
 									</Form>
 								</div>
 							</div>
