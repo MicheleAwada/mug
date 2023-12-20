@@ -89,3 +89,19 @@ a {
 	-webkit-appearance: none;
 	outline: 0px !important;
 }
+
+
+
+$menu-width-size: 22;
+
+#menu {
+	position: relative;
+	left: -$menu-width-size;
+	width: $menu-width-size;
+	height: 100vw;
+
+	box-shadow: 0.33rem 0rem 1rem 0.125rem #888;
+	overflow: hidden;
+	
+	transition: left 0.3s ease;
+}
