@@ -85,7 +85,7 @@ export default function Signup() {
 				<Form
 					onSubmit={() => setLoading(true)}
 					method="POST"
-					className="border-gray-300 border-2 rounded-md p-4 mx-8 flex flex-col items-center"
+					className="border-gray-300 border-2 rounded-md p-4 mx-8 my-4 flex flex-col items-center"
 				>
 					<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
 						Hello, Start Your Journey

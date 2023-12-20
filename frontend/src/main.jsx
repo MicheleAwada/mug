@@ -97,12 +97,12 @@ const router = createBrowserRouter([
 				path: "login/",
 				element: <Login />,
 				action: loginAction,
-				children: [
-					{
-						path: "reset/",
-						action: resetPasswordAction
-					}
-				]
+				// children: [
+				// 	{
+				// 		path: "reset/",
+				// 		action: resetPasswordAction
+				// 	}
+				// ]
 			},
 			{
 				path: "signup/",
