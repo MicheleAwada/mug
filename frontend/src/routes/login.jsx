@@ -7,16 +7,16 @@ import { useActionData, useOutletContext } from "react-router-dom";
 import { login, googlelogin } from "../auth-api";
 import HrText from "../components/hr-text";
 import { GoogleLogin } from "@react-oauth/google"
-import { resetPassword } from "../auth-api"
+// import { resetPassword } from "../auth-api"
 
 import auth_illustration from "../assets/auth illustration.svg";
 
 
-export async function resetPasswordAction({ request, params }) {
-	const formData = request.formData();
-	const response = resetPassword();
-	return response
-}
+// export async function resetPasswordAction({ request, params }) {
+// 	const formData = request.formData();
+// 	const response = resetPassword();
+// 	return response
+// }
 
 
 export async function action({ request, params }) {
@@ -60,7 +60,7 @@ export default function Login() {
 					<Form
 						onSubmit={() => setLoading(true)}
 						method="POST"
-						className="border-gray-300 border-2 rounded-md p-4 mx-8 w-[22rem] flex flex-col items-center"
+						className="border-gray-300 border-2 rounded-md p-4 mx-8 my-4 w-[22rem] flex flex-col items-center"
 					>
 						<legend className="text-center text-2xl mb-6 ml-2 mt-2 text-gray-800">
 							Welcome Back
@@ -93,12 +93,12 @@ export default function Login() {
 								required
 							></input>
 						</fieldset>
-						<Link
+						{/* <Link
 							to="reset/"
 							className="text-center text-cyan-500 py-1 px-2 block mb-2 rounded-md"
 						>
 							Forgot password
-						</Link>
+						</Link> */}
 						{error}
 						<button
 							type="sumbit"

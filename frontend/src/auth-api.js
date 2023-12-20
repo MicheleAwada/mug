@@ -154,12 +154,12 @@ export async function changePassword(data) {
 	}
 }
 
-export async function resetPassword(data) {
-	try {
-		const response = await api.post("/api/dj-rest-auth/password/reset/", data)
-		return true
-	} catch (error) {
-		console.error(error)
-		return false
-	}
-}
+// export async function resetPassword(data) {
+// 	try {
+// 		const response = await api.post("/api/dj-rest-auth/password/reset/", data)
+// 		return true
+// 	} catch (error) {
+// 		console.error(error)
+// 		return false
+// 	}
+// }
