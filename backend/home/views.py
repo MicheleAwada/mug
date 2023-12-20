@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from .forms import comment_form, create_blog
 from .permissions import IsAuthorOrReadOnly
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions as rest_framework_permissions
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
@@ -47,7 +48,6 @@ class CommentsView(viewsets.ModelViewSet):
 class PostsView(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.EditPostSerializer
-    permission_classes = [IsAuthorOrReadOnly]
     def create(self, request):
         print(request)
         serializer = serializers.EditPostSerializer(data=request.data)
@@ -61,7 +61,12 @@ class PostsView(viewsets.ModelViewSet):
         # if self.action == "retrieve":
         return serializers.PostSerializer
         # return serializers.EditPostSerializer
-
+    def get_permissions(self):
+        if self.action in rest_framework_permissions.SAFE_METHODS:
+            return []
+        if self.action == 'create':
+            return [IsAuthenticated()]
+        return [IsAuthorOrReadOnly()]
 
 
 
