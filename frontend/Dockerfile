@@ -6,3 +6,5 @@ COPY package*.json ./
 
 RUN npm install --global vite@latest
 RUN npm install
+
+# RUN npm run build

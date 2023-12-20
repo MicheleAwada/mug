@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='username',
-            field=models.CharField(max_length=50, unique=True, validators=[myauth.models.validate_username]),
+            field=models.CharField(max_length=50, unique=True, validators=[]),
         ),
     ]
