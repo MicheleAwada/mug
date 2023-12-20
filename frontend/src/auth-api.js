@@ -24,13 +24,15 @@ function setUser(token, user) {
 export async function signup(data) {
 	try {
 		const response = await api.post("/api/user/", data);
+		console.log('good')
+		console.log(response)
 		const token = response.data.token;
-		const parsed_user = response.data.user;
-		const user = JSON.stringify(parsed_user);
-		user.type = "normal"
+		const user = response.data.user;
+		user["type"] = "normal"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
+		console.log(error)
 		error = attempValuesOfObject(error, "response.data", "message")
 		return { is_authenticated: false, error: error, user: null };
 	}
@@ -40,11 +42,12 @@ export async function login(data) {
 		const response = await api.post("/api/login/", data);
 		const token = response.data.token;
 		const user = response.data.user;
-		user.type = "normal"
+		user["type"] = "normal"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
-		const error_message = attempValuesOfObject(error, "data.non_field_errors.0", "message")
+		console.log(error)
+		const error_message = attempValuesOfObject(error, "response.data.non_field_errors.0", "message")
 		return { is_authenticated: false, error: error_message, user: null };
 	}
 }
@@ -84,7 +87,7 @@ export async function googlelogin(data) {
 		const response = await api.post("/api/login/google/", data);
 		const token = response.data.token;
 		const user = response.data.user;
-		user.type = "google"
+		user["type"] = "google"
 		setUser(token, user);
 		return getAuthInfo();
 	} catch (error) {
@@ -132,6 +135,28 @@ export async function deleteAccount() {
 		const user = auth_info.user
 		const response = await api.delete(`/api/user/${user.id}/`)
 		logout()
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export async function changePassword(data) {
+	try {
+		const auth_info =  getUser()
+		const user = auth_info.user
+		const response = await api.post('/api/dj-rest-auth/password/change/', data)
+		return true
+	} catch (error) {
+		console.error(error)
+		return false
+	}
+}
+
+export async function resetPassword(data) {
+	try {
+		const response = await api.post("/api/dj-rest-auth/password/reset/", data)
 		return true
 	} catch (error) {
 		console.error(error)
