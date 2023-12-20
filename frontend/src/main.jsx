@@ -39,11 +39,14 @@ import Details, { action as changeDetailsAction } from "./routes/profile/details
 import Security, { action as changePasswordAction } from "./routes/profile/security";
 import DeleteAccount, { action as deleteAccountAction } from "./routes/profile/delete-account";
 
+import ErrorPage from "./routes/error";
+
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Root />,
 		loader: rootLoader,
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				index: true,

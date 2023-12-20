@@ -97,17 +97,20 @@ export async function googlelogin(data) {
 }
 
 
-export function logout() {
-	localStorage.removeItem("token");
+export function logout(force=false) {
 	
-	const stringified_user = localStorage.getItem("user")
-	const parsed_user = JSON.parse(stringified_user);
-	const type = parsed_user.type
-	localStorage.removeItem("user");
-
-	if (type === "google") {
+	if (!force) {
+		const stringified_user = localStorage.getItem("user")
+		const parsed_user = JSON.parse(stringified_user);
+		
+		if (parsed_user.type === "google") {
+			googleLogout();
+		}
+	} else {
 		googleLogout();
 	}
+	localStorage.removeItem("token");
+	localStorage.removeItem("user");
 	
 	return true;
 }
