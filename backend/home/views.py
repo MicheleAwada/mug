@@ -47,7 +47,7 @@ class CommentsView(viewsets.ModelViewSet):
 class PostsView(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = serializers.EditPostSerializer
-
+    permission_classes = [IsAuthorOrReadOnly]
     def create(self, request):
         print(request)
         serializer = serializers.EditPostSerializer(data=request.data)
@@ -55,18 +55,13 @@ class PostsView(viewsets.ModelViewSet):
             serializer.save(author=request.user)
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
-    def get_permissions(self):
-        if self.request.method == 'GET':
-            return []
-        elif self.request.method == 'POST':
-            return [IsAuthenticated()]
-        return [IsAuthorOrReadOnly()]
     def get_serializer_class(self):
         if self.action == 'list':
             return serializers.ListPostSerializer
         # if self.action == "retrieve":
         return serializers.PostSerializer
         # return serializers.EditPostSerializer
+
 
 
 
