@@ -1,12 +1,12 @@
-import { Form, useNavigate } from "react-router-dom";
-import Google from "../assets/google.svg";
-import Meta from "../assets/meta.svg";
+import { Form, Link, useNavigate } from "react-router-dom";
 import Spinner from "../assets/spinner.svg";
 import React, { useEffect, useState } from "react";
 import { useActionData, useOutletContext } from "react-router-dom";
 import { signup } from "../auth-api";
 import HrText from "../components/hr-text";
 import { redirect } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google"
+import { return_auth_feedback_functions } from "./login";
 
 import auth_illustration from "../assets/auth illustration.svg";
 
@@ -52,6 +52,9 @@ export default function Signup() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState({});
 	const actionData = useActionData();
+
+	const { success_login, failed_login, google_handle_success, google_handle_error } = return_auth_feedback_functions(setIsAuthenticated, setCurrentUser, simpleAddMessage, navigate)
+
 	useEffect(() => {
 		if (actionData) {
 			setLoading(false);
@@ -70,11 +73,11 @@ export default function Signup() {
 		}
 	}, [actionData]);
 
-	const ErrorText = ({ child }) => <ErrorTextObj main_obj={actionData.error} child={child} />
+	const ErrorText = ({ child }) => <ErrorTextObj main_obj={actionData === undefined ? {} : actionData.error} child={child} />
 
 	return (
 		<>
-			<div className="h-full flex items-center justify-around w-full overflow-hidden w-full">
+			<div className="h-full flex items-center justify-around overflow-hidden w-full">
 				<img
 					src={auth_illustration}
 					className="h-[30rem] w-auto hidden lg:block"
@@ -82,11 +85,17 @@ export default function Signup() {
 				<Form
 					onSubmit={() => setLoading(true)}
 					method="POST"
-					className="border-gray-300 border-2 rounded-md p-4 mx-8"
+					className="border-gray-300 border-2 rounded-md p-4 mx-8 flex flex-col items-center"
 				>
 					<legend className="text-2xl mb-6 ml-2 mt-2 text-gray-800">
-						Hello, Sign up
+						Hello, Start Your Journey
 					</legend>
+					<GoogleLogin
+							onSuccess={google_handle_success}
+							onError={google_handle_error}
+						/>
+					<div className="mb-4" />
+					<HrText />
 					<fieldset className="flex flex-col">
 						<div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
 							<div className="flex flex-col">
@@ -154,8 +163,8 @@ export default function Signup() {
 					</button>
 					<hr />
 					<Link
-						href="/login/"
-						className="text-center bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md"
+						to="/login/"
+						className="text-center bg-cyan-500 text-white py-1 px-2 block mt-4 mb-2 rounded-md w-full"
 					>
 						Login to account instead?
 					</Link>
