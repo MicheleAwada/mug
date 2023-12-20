@@ -69,16 +69,17 @@ export default function Author() {
 								>
 									Create Post
 								</Link>
-							) : (
-							<Form method="post">
-								<button
-									type="submit"
-									className="bg-cyan-500 text-white rounded-md px-4 py-2"
-								>
-									{author.is_followed ? "Unfollow" : "Follow"}
-								</button>
-							</Form>
-						)}
+							) : isAuthenticated ? (								
+								<Form method="post">
+									<button
+										type="submit"
+										className="bg-cyan-500 text-white rounded-md px-4 py-2"
+									>
+										{author.is_followed ? "Unfollow" : "Follow"}
+									</button>
+								</Form>
+							) : (<></>)
+							}
 					</div>
 				</div>
 			</div>
