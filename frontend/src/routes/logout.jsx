@@ -34,7 +34,7 @@ export default function Logout() {
 		}
 	}, [actionData]);
 	return (
-		<div className="h-full flex items-center justify-center rounded-md">
+		<div className="h-full flex items-center justify-center rounded-2xl">
 			<Form
 				method="delete"
 				className="border-gray-300 border-2 rounded-md p-4 px-6 py-10"
@@ -42,7 +42,7 @@ export default function Logout() {
 				<p className="mb-6 text-gray-700">Are you sure you want to logout?</p>
 				<button
 					type="sumbit"
-					className="flex items-center h-8 gap-2 mx-auto py-1 px-4 text-white bg-amber-600 rounded-sm"
+					className="flex items-center h-8 gap-2 mx-auto py-1 px-4 text-white bg-amber-600 rounded-md"
 				>
 					Logout
 				</button>
