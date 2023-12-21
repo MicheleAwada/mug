@@ -90,13 +90,13 @@ export default function Header({ context }) {
 	}
 
 	return (
-		<div>
+		<div className="w-full">
 			<div id="fake-header" className="bg-transparent w-full h-20 md:h-16">
 				{/* this is so content wont get clipped */}
 			</div>
 				
-			<div className="flex flex-col absolute top-0 left-0 h-screen">
-				<div className="">
+			<div className="flex flex-col absolute top-0 left-0 h-screen w-full">
+				<div className="w-full">
 					<header
 						id="header"
 						className="bg-gray-300 fixed w-full h-20 md:px-6 md:h-16 z-40"
@@ -183,7 +183,7 @@ export default function Header({ context }) {
 						{/* this is so content wont get clipped */}
 					</div>
 				</div>
-				<div id="menu" className="bg-gray-200 z-30 fixed py-4">
+				<div id="menu" className="bg-gray-200 z-30 fixed py-4 flex-grow">
 					<ul className="w-full ">
 						{menu_map.map((info, index) => {
 							const isSelectedItem = isSelected(info.link)
