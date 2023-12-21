@@ -103,12 +103,12 @@ export default function Header({ context }) {
 					>
 						<div className="flex justify-between items-center h-full">
 							{/* <div className="flex items-center h-full"> */}
-							<div className="flex items-center h-full">
+							<div className="flex items-center h-full px-4">
 								<Hamburger size={20} color="black" direction="left" toggled={toggleHamburger} toggle={toggle_hamburger} />
-								<Link to="/" className="h-full p-2 pl-6">
+								<Link to="/" className="h-full p-2 gap-2 ml-6 flex items-center">
 									<img src={Mug_Logo} alt="Logo" className="h-full" />
+									<p className="nunito text-2xl text-gray-900">Mug</p>
 								</Link>
-								<p className="nunito text-2xl">Mug</p>
 							</div>
 							{!isAuthenticated ? (
 								<nav className="flex">

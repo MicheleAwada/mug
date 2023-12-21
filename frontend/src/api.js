@@ -39,6 +39,13 @@ export function getPost(id) {
 	posts_cache[post.id] = post;
 	return post
 }
+export function deletePostFromCache(id) {
+	if (posts_cache[id]) {
+		delete posts_cache[id];
+		return true;
+	}
+	return false
+}
 
 export async function postPost(data) {
 	try {

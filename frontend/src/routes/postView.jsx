@@ -1,4 +1,4 @@
-import { getPost, comment, like } from "../api";
+import { getPost, comment, like, deletePostFromCache } from "../api";
 import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form, useFetcher } from "react-router-dom";
@@ -29,6 +29,7 @@ export async function action({ request, params }) {
 	const formData = await request.formData();
 	formData.append("post", postId);
 	comment(formData);
+	deletePostFromCache(postId)
 	return redirect(`/posts/${postId}/`);
 }
 
@@ -47,7 +48,7 @@ export default function PostView() {
 	return (
 		<div id="post-view-container" className="block lg:grid">
 			<section className="hidden lg:block"></section>
-			<section className="my-8 mx-20" id="detail-post-view lg:w-full">
+			<section className="my-8 mx-6 sm:mx-8 md:mx-10 lg:mx-14 xl:mx-20" id="detail-post-view lg:w-full">
 				<div className="modals">
 					<Modal
 						show={showDeleteModal}
