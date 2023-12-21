@@ -62,7 +62,8 @@ class PostsView(viewsets.ModelViewSet):
         return serializers.PostSerializer
         # return serializers.EditPostSerializer
     def get_permissions(self):
-        if self.action in rest_framework_permissions.SAFE_METHODS:
+        if self.request.method in rest_framework_permissions.SAFE_METHODS:
+            print("GOOOD")
             return []
         if self.action == 'create':
             return [IsAuthenticated()]
