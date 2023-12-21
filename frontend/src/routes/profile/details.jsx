@@ -13,7 +13,10 @@ import { attempValuesOfObject } from "../../utils";
 export async function action({ request, params }) {
     const formData = await request.formData();
     const avatar = formData.get("avatar");
-    if (avatar.name === undefined) {
+    console.log("YOO")
+    console.log(avatar)
+    if (avatar.name === "") {
+        console.log("inside")
 		formData.delete("avatar");
 	}
     const result = changeInfo(formData);
@@ -52,7 +55,7 @@ export default function Details() {
     
     return (
         <>
-            <Form className="pb-10" method="POST">
+            <Form className="pb-10" method="POST" encType="multipart/form-data">
                     <fieldset className="flex flex-col gap-2 pb-4">
                         <div className="flex gap-8 pb-2">
                             <div>
@@ -73,7 +76,7 @@ export default function Details() {
                             </div>
                             <div>
                                 <p className="text-gray-900 text-sm">Current: </p>
-                                <img src={currentUser && currentUser.avatar || ""} alt="avatar" className="w-12 h-12 rounded-md" />
+                                <img src={currentUser && currentUser.avatar || ""} alt="avatar" className="w-12 h-12 rounded-md object-contain" />
                             </div>
                         </div>
                         <div>

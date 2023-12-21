@@ -135,7 +135,7 @@ export default function Header({ context }) {
 												<img
 													src={currentUser.avatar}
 													alt="Profile Logo"
-													className=" h-full rounded-md cursor-pointer"
+													className="aspect-square object-cover h-full rounded-md cursor-pointer"
 												/>
 											</div>
 										)}
