@@ -28,7 +28,7 @@ a {
 }
 
 #header {
-	box-shadow: 0px 1px 12px rgb(32, 32, 32);
+	box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.6);
 }
 
 #root-divider {
@@ -100,7 +100,7 @@ $menu-width-size: 22;
 	width: $menu-width-size;
 	height: 100vw;
 
-	box-shadow: 0.33rem 0rem 1rem 0.125rem #888;
+	box-shadow: 0.33rem 0rem 1rem 0.125rem rgba(0,0,0,0.33);
 	overflow: hidden;
 	
 	transition: left 0.3s ease;
