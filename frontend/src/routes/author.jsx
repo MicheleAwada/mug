@@ -33,7 +33,7 @@ export default function Author() {
 	return (
 		<>
 			<div className="w-full flex flex-wrap justify-center">
-				<div className="flex m-8 gap-6">
+				<div className="flex flex-wrap justify-center m-8 gap-6">
 					<div className="flex items-center gap-3 ">
 						<img
 							className="author-image w-14 h-14 object-cover rounded-full"
@@ -44,7 +44,7 @@ export default function Author() {
 							<p className="text-lg text-gray-500">@{author.username}</p>
 						</div>
 					</div>
-					<div className="flex items-center gap-4">
+					<div className="flex flex-wrap items-center gap-4">
 						<div className="flex flex-col">
 							<div className="flex items-center">
 								<img className="w-6" src={heart_filled} />
