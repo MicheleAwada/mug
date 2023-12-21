@@ -1,12 +1,12 @@
 version: "3.4"
 services:
-  frontend_static:
-    container_name: frontend_static
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    volumes:
-      - ./frontend/dist:/dist
+  # frontend_static:
+  #   container_name: frontend_static
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ./frontend/dist:/dist
   backend:
     container_name: backend
     build:
@@ -36,7 +36,7 @@ services:
     image: nginx
     container_name: nginx
     ports:
-      - 80:80 
+      # - 80:80
       - 8000:8000
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
