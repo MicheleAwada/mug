@@ -23,7 +23,7 @@ services:
     depends_on:
       - postgres
   postgres:
-    image: postgres
+    image: postgres:alpine
     container_name: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -33,7 +33,7 @@ services:
       POSTGRES_DB: Mug
       POSTGRES_USER: postgres
   nginx:
-    image: nginx
+    image: nginx:alpine
     container_name: nginx
     ports:
       - 80:80

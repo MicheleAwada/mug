@@ -1,5 +1,5 @@
 import React from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google"
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -23,7 +23,10 @@ import PostEditView, {
 import { action as postDeleteAction } from "./routes/postDelete";
 
 import { actionLikePost, actionLikeComment } from "./loaders_actions/like";
-import { actionReportPost, actionReportComment } from "./loaders_actions/report";
+import {
+	actionReportPost,
+	actionReportComment,
+} from "./loaders_actions/report";
 
 import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
@@ -35,9 +38,15 @@ import Author, {
 } from "./routes/author";
 
 import Profile from "./routes/profile/profile";
-import Details, { action as changeDetailsAction } from "./routes/profile/details";
-import Security, { action as changePasswordAction } from "./routes/profile/security";
-import DeleteAccount, { action as deleteAccountAction } from "./routes/profile/delete-account";
+import Details, {
+	action as changeDetailsAction,
+} from "./routes/profile/details";
+import Security, {
+	action as changePasswordAction,
+} from "./routes/profile/security";
+import DeleteAccount, {
+	action as deleteAccountAction,
+} from "./routes/profile/delete-account";
 
 import ErrorPage from "./routes/error";
 
@@ -136,7 +145,7 @@ const router = createBrowserRouter([
 						element: <DeleteAccount />,
 						action: deleteAccountAction,
 					},
-				]
+				],
 			},
 		],
 	},
@@ -144,7 +153,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<GoogleOAuthProvider clientId="1046590878211-fe28tn4qmadq1qvc51n6algp1oshm7jv.apps.googleusercontent.com">
+		<GoogleOAuthProvider clientId="312961143872-991hn7ttgda2rg17raobqe2idb3qv7lt.apps.googleusercontent.com">
 			<RouterProvider router={router} />
 		</GoogleOAuthProvider>
 	</React.StrictMode>
