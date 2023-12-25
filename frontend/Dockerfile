@@ -1,10 +1,12 @@
-# FROM node:18-alpine
+FROM node:alpine
 
-# WORKDIR /app
+WORKDIR /frontend
 
-# COPY package*.json ./
+COPY package*.json ./
 
-# RUN npm install --global vite@latest
-# RUN npm install
+RUN npm install --global vite@latest
+RUN npm install
 
-# RUN npm run build
+COPY . .
+
+RUN npm run build

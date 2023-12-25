@@ -1,14 +1,14 @@
 version: "3.4"
 services:
-  # frontend_static:
-  #   container_name: frontend_static
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./frontend/dist:/dist
+  frontend_static:
+    container_name: mug_frontend_static
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - mug_frontend_static:/frontend/dist
   backend:
-    container_name: backend
+    container_name: mug_backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -18,32 +18,53 @@ services:
       - 8080
     command: gunicorn mug.wsgi:application --bind 0.0.0.0:8080 --log-level debug
     volumes:
-      - static:/app/static
-      - media:/app/media
+      - mug_static:/app/static
+      - mug_media:/app/media
     depends_on:
       - postgres
+    networks:
+      - internal
   postgres:
     image: postgres:alpine
-    container_name: postgres
+    container_name: mug_postgres
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mug_postgres_data:/var/lib/postgresql/data
     env_file:
       - ./backend/mug/db.env
     environment:
       POSTGRES_DB: Mug
       POSTGRES_USER: postgres
+    networks:
+      - internal
   nginx:
     image: nginx:alpine
-    container_name: nginx
+    container_name: mug_nginx
     ports:
       - 80:80
       - 8000:8000
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./frontend/dist:/dist
-      - static:/static
-      - media:/media
+      - mug_frontend_static:/frontend/dist
+      - mug_static:/static
+      - mug_media:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mug.rule=Host(`mug.micheleawada.com`)"
+      - "traefik.http.routers.mug.entrypoints=websecure"
+      - "traefik.http.routers.mug.tls=true"
+      - "traefik.http.routers.mug.tls.certresolver=letsencrypt"
+    networks:
+      - internal
+      - traefikproxy
+
 volumes:
-  postgres_data:
-  media:
-  static:
+  mug_postgres_data:
+  mug_media:
+  mug_static:
+  mug_frontend_static:
+
+networks:
+  internal:
+  traefikproxy:
+    name: traefikproxy
+    external: true
