@@ -8,9 +8,14 @@ import { TbListDetails } from "react-icons/tb";
 import { IoLogIn, IoLogInSharp, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 import { HiOutlineNewspaper } from "react-icons/hi2";
-import { HiLogin, HiOutlineLogin, HiOutlineLogout, HiOutlinePencil } from "react-icons/hi";
+import {
+	HiLogin,
+	HiOutlineLogin,
+	HiOutlineLogout,
+	HiOutlinePencil,
+} from "react-icons/hi";
 import { CgDetailsMore, CgLogIn, CgProfile } from "react-icons/cg";
-import { Twirl as Hamburger } from 'hamburger-react'
+import { Twirl as Hamburger } from "hamburger-react";
 
 export default function Header({ context }) {
 	const [isAuthenticated] = context.auth;
@@ -23,29 +28,28 @@ export default function Header({ context }) {
 	useEffect(() => {
 		const menu = document.getElementById("menu");
 		if (toggleHamburger) {
-			menu.style.left = "0"
+			menu.style.left = "0";
 		} else {
-			menu.style.left = "-40rem"
+			menu.style.left = "-100%";
 		}
 
 		return () => {
-			menu.style.left = "-40rem"
-		}
-	}, [toggleHamburger])
+			menu.style.left = "-100%";
+		};
+	}, [toggleHamburger]);
 
 	const location = useLocation();
 
 	function isSelected(link) {
 		const lastLetter = link[link.length - 1];
-		link = (lastLetter==="/") && link.slice(0, -1) || link;
+		link = (lastLetter === "/" && link.slice(0, -1)) || link;
 		if (location.pathname.startsWith(link)) {
 			return true;
 		}
 		return false;
 	}
 
-	let menu_map = [
-	]
+	let menu_map = [];
 	if (isAuthenticated) {
 		menu_map = [
 			{
@@ -73,7 +77,7 @@ export default function Header({ context }) {
 				icon: HiOutlineLogout,
 				link: "/logout/",
 			},
-		]
+		];
 	} else {
 		menu_map = [
 			{
@@ -86,7 +90,7 @@ export default function Header({ context }) {
 				icon: IoLogInSharp,
 				link: "/signup/",
 			},
-		]
+		];
 	}
 
 	return (
@@ -94,7 +98,7 @@ export default function Header({ context }) {
 			<div id="fake-header" className="bg-transparent w-full h-20 md:h-16">
 				{/* this is so content wont get clipped */}
 			</div>
-				
+
 			<div className="flex flex-col absolute top-0 left-0 h-screen w-full">
 				<div className="w-full">
 					<header
@@ -104,8 +108,17 @@ export default function Header({ context }) {
 						<div className="flex justify-between items-center h-full">
 							{/* <div className="flex items-center h-full"> */}
 							<div className="flex items-center h-full px-4">
-								<Hamburger size={20} color="black" direction="left" toggled={toggleHamburger} toggle={toggle_hamburger} />
-								<Link to="/" className="h-full p-2 gap-2 ml-6 flex items-center">
+								<Hamburger
+									size={20}
+									color="black"
+									direction="left"
+									toggled={toggleHamburger}
+									toggle={toggle_hamburger}
+								/>
+								<Link
+									to="/"
+									className="h-full p-2 gap-2 ml-6 flex items-center"
+								>
 									<img src={Mug_Logo} alt="Logo" className="h-full" />
 									<p className="nunito text-2xl text-gray-900">Mug</p>
 								</Link>
@@ -142,7 +155,8 @@ export default function Header({ context }) {
 									>
 										<Dropdown.Header>
 											<span className="block text-sm">
-												Hello, <span className="bold">{currentUser.username}</span>
+												Hello,{" "}
+												<span className="bold">{currentUser.username}</span>
 											</span>
 										</Dropdown.Header>
 										<Dropdown.Item
@@ -161,7 +175,11 @@ export default function Header({ context }) {
 											<HiOutlinePencil className="w-4 h-4 mr-2" />
 											Create Post
 										</Dropdown.Item>
-										<Dropdown.Item as={Link} className="flex items-center" to="/profile/">
+										<Dropdown.Item
+											as={Link}
+											className="flex items-center"
+											to="/profile/"
+										>
 											<IoSettingsOutline className="w-4 h-4 mr-2" />
 											Settings
 										</Dropdown.Item>
@@ -186,17 +204,44 @@ export default function Header({ context }) {
 				<div id="menu" className="bg-gray-200 z-30 fixed py-4 flex-grow">
 					<ul className="w-full ">
 						{menu_map.map((info, index) => {
-							const isSelectedItem = isSelected(info.link)
-							return (<li key={index} className="w-full px-4 flex flex-col items-center">
-								<Link to={info.link} className={"px-4 py-2 rounded-md flex items-center gap-4 w-full h-full " + (isSelectedItem ? "border-gray-300 border-4" : "bg-gray-300 border-transparent border-4")}>
-									{info.src && <img src={info.src} className="object-cover w-10 h-10 rounded-full"/>}
-									{info.icon && <info.icon color="#333" className="object-cover w-8 h-8 rounded-full"/>}
-									<p className="text-center text-gray-950 font-medium text-lg">{info.title}</p>
-								</Link>
-								<div className="py-4">
-									{index!==menu_map.length-1 && <div className="px-14 border-b-2 border-gray-600" />}
-								</div>
-							</li>)
+							const isSelectedItem = isSelected(info.link);
+							return (
+								<li
+									key={index}
+									className="w-full px-4 flex flex-col items-center"
+								>
+									<Link
+										to={info.link}
+										className={
+											"px-4 py-2 rounded-md flex items-center gap-4 w-full h-full " +
+											(isSelectedItem
+												? "border-gray-300 border-4"
+												: "bg-gray-300 border-transparent border-4")
+										}
+									>
+										{info.src && (
+											<img
+												src={info.src}
+												className="object-cover w-10 h-10 rounded-full"
+											/>
+										)}
+										{info.icon && (
+											<info.icon
+												color="#333"
+												className="object-cover w-8 h-8 rounded-full"
+											/>
+										)}
+										<p className="text-center text-gray-950 font-medium text-lg">
+											{info.title}
+										</p>
+									</Link>
+									<div className="py-4">
+										{index !== menu_map.length - 1 && (
+											<div className="px-14 border-b-2 border-gray-600" />
+										)}
+									</div>
+								</li>
+							);
 						})}
 					</ul>
 				</div>

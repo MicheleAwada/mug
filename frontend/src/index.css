@@ -107,15 +107,14 @@ a {
 
 #menu {
   position: relative;
-  height: 100vw;
   box-shadow: 0.33rem 0rem 1rem 0.125rem rgba(0, 0, 0, 0.33);
   overflow: hidden;
   transition: left 0.3s ease;
 }
 @media screen and (min-width: 769px) {
   #menu {
-    left: -22rem;
     width: 22rem;
+    left: -100%;
   }
 }
 @media screen and (max-width: 768px) {

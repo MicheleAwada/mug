@@ -21,7 +21,6 @@ $mugblue: #00acff;
 	}
 }
 
-
 html,
 body,
 #root {
@@ -107,26 +106,21 @@ a {
 	outline: 0px !important;
 }
 
-
-
 $menu-width-size: 22rem;
 
 #menu {
 	position: relative;
 	@media screen and (min-width: 769px) {
-		left: -$menu-width-size;
 		width: $menu-width-size;
-		
+		left: -100%;
 	}
 	@media screen and (max-width: 768px) {
 		left: -100%;
 		width: 100%;
-		
 	}
-	height: 100vw;
 
-	box-shadow: 0.33rem 0rem 1rem 0.125rem rgba(0,0,0,0.33);
+	box-shadow: 0.33rem 0rem 1rem 0.125rem rgba(0, 0, 0, 0.33);
 	overflow: hidden;
-	
+
 	transition: left 0.3s ease;
 }
