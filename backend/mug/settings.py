@@ -26,8 +26,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')=="True"
 
-ALLOWED_HOSTS = []
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -138,13 +136,18 @@ AUTH_USER_MODEL = 'myauth.User'
 
 FRONTEND_DOMAIN = "mug.micheleawada.com"
 
-INTERNAL_IPS = [
-    FRONTEND_DOMAIN,
-]
+# INTERNAL_IPS = [
+#     FRONTEND_DOMAIN,
+# ]
 
 CORS_ORIGIN_WHITELIST = [
      FRONTEND_DOMAIN
 ]
+
+ALLOWED_HOSTS = [
+    DOMAIN_URL,   
+]
+
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
