@@ -144,10 +144,6 @@ CORS_ORIGIN_WHITELIST = [
      FRONTEND_DOMAIN
 ]
 
-ALLOWED_HOSTS = [
-    DOMAIN_URL,   
-]
-
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%B %m %Y",
@@ -159,6 +155,10 @@ REST_FRAMEWORK = {
 }
 
 DOMAIN_URL = "backend.mug.micheleawada.com"
+
+ALLOWED_HOSTS = [
+    DOMAIN_URL,   
+]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
