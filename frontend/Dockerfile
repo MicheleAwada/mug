@@ -4,7 +4,7 @@ WORKDIR /frontend
 
 COPY package*.json ./
 
-RUN npm install --global vite@latest
+RUN npm install -g vite@latest
 RUN npm install
 
 COPY . .
