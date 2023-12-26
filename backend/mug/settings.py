@@ -134,7 +134,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'myauth.User'
 
-FRONTEND_DOMAIN = "mug.micheleawada.com"
+FRONTEND_DOMAIN = "https://mug.micheleawada.com"
 
 # INTERNAL_IPS = [
 #     FRONTEND_DOMAIN,
