@@ -48,7 +48,7 @@ services:
       - mug_media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mug.rule=Host(`mug.micheleawada.com`)"
+      - "traefik.http.routers.mug.rule=(Host(`mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`))"
       - "traefik.http.routers.mug.entrypoints=websecure"
       - "traefik.http.routers.mug.tls=true"
       - "traefik.http.routers.mug.tls.certresolver=letsencrypt"

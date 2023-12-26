@@ -136,14 +136,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'myauth.User'
 
-TAILWIND_APP_NAME = 'theme'
+FRONTEND_DOMAIN = "mug.micheleawada.com"
 
 INTERNAL_IPS = [
-    "127.0.0.1",
+    FRONTEND_DOMAIN,
 ]
 
 CORS_ORIGIN_WHITELIST = [
-     'http://localhost'
+     FRONTEND_DOMAIN
 ]
 
 REST_FRAMEWORK = {
@@ -155,13 +155,13 @@ REST_FRAMEWORK = {
     "UPLOADED_FILES_USE_URL": True,
 }
 
-DOMAIN_URL = "http://127.0.0.1:8000"
+DOMAIN_URL = "backend.mug.micheleawada.com"
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_URL = f'{DOMAIN_URL}/static/'
 
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
