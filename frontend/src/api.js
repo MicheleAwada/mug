@@ -3,8 +3,7 @@ import { getTokenInHeader } from "./auth-api";
 
 import { attempValuesOfObject, getNestedProperty } from "./utils";
 
-// PROD change domain_name
-const domain_name = "http://127.0.0.1:8000";
+const domain_name = "http://backend.mug.micheleawada.com";
 
 const api = axios.create({
 	baseURL: domain_name,
@@ -28,7 +27,7 @@ let posts_cache = {};
 
 export function getPosts() {
 	const posts = api.get("/api/posts/");
-	return posts
+	return posts;
 }
 
 export function getPost(id) {
@@ -37,14 +36,14 @@ export function getPost(id) {
 	}
 	const post = api.get(`/api/posts/${id}/`);
 	posts_cache[post.id] = post;
-	return post
+	return post;
 }
 export function deletePostFromCache(id) {
 	if (posts_cache[id]) {
 		delete posts_cache[id];
 		return true;
 	}
-	return false
+	return false;
 }
 
 export async function postPost(data) {
@@ -116,7 +115,6 @@ export function follow(id) {
 		return false;
 	}
 }
-
 
 export async function report(data) {
 	try {
