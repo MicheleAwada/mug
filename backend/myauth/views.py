@@ -154,15 +154,10 @@ class GoogleAuth(APIView):
     def post(self, request):
         data = request.data
         token = data.get('credential')
-        print("hello data is", data)
         try:
             idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
 
             if not (idinfo["aud"] == google_client_id == data.get("clientId")):
-                print("isnt equal")
-                print(idinfo["aud"])
-                print(google_client_id)
-                print(data.get("clientId"))
                 raise ValidationError("Invalid client ID.")
         except:
             # Invalid token
