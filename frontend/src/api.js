@@ -3,7 +3,7 @@ import { getTokenInHeader } from "./auth-api";
 
 import { attempValuesOfObject, getNestedProperty } from "./utils";
 
-const domain_name = "http://backend.mug.micheleawada.com";
+const domain_name = "https://backend.mug.micheleawada.com";
 
 const api = axios.create({
 	baseURL: domain_name,
