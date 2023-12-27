@@ -154,17 +154,18 @@ REST_FRAMEWORK = {
     "UPLOADED_FILES_USE_URL": True,
 }
 
-DOMAIN_URL = "backend.mug.micheleawada.com"
+DOMAIN_URL_WITHOUT_HTTPS = "backend.mug.micheleawada.com"
+DOMAIN_URL = "https://backend.mug.micheleawada.com"
 
 ALLOWED_HOSTS = [
-    DOMAIN_URL,   
+    DOMAIN_URL_WITHOUT_HTTPS,   
 ]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = f'{DOMAIN_URL}/static/'
+STATIC_URL = f'/static/'
 
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
