@@ -434,7 +434,7 @@ export default function PostView() {
 									</div>
 								</div>
 								<div>
-									<p>{comment.body}</p>
+									<pre>{comment.body}</pre>
 								</div>
 							</div>
 						))}
