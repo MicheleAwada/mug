@@ -1,7 +1,7 @@
 import { getPost, comment, like, deletePostFromCache } from "../api";
 import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
-import { Link, Form, useFetcher } from "react-router-dom";
+import { Link, Form } from "react-router-dom";
 
 import vertical_dots_icon from "../assets/3-vertical-dots.svg";
 import report_icon from "../assets/report.png";
@@ -34,7 +34,6 @@ export async function action({ request, params }) {
 }
 
 export default function PostView() {
-	const fetcher = useFetcher();
 	const context = useOutletContext();
 	const post = useLoaderData();
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
@@ -169,7 +168,7 @@ export default function PostView() {
 				<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
 				<p className="text-gray-800 p-0">Posted on {post.created_at}</p>
 				<nav className=" flex items-center gap-4 my-3">
-					<fetcher.Form action={`/posts/${post.id}/like/`} method="post">
+					<Form action={`/posts/${post.id}/like/`} method="post">
 						<button
 							type={isAuthenticated ? "sumbit" : "button"}
 							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
@@ -188,7 +187,7 @@ export default function PostView() {
 								alt={post.is_liked ? "UnLike" : "Like"}
 							/>
 						</button>
-					</fetcher.Form>
+					</Form>
 					<Dropdown
 						dismissOnClick={false}
 						renderTrigger={() => (
@@ -280,7 +279,12 @@ export default function PostView() {
 					className="post-image object-cover mx-auto rounded-md mb-8"
 					src={post.image}
 				/>
-				<pre className="mx-3 text-gray-800 text-justify mb-16">{post.body}</pre>
+				<pre
+					className="px-3 text-gray-800 text-justify mb-16 max-w-full"
+					style={{ "word-wrap": "break-word" }}
+				>
+					{post.body}
+				</pre>
 				<section>
 					<hr />
 					<p className="ml-8 my-4 text-lg">
