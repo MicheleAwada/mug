@@ -432,8 +432,17 @@ export default function PostView() {
 									</Dropdown>
 								</div>
 							</div>
-							<div>
-								<pre>{comment.body}</pre>
+							<div className="px-3 w mb-16 w-full block">
+								<p
+									className="text-gray-800 w-full"
+									style={{
+										whiteSpace: "pre-wrap",
+										textOverflow: "ellipsis",
+										overflowWrap: "break-word",
+									}}
+								>
+									{comment.body}
+								</p>
 							</div>
 						</div>
 					))}
