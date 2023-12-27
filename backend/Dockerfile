@@ -1,6 +1,5 @@
 FROM python:alpine
 
-RUN mkdir /app
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE 1

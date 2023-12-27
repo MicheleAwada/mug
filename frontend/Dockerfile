@@ -1,10 +1,10 @@
 FROM node:alpine
 
-WORKDIR /app
+WORKDIR /frontend
 
 COPY . .
 
 RUN npm install -g vite@latest
 RUN npm install
 
-RUN npm run build
+RUN npm run build --no-input
