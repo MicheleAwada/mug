@@ -160,6 +160,9 @@ DOMAIN_URL = "https://backend.mug.micheleawada.com"
 ALLOWED_HOSTS = [
     DOMAIN_URL_WITHOUT_HTTPS,   
 ]
+CSRF_TRUSTED_ORIGINS = [
+    DOMAIN_URL
+]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
