@@ -29,7 +29,7 @@ export async function action({ request, params }) {
 	const formData = await request.formData();
 	formData.append("post", postId);
 	comment(formData);
-	deletePostFromCache(postId)
+	deletePostFromCache(postId);
 	return redirect(`/posts/${postId}/`);
 }
 
@@ -41,14 +41,17 @@ export default function PostView() {
 	const { simpleAddMessage } = context.messages;
 	const [copyTxt, setCopyTxt] = useState("Copy");
 	const [showCommentForm, setShowCommentForm] = useState(false);
-	
+
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showReportModal, setShowReportModal] = useState(false);
 	const [reportCommentId, setReportCommentId] = useState(0);
 	return (
 		<div id="post-view-container" className="block lg:grid">
 			<section className="hidden lg:block"></section>
-			<section className="my-8 mx-6 sm:mx-8 md:mx-10 lg:mx-14 xl:mx-20" id="detail-post-view lg:w-full">
+			<section
+				className="my-8 mx-6 sm:mx-8 md:mx-10 lg:mx-14 xl:mx-20"
+				id="detail-post-view lg:w-full"
+			>
 				<div className="modals">
 					<Modal
 						show={showDeleteModal}
@@ -89,10 +92,19 @@ export default function PostView() {
 						<Modal.Body>
 							<div className="text-center">
 								<h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-									Report {reportCommentId===0 ? "Post" : "Comment"}
+									Report {reportCommentId === 0 ? "Post" : "Comment"}
 								</h3>
 
-								<Form action={reportCommentId===0 ? "report/" : `report/${reportCommentId}`} method="post" className="w-full" onSubmit={() => setShowReportModal(false)}>
+								<Form
+									action={
+										reportCommentId === 0
+											? "report/"
+											: `report/${reportCommentId}`
+									}
+									method="post"
+									className="w-full"
+									onSubmit={() => setShowReportModal(false)}
+								>
 									<div className="flex flex-col gap-8">
 										<div className="flex flex-wrap gap-x-6 gap-y-2 content-center">
 											<div className="flex items-center gap-2">
@@ -104,28 +116,46 @@ export default function PostView() {
 												<Label htmlFor="abuse">Abuse</Label>
 											</div>
 											<div className="flex items-center gap-2">
-												<Radio name="type" value="sexual" id="sexual" required />
+												<Radio
+													name="type"
+													value="sexual"
+													id="sexual"
+													required
+												/>
 												<Label htmlFor="sexual">Sexual Content</Label>
 											</div>
 											<div className="flex items-center gap-2">
-												<Radio name="type" value="inappropriate" id="inappropriate" required />
-												<Label htmlFor="inappropriate">Inappropriate Content</Label>
+												<Radio
+													name="type"
+													value="inappropriate"
+													id="inappropriate"
+													required
+												/>
+												<Label htmlFor="inappropriate">
+													Inappropriate Content
+												</Label>
 											</div>
 											<div className="flex items-center gap-2">
 												<Radio name="type" value="other" id="other" required />
 												<Label htmlFor="other">Other</Label>
 											</div>
 										</div>
-										<Textarea id="extra-report-info" placeholder="Care to tell us more?" rows={2} name="name" />
+										<Textarea
+											id="extra-report-info"
+											placeholder="Care to tell us more?"
+											rows={2}
+											name="name"
+										/>
 										<div className="flex items-center justify-end gap-4">
-											<Button type="button" onClick={() => setShowReportModal(false)} color="gray" className="w-20">
+											<Button
+												type="button"
+												onClick={() => setShowReportModal(false)}
+												color="gray"
+												className="w-20"
+											>
 												Cancel
 											</Button>
-											<Button
-												className="w-20"
-												color="failure"
-												type="sumbit"
-											>
+											<Button className="w-20" color="failure" type="sumbit">
 												Report
 											</Button>
 										</div>
@@ -141,14 +171,15 @@ export default function PostView() {
 				<nav className=" flex items-center gap-4 my-3">
 					<fetcher.Form action={`/posts/${post.id}/like/`} method="post">
 						<button
-							type={isAuthenticated ? "sumbit":"button"}
+							type={isAuthenticated ? "sumbit" : "button"}
 							className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
-							onClick={isAuthenticated ? () => {} : () => {
-								simpleAddMessage(
-									"Please login to like posts",
-									"error",
-								)
-							}}
+							onClick={
+								isAuthenticated
+									? () => {}
+									: () => {
+											simpleAddMessage("Please login to like posts", "error");
+									  }
+							}
 						>
 							<p className="text-gray-950">{short_nums(post.likes)}</p>
 							<img
@@ -191,17 +222,18 @@ export default function PostView() {
 							/>
 						)}
 					>
-						<Dropdown.Item as="button" onClick={() => {
-							if (!isAuthenticated) {
-								simpleAddMessage(
-									"Please login to report posts",
-									"error",
-								)
-								return
-							}
-							setReportCommentId(0)
-							setShowReportModal(true)
-							}} className="flex items-center">
+						<Dropdown.Item
+							as="button"
+							onClick={() => {
+								if (!isAuthenticated) {
+									simpleAddMessage("Please login to report posts", "error");
+									return;
+								}
+								setReportCommentId(0);
+								setShowReportModal(true);
+							}}
+							className="flex items-center"
+						>
 							<img src={report_icon} className="w-4 h-4 mr-2" />
 							Report
 						</Dropdown.Item>
@@ -248,7 +280,7 @@ export default function PostView() {
 					className="post-image object-cover mx-auto rounded-md mb-8"
 					src={post.image}
 				/>
-				<p className="mx-3 text-gray-800 text-justify mb-16">{post.body}</p>
+				<pre className="mx-3 text-gray-800 text-justify mb-16">{post.body}</pre>
 				<section>
 					<hr />
 					<p className="ml-8 my-4 text-lg">
@@ -313,7 +345,10 @@ export default function PostView() {
 								key={comment.id}
 							>
 								<div className="flex items-center justify-between gap-2 mb-3">
-									<Link to={`/author/${comment.author.id}/`} className="flex items-center gap-2 mb-3">
+									<Link
+										to={`/author/${comment.author.id}/`}
+										className="flex items-center gap-2 mb-3"
+									>
 										<img
 											className="author-image w-8 h-8 object-cover rounded-full"
 											src={comment.author.avatar}
@@ -330,12 +365,16 @@ export default function PostView() {
 											<button
 												type={isAuthenticated ? "sumbit" : "button"}
 												className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
-												onClick={isAuthenticated ? () => {} : () => {
-													simpleAddMessage(
-														"Please login to like posts",
-														"error",
-													)
-												}}
+												onClick={
+													isAuthenticated
+														? () => {}
+														: () => {
+																simpleAddMessage(
+																	"Please login to like posts",
+																	"error"
+																);
+														  }
+												}
 											>
 												<p className="text-gray-950">
 													{short_nums(comment.likes)}
@@ -356,17 +395,21 @@ export default function PostView() {
 												/>
 											)}
 										>
-											<Dropdown.Item as="button" onClick={() => {
+											<Dropdown.Item
+												as="button"
+												onClick={() => {
 													if (!isAuthenticated) {
 														simpleAddMessage(
 															"Please login to report posts",
-															"error",
-														)
-														return
+															"error"
+														);
+														return;
 													}
-												setReportCommentId(comment.id)
-												setShowReportModal(true)
-											}} className="flex items-center">
+													setReportCommentId(comment.id);
+													setShowReportModal(true);
+												}}
+												className="flex items-center"
+											>
 												<img src={report_icon} className="w-4 h-4 mr-2" />
 												Report
 											</Dropdown.Item>

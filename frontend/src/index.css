@@ -25,7 +25,7 @@ body,
 
 .nunito,
 * {
-  font-family: "Nunito", sans-serif;
+  font-family: "Nunito", sans-serif !important;
 }
 
 .bold {
