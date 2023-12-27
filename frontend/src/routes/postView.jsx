@@ -28,7 +28,7 @@ export async function action({ request, params }) {
 	const postId = params.id;
 	const formData = await request.formData();
 	formData.append("post", postId);
-	comment(formData);
+	await comment(formData);
 	deletePostFromCache(postId);
 	return redirect(`/posts/${postId}/`);
 }
@@ -363,7 +363,7 @@ export default function PostView() {
 									>
 										<button
 											type={isAuthenticated ? "sumbit" : "button"}
-											className="h-6  rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
+											className="h-6 rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
 											onClick={
 												isAuthenticated
 													? () => {}
