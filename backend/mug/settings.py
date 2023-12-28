@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'Mug',
         'USER': 'postgres',
-        'PASSWORD': 'ChairOnBlueBlair',
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
         'HOST': 'postgres',
         'PORT': 5432,
     }
@@ -158,7 +158,7 @@ DOMAIN_URL_WITHOUT_HTTPS = "backend.mug.micheleawada.com"
 DOMAIN_URL = "https://backend.mug.micheleawada.com"
 
 ALLOWED_HOSTS = [
-    DOMAIN_URL_WITHOUT_HTTPS,   
+    DOMAIN_URL_WITHOUT_HTTPS,
 ]
 CSRF_TRUSTED_ORIGINS = [
     DOMAIN_URL
