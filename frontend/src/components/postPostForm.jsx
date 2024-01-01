@@ -1,9 +1,8 @@
-import { Form } from "react-router-dom";
-import Spinner from "../assets/spinner.svg";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate, useNavigation } from "react-router-dom";
+import Loading from "./loading";
 import { useEffect } from "react";
 import { Tooltip } from "flowbite-react";
+
 
 export function PostPostForm({
 	actionData,
@@ -12,8 +11,9 @@ export function PostPostForm({
 	simpleAddMessage,
 	isAuthenticated = true,
 }) {
-	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+	const navigation = useNavigation();
+	const showLoading = navigation.state === "submitting";
 	let error = null;
 	if (actionData !== undefined) {
 		error = actionData[0] ? null : (
@@ -23,7 +23,6 @@ export function PostPostForm({
 
 	useEffect(() => {
 		if (actionData !== undefined) {
-			setLoading(false);
 			if (actionData[0]) {
 				if (create) {
 					simpleAddMessage("Post created", "success", "Success!");
@@ -42,9 +41,6 @@ export function PostPostForm({
 				id="post-create-form"
 				className=" rounded-sm p-4 mt-6 mx-8"
 				encType="multipart/form-data"
-				onSubmit={() => {
-					setLoading(true);
-				}}
 			>
 				<fieldset className="flex flex-col">
 					<label htmlFor="title">Title{create && "*"}</label>
@@ -85,37 +81,25 @@ export function PostPostForm({
 				<button
 					type="sumbit"
 					className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+					disabled={showLoading}
 				>
-					<img
-						src={Spinner}
-						alt="loading"
-						className={
-							(loading ? "animate-spin cursor-not-allowed" : "hidden") +
-							" h-full"
-						}
-					/>
+					<Loading show={showLoading} />
 					{create ? "Post" : "Edit"}
-				</button> : <Tooltip
-				content="You must be logged in to post"
-				style="light"
-				arrow
-				>
-					<button
-						type="sumbit"
-						className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
-						disabled
+				</button> : <div className="w-full">
+					<Tooltip
+					content="You must be logged in to post"
+					style="light"
+					arrow
 					>
-						<img
-							src={Spinner}
-							alt="loading"
-							className={
-								(loading ? "animate-spin cursor-not-allowed" : "hidden") +
-								" h-full"
-							}
-						/>
-						{create ? "Post" : "Edit"}
-					</button>
-				</Tooltip>}
+						<button
+							type="sumbit"
+							className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+							disabled
+						>
+							{create ? "Post" : "Edit"}
+						</button>
+					</Tooltip>
+				</div>}
 				{error}
 			</Form>
 		</div>
