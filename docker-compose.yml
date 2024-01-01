@@ -30,7 +30,7 @@ services:
     image: nginx:alpine
     container_name: mug_nginx
     ports:
-      - "80:80"
+      - "8000:8000"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/dist:/dist
