@@ -17,6 +17,8 @@ import {
 import { CgDetailsMore, CgLogIn, CgProfile } from "react-icons/cg";
 import { Twirl as Hamburger } from "hamburger-react";
 
+import Button from "./button"
+
 export default function Header({ context }) {
 	const [isAuthenticated] = context.auth;
 	const [currentUser] = context.user;
@@ -125,18 +127,13 @@ export default function Header({ context }) {
 							</div>
 							{!isAuthenticated ? (
 								<nav className="flex">
-									<Link
+									<Button
 										to="/login/"
-										className="bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-amber-100 mx-4 rounded-md box-border px-6 py-2"
+										as={Link}
+										color="amber"
 									>
 										Login
-									</Link>
-									{/* <Link
-										to="/signup/"
-										className="bg-cyan-600 hover:bg-cyan-700 active:bg-cyan-800 text-cyan-100 mx-4 rounded-sm box-border px-6 py-2"
-									>
-										Signup
-									</Link> */}
+									</Button>
 								</nav>
 							) : (
 								<nav className="h-full">
