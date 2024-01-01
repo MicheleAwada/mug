@@ -140,6 +140,8 @@ FRONTEND_DOMAIN = "https://mug.micheleawada.com"
 #     FRONTEND_DOMAIN,
 # ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ORIGIN_WHITELIST = [
      FRONTEND_DOMAIN
 ]
@@ -158,11 +160,11 @@ DOMAIN_URL_WITHOUT_HTTPS = "backend.mug.micheleawada.com"
 DOMAIN_URL = "https://backend.mug.micheleawada.com"
 
 ALLOWED_HOSTS = [
-    DOMAIN_URL_WITHOUT_HTTPS,
+    "*",
 ]
-CSRF_TRUSTED_ORIGINS = [
-    DOMAIN_URL
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     DOMAIN_URL
+# ]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
