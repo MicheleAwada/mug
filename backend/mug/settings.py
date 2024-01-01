@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'mug.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Mug',
-        'USER': 'postgres',
+        'NAME': os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
         'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
         'HOST': 'postgres',
         'PORT': 5432,

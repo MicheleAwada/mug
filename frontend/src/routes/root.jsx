@@ -13,7 +13,7 @@ import {
 } from "react-icons/hi";
 
 import { googlelogin } from "../auth-api";
-import { useGoogleOneTapLogin } from "@react-oauth/google"
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 import { return_auth_feedback_functions } from "./login";
 
 export function loader() {
@@ -100,43 +100,46 @@ export default function Root() {
 	const navigate = useNavigate();
 	const [isAuthenticated, setIsAuthenticated] = useState(
 		loaderData.is_authenticated
-		);
+	);
 	const [currentUser, setCurrentUser] = useState(loaderData.user);
 
 	const [messages, setMessages] = useState({});
 	const addMessage = (message) =>
-	addMessageWithSetMessage(message, setMessages);
+		addMessageWithSetMessage(message, setMessages);
 	const simpleAddMessage = (message, type, boldMessage = "") =>
 		addMessage(
 			simpleMakeMessage(message, type, boldMessage, messages, setMessages)
-			);
-			
-			
-	const { success_login, failed_login, google_handle_success, google_handle_error } = return_auth_feedback_functions(setIsAuthenticated, setCurrentUser, simpleAddMessage, navigate);
+		);
+
+	const {
+		success_login,
+		failed_login,
+		google_handle_success,
+		google_handle_error,
+	} = return_auth_feedback_functions(
+		setIsAuthenticated,
+		setCurrentUser,
+		simpleAddMessage,
+		navigate
+	);
 
 	useGoogleOneTapLogin({
 		onSuccess: google_handle_success,
 		onError: google_handle_error,
 		disabled: isAuthenticated,
-	})
-
-
+	});
 
 	const context = {
 		auth: [isAuthenticated, setIsAuthenticated],
 		user: [currentUser, setCurrentUser],
 		messages: { messages, setMessages, addMessage, simpleAddMessage },
-		routes: {
-		}
-	}
-	
+		routes: {},
+	};
 
 	return (
 		<>
 			<div id="root-divider">
-				<Header
-					context={context}
-				/>
+				<Header context={context} />
 				<div className="relative">
 					<div
 						id="messages"
@@ -146,13 +149,9 @@ export default function Root() {
 							.reverse()
 							.map((message) => messages[message])}
 					</div>
-					<Outlet
-						context={context}
-					/>
+					<Outlet context={context} />
 				</div>
 			</div>
 		</>
 	);
 }
-
-
