@@ -3,6 +3,7 @@ import Loading from "./loading";
 import { useEffect } from "react";
 import { Tooltip } from "flowbite-react";
 
+import Button from "./button";
 
 export function PostPostForm({
 	actionData,
@@ -78,26 +79,28 @@ export function PostPostForm({
 					/>
 				</fieldset>
 				{isAuthenticated ? 
-				<button
+				<Button
 					type="sumbit"
-					className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+					color="amber"
+					loading={showLoading}
 					disabled={showLoading}
+					className="w-full"
 				>
-					<Loading show={showLoading} />
 					{create ? "Post" : "Edit"}
-				</button> : <div className="w-full">
+				</Button> : <div className="w-full">
 					<Tooltip
 					content="You must be logged in to post"
 					style="light"
 					arrow
 					>
-						<button
-							type="sumbit"
-							className="flex items-center justify-center h-8 gap-2 w-full my-6 py-1 px-4 text-white bg-amber-600 rounded-sm"
+						<Button
+							type="button"
+							color="amber"
 							disabled
+							className="w-full"
 						>
 							{create ? "Post" : "Edit"}
-						</button>
+						</Button>
 					</Tooltip>
 				</div>}
 				{error}
