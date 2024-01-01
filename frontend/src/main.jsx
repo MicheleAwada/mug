@@ -2,7 +2,7 @@ import React from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
+import "./styles/index.scss";
 
 import Root, { loader as rootLoader } from "./routes/root";
 

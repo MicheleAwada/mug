@@ -19,6 +19,7 @@
     "react-icons": "^4.11.0",
     "react-oauth": "^0.0.1",
     "react-router-dom": "^6.17.0",
+    "sass": "^1.69.6",
     "universal-cookie": "^6.1.1"
   },
   "devDependencies": {
