@@ -10,13 +10,12 @@ import { ErrorTextObj } from "../signup";
 
 import { attempValuesOfObject } from "../../utils";
 
+import Button from "../../components/button";
+
 export async function action({ request, params }) {
     const formData = await request.formData();
     const avatar = formData.get("avatar");
-    console.log("YOO")
-    console.log(avatar)
     if (avatar.name === "") {
-        console.log("inside")
 		formData.delete("avatar");
 	}
     const result = changeInfo(formData);
@@ -97,15 +96,15 @@ export default function Details() {
                     </fieldset>
                     <ErrorText child="non_field_errors" />
                     <ErrorText child="" />
-                    {isAuthenticated ? <button type="sumbit" className="px-6 py-2 bg-cyan-500 text-white rounded-lg">
+                    {isAuthenticated ? <Button type="sumbit" color="blue">
                         Save Changes
-                    </button> : <Tooltip
+                    </Button> : <Tooltip
 								content="You must Login first to change your details"
 								style="light"
 								arrow
-							><button type="button" className="px-6 py-2 bg-cyan-500 text-white rounded-lg">
+							><Button type="button" color="blue">
                         Save Changes
-                    </button></Tooltip>}
+                    </Button></Tooltip>}
             </Form>
         </>
     )
