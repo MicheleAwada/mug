@@ -17,7 +17,9 @@ export default function Button({ children, color="amber", loading=false, classNa
             || color==="white" &&
             `h-8 flex items-center justify-center gap-2 py-1 px-4 rounded-md ring-0 active:ring-2 text-white bg-white-600 hover:bg-white-700 active:ring-white-400`
             
-            )}
+            )
+            + " " + className
+        }
         >
             <Loading show={loading} />
             {!loading && children}
