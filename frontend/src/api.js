@@ -78,7 +78,7 @@ export async function deletePost(id) {
 export async function comment(data) {
 	try {
 		const response = await api.post("/api/comments/", data);
-		return response.data;
+		return response.data.body;
 	} catch (error) {
 		console.error(error);
 		return false;

@@ -1,5 +1,5 @@
 import { getPost, comment, like, deletePostFromCache } from "../api";
-import { redirect, useLoaderData, useOutletContext } from "react-router-dom";
+import { redirect, useLoaderData, useActionData, useOutletContext } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form } from "react-router-dom";
 
@@ -13,11 +13,10 @@ import heart from "../assets/heart.svg";
 import heart_filled from "../assets/heart filled.svg";
 
 import { Button, Modal, Radio, Label, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 import { short_nums } from "../utils";
-
 export async function loader({ request, params }) {
 	const id = params.id;
 	const posts_data = await getPost(id);
@@ -28,9 +27,9 @@ export async function action({ request, params }) {
 	const postId = params.id;
 	const formData = await request.formData();
 	formData.append("post", postId);
-	await comment(formData);
+	const response = await comment(formData);
 	deletePostFromCache(postId);
-	return redirect(`/posts/${postId}/`);
+	return response
 }
 
 export default function PostView() {
@@ -39,7 +38,23 @@ export default function PostView() {
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
 	const { simpleAddMessage } = context.messages;
 	const [copyTxt, setCopyTxt] = useState("Copy");
+
+	const commentFormRef = useRef();
 	const [showCommentForm, setShowCommentForm] = useState(false);
+
+	const actionData = useActionData();
+	useEffect(() => {
+		if (actionData!==undefined) {
+			if (actionData!==false) {
+				commentFormRef.current.reset()
+				setShowCommentForm(false)
+				simpleAddMessage("Comment created", "success", "Success!")
+			} else {
+				simpleAddMessage("Failed to create comment", "error", "Error!")
+			}
+		}
+	}, [actionData])
+
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showReportModal, setShowReportModal] = useState(false);
@@ -289,6 +304,7 @@ export default function PostView() {
 				<Form
 					className="bg-gray-50 rounded-md border-2 border-gray-200 p-0 mb-4"
 					method="post"
+					ref={commentFormRef}
 				>
 					{isAuthenticated ? (
 						<textarea
