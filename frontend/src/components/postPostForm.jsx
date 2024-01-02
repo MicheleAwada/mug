@@ -84,7 +84,7 @@ export function PostPostForm({
 					color="amber"
 					loading={showLoading}
 					disabled={showLoading}
-					className="w-full"
+					className="w-full mt-6"
 				>
 					{create ? "Post" : "Edit"}
 				</Button> : <div className="w-full">
@@ -97,7 +97,7 @@ export function PostPostForm({
 							type="button"
 							color="amber"
 							disabled
-							className="w-full"
+							className="w-full mt-6"
 						>
 							{create ? "Post" : "Edit"}
 						</Button>
