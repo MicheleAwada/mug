@@ -370,7 +370,7 @@ export default function PostView() {
 
 					<div className={"flex items-center gap-3 " + (showCommentForm ? "" : " hidden")}>
 						<Button
-							color="gray"
+							color="light-gray"
 							onClick={() => setShowCommentForm(false)}
 							type="button"
 							className="my-2 ml-3"
