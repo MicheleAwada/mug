@@ -29,27 +29,26 @@ services:
   nginx:
     image: nginx:alpine
     container_name: mug_nginx
-    ports:
-      - "8000:8000"
+    expose:
+      - 81
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/dist:/dist
       - mug_static:/static
       - mug_media:/media
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.http.routers.mug.middlewares=no-www-http@file,to-https@file"
-#      - "traefik.http.routers.mug.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
-#      - "traefik.http.routers.mug.entrypoints=web"
-#      - "traefik.http.routers.mug-secure.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
-#      - "traefik.http.routers.mug-secure.middlewares=no-www@file"
-#      - "traefik.http.routers.mug-secure.tls.certresolver=letsencrypt"
-#      - "traefik.http.routers.mug-secure.tls=true"
-#      - "traefik.http.routers.mug-secure.entrypoints=web-secure"
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mug.middlewares=no-www-http@file,to-https@file"
+      - "traefik.http.routers.mug.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
+      - "traefik.http.routers.mug.entrypoints=web"
+      - "traefik.http.routers.mug-secure.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
+      - "traefik.http.routers.mug-secure.middlewares=no-www@file"
+      - "traefik.http.routers.mug-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.mug-secure.tls=true"
+      - "traefik.http.routers.mug-secure.entrypoints=web-secure"
     networks:
       - internal
-#      - traefikproxy
+      - traefikproxy
 
 volumes:
   mug_postgres_data:
@@ -59,6 +58,6 @@ volumes:
 
 networks:
   internal:
-#  traefikproxy:
-#    name: traefikproxy
-#    external: true
+  traefikproxy:
+    name: traefikproxy
+    external: true
