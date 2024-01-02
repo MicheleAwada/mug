@@ -105,7 +105,7 @@ export default function Header({ context }) {
 				<div className="w-full">
 					<header
 						id="header"
-						className="bg-gray-300 fixed w-full h-20 md:px-6 md:h-16 z-40"
+						className="bg-gray-300 fixed w-full h-20 px-4 md:px-6 md:h-16 z-40"
 					>
 						<div className="flex justify-between items-center h-full">
 							{/* <div className="flex items-center h-full"> */}
