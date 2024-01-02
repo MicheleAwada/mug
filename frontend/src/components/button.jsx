@@ -14,6 +14,12 @@ export default function Button({ children, color="amber", loading=false, classNa
             `text-white bg-blue-600 hover:bg-blue-700 active:ring-blue-400`
             || color==="gray" &&
             `text-white bg-gray-600 hover:bg-gray-700 active:ring-gray-400`
+            || color==="light-gray" &&
+            `text-white bg-gray-400 hover:bg-gray-500 active:ring-gray-200`
+            || color==="light-red" &&
+            `text-white bg-red-400 hover:bg-red-500 active:ring-red-200`
+            || color==="red" &&
+            `text-white bg-red-600 hover:bg-red-700 active:ring-red-400`
             || color==="white" &&
             `text-white bg-gray-300 hover:bg-gray-400 active:ring-gray-100`
             
