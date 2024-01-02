@@ -11,6 +11,8 @@ import heart_filled from "../assets/heart filled.svg";
 
 import { follow } from "../api";
 
+import Button from "../components/button";
+
 export async function loader({ params }) {
 	const respone = await getAuthor(params.id);
 	return respone.data;
@@ -63,20 +65,21 @@ export default function Author() {
 							</div>
 						</div>
 						{isCurrentUser ? (
-								<Link
-									to="/posts/create/"
-									className="bg-cyan-500 text-white rounded-md px-4 py-2"
-								>
-									Create Post
-								</Link>
+									<Button
+										as={Link}
+										to="/posts/create/"
+										color="cyan"
+									>
+										Create Post
+									</Button>
 							) : isAuthenticated ? (								
 								<Form method="post">
-									<button
+									<Button
 										type="submit"
-										className="bg-cyan-500 text-white rounded-md px-4 py-2"
+										color="cyan"	
 									>
 										{author.is_followed ? "Unfollow" : "Follow"}
-									</button>
+									</Button>
 								</Form>
 							) : (<></>)
 							}
