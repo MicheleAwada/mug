@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 import { Tooltip } from "flowbite-react";
 
+import Button from "../../components/button";
+
 export async function action({ request, params }) {
     const formData = await request.formData();
     const response = changePassword(formData);
@@ -32,15 +34,15 @@ export default function Security() {
                     <input className="rounded-md" type="password" name="new_password2" placeholder="confirm password" />
                 </fieldset>
 
-                {isAuthenticated ? <button type="submit" className="px-6 py-2 bg-red-400 text-white rounded-lg">
+                {isAuthenticated ? <Button type="submit"color="light-red">
                     Change Password
-                </button> : <Tooltip
+                </Button> : <Tooltip
 								content="You must Login first to change your password"
 								style="light"
 								arrow
-							><button type="button" className="px-6 py-2 bg-red-400 text-white rounded-lg">
+							><Button type="button" color="light-red">
                             Change Password
-                        </button></Tooltip>}
+                        </Button></Tooltip>}
             </Form>
         </div>
     )
