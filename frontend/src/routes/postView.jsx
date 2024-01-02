@@ -368,22 +368,22 @@ export default function PostView() {
 						</Tooltip>
 					)}
 
-					<div className={"buttons " + (showCommentForm ? "" : " hidden")}>
-						<button
-							className="bg-gray-400 hover:bg-gray-500 acitve:bg-gray-600
-								text-white p-2 px-4 m-2 rounded-md"
+					<div className={"flex items-center gap-3 " + (showCommentForm ? "" : " hidden")}>
+						<Button
+							color="gray"
 							onClick={() => setShowCommentForm(false)}
 							type="button"
+							className="my-2 ml-3"
 						>
 							Cancel
-						</button>
-						<button
+						</Button>
+						<Button
 							type="sumbit"
-							className="bg-blue-500 hover:bg-blue-600 acitve:bg-blue-700
-								text-white p-2 px-4 m-2 rounded-md"
+							color="cyan"
+							className="my-2"
 						>
 							Comment
-						</button>
+						</Button>
 					</div>
 				</Form>
 				<ul className="comments gap-4 flex flex-col m-0 p-0">
