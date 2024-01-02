@@ -80,17 +80,13 @@ WSGI_APPLICATION = 'mug.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': os.environ.get("POSTGRES_DB"),
-    #     'USER': os.environ.get("POSTGRES_USER"),
-    #     'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
-    #     'HOST': 'postgres',
-    #     'PORT': 5432,
-    # }
     'default': {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': 'postgres',
+        'PORT': 5432,
     }
 }
 
@@ -144,8 +140,6 @@ FRONTEND_DOMAIN = "https://mug.micheleawada.com"
 #     FRONTEND_DOMAIN,
 # ]
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ORIGIN_WHITELIST = [
      FRONTEND_DOMAIN
 ]
@@ -164,11 +158,11 @@ DOMAIN_URL_WITHOUT_HTTPS = "backend.mug.micheleawada.com"
 DOMAIN_URL = "https://backend.mug.micheleawada.com"
 
 ALLOWED_HOSTS = [
-    "*",
+    DOMAIN_URL_WITHOUT_HTTPS,
 ]
-# CSRF_TRUSTED_ORIGINS = [
-#     DOMAIN_URL
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    DOMAIN_URL
+]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = f'{DOMAIN_URL}/media/'
