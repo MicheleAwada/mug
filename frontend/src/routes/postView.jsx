@@ -1,5 +1,5 @@
 import { getPost, comment, like, deletePostFromCache } from "../api";
-import { redirect, useLoaderData, useActionData, useOutletContext, useFetcher } from "react-router-dom";
+import { useNavigation, useLoaderData, useActionData, useOutletContext, useFetcher } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form } from "react-router-dom";
 
@@ -31,11 +31,13 @@ export async function action({ request, params }) {
 	formData.append("post", postId);
 	const response = await comment(formData);
 	deletePostFromCache(postId);
+
 	return response
 }
 
 export default function PostView() {
 	const context = useOutletContext();
+	
 	let post = useLoaderData();
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
 	const { simpleAddMessage } = context.messages;
@@ -56,6 +58,10 @@ export default function PostView() {
 			}
 		}
 	}, [actionData])
+	const navigation = useNavigation();
+	console.log("navigtion")
+	console.log(navigation)
+	const showCommentLoading = navigation.state === "submitting" && navigation.location.pathname === "/posts/" + post.id;
 
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -337,6 +343,7 @@ export default function PostView() {
 				<Form
 					className="bg-gray-50 rounded-md border-2 border-gray-200 p-0 mb-4"
 					method="post"
+					action={`/posts/${post.id}`}
 					ref={commentFormRef}
 				>
 					{isAuthenticated ? (
@@ -381,6 +388,7 @@ export default function PostView() {
 							type="sumbit"
 							color="cyan"
 							className="my-2"
+							loading={showCommentLoading}
 						>
 							Comment
 						</Button>
