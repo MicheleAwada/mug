@@ -1,5 +1,5 @@
 import { getPost, comment, like, deletePostFromCache } from "../api";
-import { redirect, useLoaderData, useActionData, useOutletContext } from "react-router-dom";
+import { redirect, useLoaderData, useActionData, useOutletContext, useFetcher } from "react-router-dom";
 import { Dropdown, Tooltip } from "flowbite-react";
 import { Link, Form } from "react-router-dom";
 
@@ -12,9 +12,11 @@ import copy_icon from "../assets/link.png";
 import heart from "../assets/heart.svg";
 import heart_filled from "../assets/heart filled.svg";
 
-import { Button, Modal, Radio, Label, Textarea } from "flowbite-react";
+import { Modal, Radio, Label, Textarea } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+
+import Button from "../components/button";
 
 import { short_nums } from "../utils";
 export async function loader({ request, params }) {
@@ -34,7 +36,7 @@ export async function action({ request, params }) {
 
 export default function PostView() {
 	const context = useOutletContext();
-	const post = useLoaderData();
+	let post = useLoaderData();
 	const [isAuthenticated, setIsAuthenticated] = context.auth;
 	const { simpleAddMessage } = context.messages;
 	const [copyTxt, setCopyTxt] = useState("Copy");
@@ -59,6 +61,33 @@ export default function PostView() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showReportModal, setShowReportModal] = useState(false);
 	const [reportCommentId, setReportCommentId] = useState(0);
+
+
+	const fetcher = useFetcher()
+
+	if (fetcher.formData) {
+		const currentFormData = fetcher.formData
+		const id = parseInt(currentFormData.get("id"))
+		const old_is_liked_value = currentFormData.get("old_is_liked_value") === "true"
+		const old_likes_value = parseInt(currentFormData.get("old_likes_value"))
+		if (currentFormData.get("type")==="post") {
+			post.is_liked = !old_is_liked_value
+			post.likes = post.is_liked ? old_likes_value + 1 : old_likes_value - 1
+		}
+		if (currentFormData.get("type")==="comment") {
+			post.comments.map((comment) => {
+				if (comment.id === id) {
+					comment.is_liked = !old_is_liked_value
+					comment.likes = comment.is_liked ? old_likes_value + 1 : old_likes_value - 1
+				}
+				return comment
+			})
+		}
+	}
+
+
+
+
 	return (
 		<section
 			className="my-8 px-6 sm:px-8 md:px-10 lg:px-14 xl:px-20 w-screen h-full"
@@ -80,7 +109,7 @@ export default function PostView() {
 							</h3>
 							<div className="flex flex-col justify-center gap-4">
 								<Button
-									color="failure"
+									color="red"
 									onClick={() => setShowDeleteModal(false)}
 								>
 									Cancel
@@ -106,7 +135,6 @@ export default function PostView() {
 							<h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 								Report {reportCommentId === 0 ? "Post" : "Comment"}
 							</h3>
-
 							<Form
 								action={
 									reportCommentId === 0
@@ -162,7 +190,7 @@ export default function PostView() {
 										>
 											Cancel
 										</Button>
-										<Button className="w-20" color="failure" type="sumbit">
+										<Button className="w-20" color="red" type="sumbit">
 											Report
 										</Button>
 									</div>
@@ -176,17 +204,13 @@ export default function PostView() {
 			<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
 			<p className="text-gray-800 p-0">Posted on {post.created_at}</p>
 			<nav className=" flex items-center gap-4 my-3">
-				<Form action={`/posts/${post.id}/like/`} method="post">
+				{isAuthenticated ? <fetcher.Form action={`/posts/${post.id}/like/`} method="post">
+					<input type="hidden" name="type" value="post" />
+					<input type="hidden" name="id" value={post.id} />
+					<input type="hidden" name="old_is_liked_value" value={post.is_liked} />
+					<input type="hidden" name="old_likes_value" value={post.likes} />
 					<button
-						type={isAuthenticated ? "sumbit" : "button"}
 						className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
-						onClick={
-							isAuthenticated
-								? () => {}
-								: () => {
-										simpleAddMessage("Please login to like posts", "error");
-								  }
-						}
 					>
 						<p className="text-gray-950">{short_nums(post.likes)}</p>
 						<img
@@ -195,7 +219,17 @@ export default function PostView() {
 							alt={post.is_liked ? "UnLike" : "Like"}
 						/>
 					</button>
-				</Form>
+				</fetcher.Form> : <button
+						className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
+						onClick={() => simpleAddMessage("Please login to like posts", "error")}
+					>
+						<p className="text-gray-950">{short_nums(post.likes)}</p>
+						<img
+							className="w-4 h-4"
+							src={post.is_liked ? heart_filled : heart}
+							alt={post.is_liked ? "UnLike" : "Like"}
+						/>
+					</button>}
 				<Dropdown
 					dismissOnClick={false}
 					renderTrigger={() => (
@@ -373,34 +407,32 @@ export default function PostView() {
 									</p>
 								</Link>
 								<div className="flex items-center gap-2">
-									<Form
-										action={`/posts/${post.id}/like/${comment.id}/`}
-										method="post"
-									>
+									{isAuthenticated ? <fetcher.Form action={`/posts/${post.id}/like/${comment.id}/`} method="post">
+										<input type="hidden" name="type" value="comment" />
+										<input type="hidden" name="id" value={comment.id} />
+										<input type="hidden" name="old_is_liked_value" value={comment.is_liked} />
+										<input type="hidden" name="old_likes_value" value={comment.likes} />
 										<button
-											type={isAuthenticated ? "sumbit" : "button"}
-											className="h-6 rounded-full bg-gray-200 p-1 px-2 flex items-center gap-2"
-											onClick={
-												isAuthenticated
-													? () => {}
-													: () => {
-															simpleAddMessage(
-																"Please login to like posts",
-																"error"
-															);
-													  }
-											}
+											className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
 										>
-											<p className="text-gray-950">
-												{short_nums(comment.likes)}
-											</p>
+											<p className="text-gray-950">{short_nums(comment.likes)}</p>
 											<img
 												className="w-4 h-4"
 												src={comment.is_liked ? heart_filled : heart}
 												alt={comment.is_liked ? "UnLike" : "Like"}
 											/>
 										</button>
-									</Form>
+									</fetcher.Form> : <button
+											className="h-6 rounded-full bg-gray-200 p-1 flex items-center gap-2 px-2"
+											onClick={() => simpleAddMessage("Please login to like comments", "error")}
+										>
+											<p className="text-gray-950">{short_nums(comment.likes)}</p>
+											<img
+												className="w-4 h-4"
+												src={comment.is_liked ? heart_filled : heart}
+												alt={comment.is_liked ? "UnLike" : "Like"}
+											/>
+									</button>}
 									<Dropdown
 										dismissOnClick={true}
 										renderTrigger={() => (
