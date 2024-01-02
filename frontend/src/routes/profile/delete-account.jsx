@@ -1,4 +1,5 @@
-import { Button, Modal } from "flowbite-react";
+import {  Modal } from "flowbite-react";
+import Button from "../../components/button";
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { Form, useActionData, useOutletContext } from "react-router-dom";
@@ -52,20 +53,20 @@ export default function DeleteAccount() {
 								</h3>
 								<div className="flex flex-col justify-center gap-4">
 									<Button
-										color="failure"
+										color="red"
 										onClick={() => setShowDeleteModal(false)}
 									>
 										Cancel
 									</Button>
 									<Form method="post" className="w-full">
-										{isAuthenticated ? <Button type="submit" color="gray" className="w-full">
+										{isAuthenticated ? <Button type="submit" color="light-gray" className="w-full">
 											Delete
 										</Button> : <Tooltip
 										content="You must Login first to delete your account"
 										style="light"
 										className="w-full"
 										arrow>
-											<Button type="button" color="gray" className="w-full">
+											<Button type="button" color="light-gray" className="w-full">
 												Delete
 											</Button>
 										</Tooltip>}
@@ -74,7 +75,7 @@ export default function DeleteAccount() {
 							</div>
 						</Modal.Body>
 					</Modal>
-            <div className="py-4"><button onClick={() => (setShowDeleteModal(true))} className="bg-red-600 text-white px-6 py-2 rounded-md">Delete Account</button></div>
+            <div className="py-4"><Button onClick={() => (setShowDeleteModal(true))} color="red">Delete Account</Button></div>
         </>
     )
 }
