@@ -200,7 +200,6 @@ export default function PostView() {
 					</Modal.Body>
 				</Modal>
 			</div>
-			<h3 className="italic text-gray-500">Tutorial</h3>
 			<h1 className="text-4xl text-gray-800 font-bold mb-4">{post.title}</h1>
 			<p className="text-gray-800 p-0">Posted on {post.created_at}</p>
 			<nav className=" flex items-center gap-4 my-3">
