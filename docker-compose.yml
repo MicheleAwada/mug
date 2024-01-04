@@ -2,6 +2,7 @@ version: "3.4"
 services:
   backend:
     container_name: mug_backend
+    restart: always
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -21,6 +22,7 @@ services:
   postgres:
     image: postgres:alpine
     container_name: mug_postgres
+    restart: always
     volumes:
       - mug_postgres_data:/var/lib/postgresql/data
     env_file:
@@ -30,6 +32,7 @@ services:
   nginx:
     image: nginx:alpine
     container_name: mug_nginx
+    restart: always
     expose:
       - 81
     volumes:
@@ -39,7 +42,7 @@ services:
       - mug_media:/media
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mug.middlewares=no-www-http@file,to-https@file"
+      - "traefik.http.routers.mug.middlewares=no-www@file,to-https@file"
       - "traefik.http.routers.mug.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
       - "traefik.http.routers.mug.entrypoints=web"
       - "traefik.http.routers.mug-secure.rule=Host(`mug.micheleawada.com`) || Host(`www.mug.micheleawada.com`) || Host(`backend.mug.micheleawada.com`)"
